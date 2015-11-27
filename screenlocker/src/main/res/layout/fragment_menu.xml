@@ -13,6 +13,7 @@
         android:dividerHeight="0dp"
         android:fadingEdgeLength="0dp"
         android:listSelector="@android:color/transparent"
+        android:scrollbars="none"
         android:padding="0dp" />
 
 </RelativeLayout>
