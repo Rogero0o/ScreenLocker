@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:match="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity">
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/demo_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.roger.screenlocker.render.MissView
+        android:visibility="gone"
+        android:id="@+id/missview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/close"
+        android:text="Close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_centerInParent="true"
+        android:id="@+id/open"
+        android:text="Open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.roger.screenlocker.utils.SliderLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <RelativeLayout
+            android:id="@+id/matchview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.roger.screenlocker.matchview.MatchTextView
+                android:id="@+id/mMatchTextView"
+                match:textSize="8sp"
+                match:text="slide to unlock"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+    </com.roger.screenlocker.utils.SliderLayout>
+
+</RelativeLayout>

@@ -1,0 +1,97 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:match="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <FrameLayout
+        android:id="@+id/frame_init"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <com.roger.screenlocker.matchview.MatchTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            match:text="@string/app_name"/>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_item_shap"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:id="@+id/text_init3"
+                android:layout_marginTop="10dp"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_title" />
+
+            <RadioGroup
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:id="@+id/radioGroup"
+                android:contentDescription="性别"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radioslide"
+                    android:text="@string/home_mode_slide"
+                    android:checked="true"></RadioButton>
+
+                <RadioButton
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radiogesture"
+                    android:text="@string/home_mode_gesture"></RadioButton>
+            </RadioGroup>
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_blackground" />
+
+            <Button
+                android:id="@+id/chose_image"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_chose_image" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
+

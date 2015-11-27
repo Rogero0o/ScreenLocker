@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.roger.screenlocker"
+    android:versionCode="2"
+    android:versionName="1.01">
+
+    <uses-sdk android:minSdkVersion="19"></uses-sdk>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+
+    <application
+        android:hardwareAccelerated="true"
+        android:name=".MrApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/mr_icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:name=".WelcomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent"
+            android:name=".InitSysActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"></activity>
+        <activity
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
+            android:name=".HomeActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"></activity>
+
+        <service android:name=".LockScreenService"></service>
+        <receiver android:name="com.roger.screenlocker.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:value="5551d155e0f55a48f700189b"
+            android:name="UMENG_APPKEY"></meta-data>
+        <meta-data
+            android:value="All"
+            android:name="UMENG_CHANNEL" />
+    </application>
+
+</manifest>

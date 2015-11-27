@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ImgListView">
+        <attr name="headimage" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="Scrollbar">
+        <attr name="backgroundColor" format="color" />
+        <attr name="indicatorColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="DrawInsetsFrameLayout">
+        <attr name="topInsetBackground" format="reference|color" />
+        <attr name="bottomInsetBackground" format="reference|color" />
+        <attr name="sideInsetBackground" format="reference|color" />
+        <attr name="insetBackground" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="ShadowDipsTextView">
+        <attr name="shadowDx" format="dimension" />
+        <attr name="shadowDy" format="dimension" />
+        <attr name="shadowRadius" format="dimension" />
+        <attr name="shadowColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="CheckableImageView">
+        <attr name="checkedOverlayDrawable" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="SlidingMenu">
+        <attr name="mode">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+        <attr name="viewAbove" format="reference" />
+        <attr name="viewBehind" format="reference" />
+        <attr name="behindOffset" format="dimension" />
+        <attr name="behindWidth" format="dimension" />
+        <attr name="behindScrollScale" format="float" />
+        <attr name="touchModeAbove">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+            <enum name="none" value="2" />
+        </attr>
+        <attr name="touchModeBehind">
+            <enum name="margin" value="0" />
+            <enum name="fullscreen" value="1" />
+            <enum name="none" value="2" />
+        </attr>
+        <attr name="shadowDrawable" format="reference" />
+        <attr name="shadowWidth" format="dimension" />
+        <attr name="fadeEnabled" format="boolean" />
+        <attr name="fadeDegree" format="float" />
+        <attr name="selectorEnabled" format="boolean" />
+        <attr name="selectorDrawable" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="StaggeredGridView">
+        <attr name="column_count" format="integer" />
+        <attr name="column_count_portrait" format="integer" />
+        <attr name="column_count_landscape" format="integer" />
+        <attr name="item_margin" format="dimension" />
+        <attr name="grid_paddingLeft" format="dimension" />
+        <attr name="grid_paddingRight" format="dimension" />
+        <attr name="grid_paddingTop" format="dimension" />
+        <attr name="grid_paddingBottom" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="match">
+        <attr name="text" format="string" />
+        <attr name="textColor" format="color" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="ShimmerFrameLayout">
+        <attr name="auto_start" format="boolean" />
+        <attr name="base_alpha" format="float" />
+        <attr name="duration" format="integer" />
+        <attr name="repeat_count" format="integer" />
+        <attr name="repeat_delay" format="integer" />
+        <attr name="repeat_mode" format="enum">
+            <enum name="restart" value="1" />
+            <enum name="reverse" value="2" />
+        </attr>
+        <attr name="angle" format="enum">
+            <enum name="cw_0" value="0" />
+            <enum name="cw_90" value="90" />
+            <enum name="cw_180" value="180" />
+            <enum name="cw_270" value="270" />
+        </attr>
+        <attr name="dropoff" format="float" />
+        <attr name="fixed_width" format="dimension" />
+        <attr name="fixed_height" format="dimension" />
+        <attr name="intensity" format="float" />
+        <attr name="relative_width" format="float" />
+        <attr name="relative_height" format="float" />
+        <attr name="shape" format="enum">
+            <enum name="linear" value="0" />
+            <enum name="radial" value="1" />
+        </attr>
+        <attr name="tilt" format="float" />
+    </declare-styleable>
+    <declare-styleable name="RippleView">
+        <attr name="rippleColor" format="color" />
+        <attr name="alphaFactor" format="float" />
+        <attr name="hover" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="PullSeparateListView">
+        <attr name="separate_all" format="boolean"/>
+        <attr name="showDownAnim" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="SwitchButton">
+        <attr name="onDrawable" format="reference" />
+        <attr name="offDrawable" format="reference" />
+        <attr name="thumbDrawable" format="reference" />
+        <attr name="thumb_margin" format="dimension|reference" />
+        <attr name="thumb_marginTop" format="dimension|reference" />
+        <attr name="thumb_marginBottom" format="dimension|reference" />
+        <attr name="thumb_marginLeft" format="dimension|reference" />
+        <attr name="thumb_marginRight" format="dimension|reference" />
+        <attr name="thumb_width" format="dimension|reference" />
+        <attr name="thumb_height" format="dimension|reference" />
+        <attr name="onColor" format="color|reference" />
+        <attr name="offColor" format="color|reference" />
+        <attr name="thumbColor" format="color|reference" />
+        <attr name="thumbPressedColor" format="color|reference" />
+        <attr name="animationVelocity" format="integer" />
+        <attr name="radius" format="integer" />
+        <attr name="measureFactor" format="float" />
+        <attr name="insetLeft" format="dimension|reference" />
+        <attr name="insetRight" format="dimension|reference" />
+        <attr name="insetTop" format="dimension|reference" />
+        <attr name="insetBottom" format="dimension|reference" />
+    </declare-styleable>
+</resources>

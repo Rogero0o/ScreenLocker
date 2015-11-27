@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="menu_names">
+        <item>打开Mr.Locker</item>
+        <item>首页</item>
+        <item>详细设置</item>
+        <item>手势设置</item>
+        <item>初始设置</item>
+        <item>检查更新</item>
+        <item>关于</item>
+    </string-array>
+
+</resources>
