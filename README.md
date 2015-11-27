@@ -5,6 +5,7 @@ Psychedelic background and cool animation is the biggest highlight of the applic
 In order to provide the most cool lock screen software for users.<br>
 
 
+## Looks like
 ![](http://2.rogerbolg.sinaapp.com/wp-content/uploads/2015/05/5.gif)
 
 ..as you see right now,wish you like it.
