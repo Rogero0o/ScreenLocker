@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -340,7 +341,7 @@ public class PullSeparateListView extends ListView {
             //是否到达底部
             if (firstVisibleItem + visibleItemCount == getCount()) {
                 View lastView = getChildAt(visibleItemCount - 1);
-                if (lastView != null && (lastView.getBottom() + getPaddingBottom()) <= getHeight() && getCount() > getChildCount()) {
+                if (lastView != null && (lastView.getBottom() + getPaddingBottom()) <= getHeight() && getCount() >= getChildCount()) {
                     downPosition = originDownPosition - firstVisibleItem;
                     reachBottom = true;
                 } else {
