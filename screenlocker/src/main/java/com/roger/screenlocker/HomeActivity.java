@@ -35,7 +35,7 @@ public class HomeActivity extends BaseActivity {
     private DrawerArrowDrawable drawerArrow;
     private CharSequence mTitle;
     public int position;
-    private int oldPosition = 1;
+    private int oldPosition = 0;
     private String[] sNewsList;
 
     private Fragment mContent;
@@ -88,10 +88,7 @@ public class HomeActivity extends BaseActivity {
 
             public void onDrawerClosed(View view) {
 
-                if (4 != position) {
-                    if (0 == position) {//直接关闭
-                        position = oldPosition;
-                    }
+                if (3 != position) {
 
                     if (position == oldPosition) {
                         return;
@@ -105,30 +102,30 @@ public class HomeActivity extends BaseActivity {
                 invalidateOptionsMenu(); // creates call to
 
                 switch (position) {
-                    case 1:
+                    case 0:
                         if (mHomeFragment == null)
                             mHomeFragment = new HomeFragment();
                         mContent = mHomeFragment;
                         break;
-                    case 2:
+                    case 1:
                         if (mDetialSettingFragment == null)
                             mDetialSettingFragment = new DetialSettingFragment();
                         mContent = mDetialSettingFragment;
                         break;
-                    case 3:
+                    case 2:
                         if (mGestureSettingFragment == null)
                             mGestureSettingFragment = new GestureSettingFragment();
                         mContent = mGestureSettingFragment;
                         break;
-                    case 4:
+                    case 3:
                         Intent i = new Intent();
                         i.setClass(HomeActivity.this, InitSysActivity.class);
                         startActivity(i);
                         return;
-                    case 5:
+                    case 4:
                         Toast.makeText(mActivity, getResources().getString(R.string.update), Toast.LENGTH_LONG).show();
                         return;
-                    case 6:
+                    case 5:
                         if (mAboutFragment == null)
                             mAboutFragment = new AboutFragment();
                         mContent = mAboutFragment;
@@ -136,7 +133,7 @@ public class HomeActivity extends BaseActivity {
                     default:
                         return;
                 }
-                if (4 != position) {
+                if (3 != position) {
                     getFragmentManager().beginTransaction().replace(R.id.content_frame, mContent).commit();
                 }
             }

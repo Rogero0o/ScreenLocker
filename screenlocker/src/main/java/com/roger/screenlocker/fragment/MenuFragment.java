@@ -49,7 +49,7 @@ public class MenuFragment extends Fragment {
         sListView.addHeaderView(mHeaderView);
         sListView.setAdapter(new MenuAdapter());
         sListView.setSeparateAll(true);
-        sImageId = new int[]{R.drawable.menu_1, R.drawable.menu_1, R.drawable.menu_2, R.drawable.menu_3, R.drawable.menu_4, R.drawable.menu_5, R.drawable.menu_6};
+        sImageId = new int[]{R.drawable.menu_1, R.drawable.menu_2, R.drawable.menu_3, R.drawable.menu_4, R.drawable.menu_5, R.drawable.menu_6};
         mHomeActivity = (HomeActivity) getActivity();
         isOpen = mHomeActivity.localSharedPreferences.getBoolean(mHomeActivity.PREFS_IS_OPEN, false);
     }
@@ -111,37 +111,36 @@ public class MenuFragment extends Fragment {
                 @Override
                 public void onClick(View arg0) {
                     // TODO Auto-generated method stub
-                    if (m != 0)
                         switchFragment(m);
                 }
             });
-            if (position == 0) {
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);  // , 1是可选写的
-                lp.setMargins(Px2DpUntil.dip2px(mHomeActivity, 20), 0, 0, 0);
-                h.content.setLayoutParams(lp);
-                h.image.setVisibility(View.GONE);
-                h.mSwitchButton.setVisibility(View.VISIBLE);
-                if (isOpen) {
-                    h.mSwitchButton.setChecked(true);
-                } else {
-                    h.mSwitchButton.setChecked(false);
-                }
-
-                h.mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        if (isChecked) {
-                            mHomeActivity.localSharedPreferences.edit().putBoolean(mHomeActivity.PREFS_IS_OPEN, true).commit();
-                            mHomeActivity.startService(new Intent(mHomeActivity, LockScreenService.class));
-                        } else {
-                            mHomeActivity.localSharedPreferences.edit().putBoolean(mHomeActivity.PREFS_IS_OPEN, false).commit();
-                            mHomeActivity.stopService(new Intent(mHomeActivity, LockScreenService.class));
-                        }
-                    }
-                });
-
-            }
+//            if (position == 0) {
+//                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);  // , 1是可选写的
+//                    lp.setMargins(Px2DpUntil.dip2px(mHomeActivity, 20), 0, 0, 0);
+//                    h.content.setLayoutParams(lp);
+//                    h.image.setVisibility(View.GONE);
+//                    h.mSwitchButton.setVisibility(View.VISIBLE);
+//                    if (isOpen) {
+//                        h.mSwitchButton.setChecked(true);
+//                    } else {
+//                        h.mSwitchButton.setChecked(false);
+//                    }
+//
+//                    h.mSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                        @Override
+//                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//
+//                            if (isChecked) {
+//                                mHomeActivity.localSharedPreferences.edit().putBoolean(mHomeActivity.PREFS_IS_OPEN, true).commit();
+//                                mHomeActivity.startService(new Intent(mHomeActivity, LockScreenService.class));
+//                            } else {
+//                                mHomeActivity.localSharedPreferences.edit().putBoolean(mHomeActivity.PREFS_IS_OPEN, false).commit();
+//                                mHomeActivity.stopService(new Intent(mHomeActivity, LockScreenService.class));
+//                            }
+//                        }
+//                    });
+//
+//            }
             return convertView;
         }
 

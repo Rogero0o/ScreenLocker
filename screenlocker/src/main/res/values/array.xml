@@ -2,7 +2,6 @@
 <resources>
 
     <string-array name="menu_names">
-        <item>打开Mr.Locker</item>
         <item>首页</item>
         <item>详细设置</item>
         <item>手势设置</item>

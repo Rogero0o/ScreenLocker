@@ -341,7 +341,7 @@ public class PullSeparateListView extends ListView {
             //是否到达底部
             if (firstVisibleItem + visibleItemCount == getCount()) {
                 View lastView = getChildAt(visibleItemCount - 1);
-                if (lastView != null && (lastView.getBottom() + getPaddingBottom()) <= getHeight() && getCount() >= getChildCount()) {
+                if (lastView != null && (lastView.getBottom() + getPaddingBottom()) <= getHeight() && getCount() > getChildCount()) {
                     downPosition = originDownPosition - firstVisibleItem;
                     reachBottom = true;
                 } else {
