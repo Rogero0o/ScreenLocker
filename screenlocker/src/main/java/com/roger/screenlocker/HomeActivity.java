@@ -21,6 +21,8 @@ import com.roger.screenlocker.fragment.DetialSettingFragment;
 import com.roger.screenlocker.fragment.GestureSettingFragment;
 import com.roger.screenlocker.fragment.HomeFragment;
 import com.roger.screenlocker.fragment.MenuFragment;
+import com.roger.screenlocker.render.RendererFragment;
+import com.roger.screenlocker.render.util.UriUtil;
 import com.roger.screenlocker.utils.ActionBarDrawerToggle;
 import com.roger.screenlocker.utils.DrawerArrowDrawable;
 
@@ -43,7 +45,8 @@ public class HomeActivity extends BaseActivity {
     private Fragment mDetialSettingFragment;
     private Fragment mGestureSettingFragment;
     private Fragment mAboutFragment;
-
+    
+    RendererFragment mRendererFragment;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,6 +167,15 @@ public class HomeActivity extends BaseActivity {
         getFragmentManager().beginTransaction()
                             .replace(R.id.content_frame, mHomeFragment)
                             .commit();
+
+
+        mRendererFragment = RendererFragment.createInstance(
+                UriUtil.getImageAbsolutePath(this, BaseActivity.mUri));
+        getFragmentManager().beginTransaction()
+                            .add(R.id.frame_init, mRendererFragment)
+                            .commit();
+
+
         setTitle(getResources().getString(R.string.app_name));
     }
 

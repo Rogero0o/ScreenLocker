@@ -36,12 +36,6 @@ public abstract class BaseFragment extends Fragment
                 "font/cartoon.ttf");
         BaseActivity.localSharedPreferences.registerOnSharedPreferenceChangeListener(
                 this);
-
-        mRendererFragment = RendererFragment.createInstance(
-                UriUtil.getImageAbsolutePath(getActivity(), BaseActivity.mUri));
-        getFragmentManager().beginTransaction()
-                            .add(R.id.frame_init, mRendererFragment)
-                            .commit();
         initUI();
         return mView;
     }
