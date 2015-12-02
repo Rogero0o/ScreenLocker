@@ -25,6 +25,7 @@ import com.roger.screenlocker.render.RendererFragment;
 import com.roger.screenlocker.render.util.UriUtil;
 import com.roger.screenlocker.utils.ActionBarDrawerToggle;
 import com.roger.screenlocker.utils.DrawerArrowDrawable;
+import com.umeng.update.UmengUpdateAgent;
 import java.io.File;
 
 public class HomeActivity extends BaseActivity {
@@ -51,6 +52,9 @@ public class HomeActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UmengUpdateAgent.update(this);
+
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_home);
         sNewsList = getResources().getStringArray(R.array.menu_names);
@@ -148,7 +152,7 @@ public class HomeActivity extends BaseActivity {
                     default:
                         return;
                 }
-                
+
                 getFragmentManager().beginTransaction()
                                     .replace(R.id.content_frame, mContent)
                                     .commit();

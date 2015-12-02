@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Mr. Locker</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">首页动画</string>
+    <string name="initSys">初始化系统设置</string>
+    <string name="closeSyslock">点击关闭系统锁屏(避免双锁屏)</string>
+    <string name="notice">个别机型注意</string>
+    <string name="notice1">1.MIUI(V6)请在[权限管理]中打开[显示悬浮窗]&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="notice2">2.MIUI(V6)请在[权限管理]中设置信任 Mr.Locker</string>
+    <string name="notice3">3.MIUI(V6) Flyme 请在安全中心→权限管理→&#160;&#160;&#160;&#160;&#160;\n自启动→开启Mr.Locker</string>
+    <string name="notice4">4.Flyme 请在安全中心→省电模式→右下角&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;\n待机耗电管理→开启Mr.Locker</string>
+    <string name="notice5">5.请在优化大师等一切大师中将 Mr.Locker&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; \n设为白名单</string>
+    <string name="finish_init">完成</string>
+
+
+    <string name="home_title">请设置解锁方式:</string>
+    <string name="home_mode_slide">滑动解锁</string>
+    <string name="home_mode_gesture">手势解锁</string>
+    <string name="home_blackground">请设置背景图片:</string>
+    <string name="home_chose_image">点击选择图片</string>
+    <string name="home_notice">未设置手势,自动跳转手势设置界面</string>
+
+    <string name="detial_setting_detial">详细设置</string>
+    <string name="detial_setting_showmenu">锁屏显示状态栏</string>
+    <string name="detial_setting_shake">开启解锁时震动</string>
+    <string name="detial_setting_showline">隐藏手势连接线</string>
+
+    <string name="gesture_setting_note">绘制解锁图案</string>
+    <string name="gesture_setting_note1">解锁图案已记录</string>
+    <string name="gesture_setting_note2">再次绘制解锁图案进行确认</string>
+    <string name="gesture_setting_note3">您的新解锁图案</string>
+    <string name="gesture_setting_reset">重绘</string>
+    <string name="gesture_setting_set_continue">继续</string>
+    <string name="gesture_setting_set_sure">确认</string>
+    <string name="gesture_setting_input">请输入手势</string>
+    <string name="gesture_setting_save_success">手势保存成功</string>
+    <string name="gesture_setting_save_error">两次手势输入不一致，请重绘。</string>
+
+    <string name="gesture_note">无手势密码,自动切换滑动解锁。</string>
+
+    <string name="gesture_unlock">请绘制解锁图案</string>
+
+    <string name="update">暂无更新</string>
+
+    <string name="about">关于</string>
+
+    <string name="about_1">1.用到的开源项目多到写不下(主要是没整理忘了),感谢所有开源项目作者。</string>
+    <string name="about_2">2.主要功能创意来自Muzei,感谢大神Roman Nurik。</string>
+    <string name="about_3">3.本App纯天然无广告,功能如有雷同,算我抄你。</string>
+    <string name="about_4">4.如果您有任何建议和意见,请到 www.rogerblog.cn 留言,不胜感激。</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+</resources>
