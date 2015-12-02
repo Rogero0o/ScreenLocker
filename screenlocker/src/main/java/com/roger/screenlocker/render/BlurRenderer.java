@@ -80,15 +80,19 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
     private boolean mSurfaceCreated;
 
     private volatile float mNormalOffsetX;
-    private volatile RectF mCurrentViewport = new RectF(); // [-1, -1] to [1, 1], flipped
+    private volatile RectF mCurrentViewport = new RectF();
+            // [-1, -1] to [1, 1], flipped
 
     private Context mContext;
 
     private boolean mIsBlurred = true;
     private boolean mBlurRelatedToArtDetailMode = false;
-    private Interpolator mBlurInterpolator = new AccelerateDecelerateInterpolator();
+    private Interpolator mBlurInterpolator
+            = new AccelerateDecelerateInterpolator();
     private TickingFloatAnimator mBlurAnimator;
-    private TickingFloatAnimator mCrossfadeAnimator = TickingFloatAnimator.create().from(0);
+    private TickingFloatAnimator mCrossfadeAnimator
+            = TickingFloatAnimator.create().from(0);
+
 
     public BlurRenderer(Context context, Callbacks callbacks) {
         mContext = context;
@@ -98,18 +102,20 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         mBlurAnimator = TickingFloatAnimator.create().from(mBlurKeyframes);
 
         mCurrentGLPictureSet = new GLPictureSet(0);
-        mNextGLPictureSet = new GLPictureSet(1); // for transitioning to next pictures
+        mNextGLPictureSet = new GLPictureSet(
+                1); // for transitioning to next pictures
         setNormalOffsetX(0);
         recomputeMaxPrescaledBlurPixels();
         recomputeMaxDimAmount();
         recomputeGreyAmount();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private int getNumberOfKeyframes() {
+
+    @TargetApi(Build.VERSION_CODES.KITKAT) private int getNumberOfKeyframes() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ActivityManager activityManager = (ActivityManager)
-                    mContext.getSystemService(Context.ACTIVITY_SERVICE);
+            ActivityManager activityManager
+                    = (ActivityManager) mContext.getSystemService(
+                    Context.ACTIVITY_SERVICE);
             if (activityManager.isLowRamDevice()) {
                 return 1;
             }
@@ -118,43 +124,45 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         return 5;
     }
 
+
     public void recomputeMaxPrescaledBlurPixels() {
         // Compute blur sizes
-        float maxBlurRadiusOverScreenHeight = PreferenceManager
-                .getDefaultSharedPreferences(mContext).getInt("blur_amount", DEFAULT_BLUR)
-                * 0.0001f;
+        float maxBlurRadiusOverScreenHeight =
+                PreferenceManager.getDefaultSharedPreferences(mContext)
+                                 .getInt("blur_amount", DEFAULT_BLUR) * 0.0001f;
         DisplayMetrics dm = mContext.getResources().getDisplayMetrics();
         int maxBlurPx = (int) (dm.heightPixels * maxBlurRadiusOverScreenHeight);
         mBlurredSampleSize = 4;
-        while (maxBlurPx / mBlurredSampleSize > ImageBlurrer.MAX_SUPPORTED_BLUR_PIXELS) {
+        while (maxBlurPx / mBlurredSampleSize >
+                ImageBlurrer.MAX_SUPPORTED_BLUR_PIXELS) {
             mBlurredSampleSize <<= 1;
         }
         mMaxPrescaledBlurPixels = maxBlurPx / mBlurredSampleSize;
     }
 
+
     public void recomputeMaxDimAmount() {
-        mMaxDim = PreferenceManager
-                .getDefaultSharedPreferences(mContext).getInt("dim_amount", DEFAULT_MAX_DIM);
+        mMaxDim = PreferenceManager.getDefaultSharedPreferences(mContext)
+                                   .getInt("dim_amount", DEFAULT_MAX_DIM);
     }
 
+
     public void recomputeGreyAmount() {
-        mMaxGrey = PreferenceManager
-                .getDefaultSharedPreferences(mContext).getInt("grey_amount", DEFAULT_GREY);
+        mMaxGrey = PreferenceManager.getDefaultSharedPreferences(mContext)
+                                    .getInt("grey_amount", DEFAULT_GREY);
     }
+
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         mSurfaceCreated = false;
         GLES20.glEnable(GLES20.GL_BLEND);
-//        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-        GLES20.glBlendFuncSeparate(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA,
-                GLES20.GL_ONE, GLES20.GL_ONE);
+        //        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        GLES20.glBlendFuncSeparate(GLES20.GL_SRC_ALPHA,
+                GLES20.GL_ONE_MINUS_SRC_ALPHA, GLES20.GL_ONE, GLES20.GL_ONE);
         GLES20.glClearColor(0, 0, 0, 0);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mVMatrix, 0,
-                0, 0, 1,
-                0, 0, -1,
-                0, 1, 0);
+        Matrix.setLookAtM(mVMatrix, 0, 0, 0, 1, 0, 0, -1, 0, 1, 0);
 
         GLColorOverlay.initGl();
         GLPicture.initGl();
@@ -169,6 +177,7 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+
     public void onSurfaceChanged(GL10 unused, int width, int height) {
         GLES20.glViewport(0, 0, width, height);
         hintViewportSize(width, height);
@@ -182,10 +191,12 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         recomputeMaxPrescaledBlurPixels();
     }
 
+
     public void hintViewportSize(int width, int height) {
         mHeight = height;
         mAspectRatio = width * 1f / height;
     }
+
 
     public void onDrawFrame(GL10 unused) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
@@ -203,24 +214,29 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         float dimAmount = mCurrentGLPictureSet.mDimAmount;
         mCurrentGLPictureSet.drawFrame(1);
         if (mCrossfadeAnimator.isRunning()) {
-            dimAmount = MathUtil.interpolate(dimAmount, mNextGLPictureSet.mDimAmount,
+            dimAmount = MathUtil.interpolate(dimAmount,
+                    mNextGLPictureSet.mDimAmount,
                     mCrossfadeAnimator.currentValue());
             mNextGLPictureSet.drawFrame(mCrossfadeAnimator.currentValue());
         }
 
-        mColorOverlay.setColor(Color.argb((int) (dimAmount
-                * mBlurAnimator.currentValue() / mBlurKeyframes), 0, 0, 0));
-        mColorOverlay.draw(mMMatrix); // don't need any perspective or anything for color overlay
+        mColorOverlay.setColor(Color.argb(
+                (int) (dimAmount * mBlurAnimator.currentValue() /
+                        mBlurKeyframes), 0, 0, 0));
+        mColorOverlay.draw(
+                mMMatrix); // don't need any perspective or anything for color overlay
 
         if (stillAnimating) {
             mCallbacks.requestRender();
         }
     }
 
+
     public void setNormalOffsetX(float x) {
         mNormalOffsetX = MathUtil.constrain(0, 1, x);
         onViewportChanged();
     }
+
 
     private void onViewportChanged() {
         mCurrentGLPictureSet.recomputeTransformMatrices();
@@ -230,9 +246,12 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+
     private float blurRadiusAtFrame(float f) {
-        return mMaxPrescaledBlurPixels * mBlurInterpolator.getInterpolation(f / mBlurKeyframes);
+        return mMaxPrescaledBlurPixels *
+                mBlurInterpolator.getInterpolation(f / mBlurKeyframes);
     }
+
 
     public void setAndConsumeBitmapRegionLoader(final BitmapRegionLoader bitmapRegionLoader) {
         if (!mSurfaceCreated) {
@@ -248,40 +267,46 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
             return;
         }
 
-
         mNextGLPictureSet.load(bitmapRegionLoader);
 
-        mCrossfadeAnimator
-                .from(0).to(1)
-                .withDuration(CROSSFADE_ANIMATION_DURATION)
-                .withEndListener(new Runnable() {
-                    @Override
-                    public void run() {
-                        // swap current and next picturesets
-                        final GLPictureSet oldGLPictureSet = mCurrentGLPictureSet;
-                        mCurrentGLPictureSet = mNextGLPictureSet;
-                        mNextGLPictureSet = new GLPictureSet(oldGLPictureSet.mId);
-                        mCallbacks.requestRender();
-                        oldGLPictureSet.destroyPictures();
-                        System.gc();
-                        if (mQueuedNextBitmapRegionLoader != null) {
-                            BitmapRegionLoader queuedNextBitmapRegionLoader
-                                    = mQueuedNextBitmapRegionLoader;
-                            mQueuedNextBitmapRegionLoader = null;
-                            setAndConsumeBitmapRegionLoader(queuedNextBitmapRegionLoader);
-                        }
-                    }
-                })
-                .start();
+        mCrossfadeAnimator.from(0)
+                          .to(1)
+                          .withDuration(CROSSFADE_ANIMATION_DURATION)
+                          .withEndListener(new Runnable() {
+                              @Override public void run() {
+                                  // swap current and next picturesets
+                                  final GLPictureSet oldGLPictureSet
+                                          = mCurrentGLPictureSet;
+                                  mCurrentGLPictureSet = mNextGLPictureSet;
+                                  mNextGLPictureSet = new GLPictureSet(
+                                          oldGLPictureSet.mId);
+                                  mCallbacks.requestRender();
+                                  oldGLPictureSet.destroyPictures();
+                                  System.gc();
+                                  if (mQueuedNextBitmapRegionLoader != null) {
+                                      BitmapRegionLoader
+                                              queuedNextBitmapRegionLoader
+                                              = mQueuedNextBitmapRegionLoader;
+                                      mQueuedNextBitmapRegionLoader = null;
+                                      setAndConsumeBitmapRegionLoader(
+                                              queuedNextBitmapRegionLoader);
+                                  }
+                              }
+                          })
+                          .start();
         mCallbacks.requestRender();
     }
+
 
     public void setDemoMode(boolean demoMode) {
         mDemoMode = demoMode;
     }
+
+
     public void setIsPreview(boolean preview) {
         mPreview = preview;
     }
+
 
     private class GLPictureSet {
         private int mId;
@@ -292,15 +317,17 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         private float mBitmapAspectRatio = 1f;
         private int mDimAmount = 0;
 
+
         public GLPictureSet(int id) {
             mId = id;
         }
 
+
         public void load(BitmapRegionLoader bitmapRegionLoader) {
             mHasBitmap = (bitmapRegionLoader != null);
-            mBitmapAspectRatio = mHasBitmap
-                    ? bitmapRegionLoader.getWidth() * 1f / bitmapRegionLoader.getHeight()
-                    : 1f;
+            mBitmapAspectRatio = mHasBitmap ?
+                                 bitmapRegionLoader.getWidth() * 1f /
+                                         bitmapRegionLoader.getHeight() : 1f;
 
             mDimAmount = DEFAULT_MAX_DIM;
 
@@ -314,12 +341,15 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
 
                 // Calculate image darkness to determine dim amount
                 rect.set(0, 0, originalWidth, originalHeight);
-                options.inSampleSize = ImageUtil.calculateSampleSize(originalHeight, 64);
-                Bitmap tempBitmap = bitmapRegionLoader.decodeRegion(rect, options);
+                options.inSampleSize = ImageUtil.calculateSampleSize(
+                        originalHeight, 64);
+                Bitmap tempBitmap = bitmapRegionLoader.decodeRegion(rect,
+                        options);
                 float darkness = ImageUtil.calculateDarkness(tempBitmap);
                 mDimAmount = mDemoMode
-                        ? DEMO_DIM
-                        : (int) (mMaxDim * ((1 - DIM_RANGE) + DIM_RANGE * Math.sqrt(darkness)));
+                             ? DEMO_DIM
+                             : (int) (mMaxDim * ((1 - DIM_RANGE) +
+                                     DIM_RANGE * Math.sqrt(darkness)));
                 tempBitmap.recycle();
 
                 // Create the GLPicture objects
@@ -328,7 +358,8 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
                     for (int f = 1; f <= mBlurKeyframes; f++) {
                         mPictures[f] = mPictures[0];
                     }
-                } else {
+                }
+                else {
                     ImageBlurrer blurrer = new ImageBlurrer(mContext);
                     // To blur, first load the entire bitmap region, but at a very large
                     // sample size that's appropriate for the final blurred image
@@ -344,20 +375,21 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
 
                     // Note that image width should be a multiple of 4 to avoid
                     // issues with RenderScript allocations.
-                    int scaledHeight = Math.max(2, MathUtil.floorEven(
-                            mHeight / mBlurredSampleSize));
+                    int scaledHeight = Math.max(2,
+                            MathUtil.floorEven(mHeight / mBlurredSampleSize));
                     int scaledWidth = Math.max(4, MathUtil.roundMult4(
                             (int) (scaledHeight * mBitmapAspectRatio)));
-                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(
-                            tempBitmap, scaledWidth, scaledHeight, true);
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(tempBitmap,
+                            scaledWidth, scaledHeight, true);
 
                     tempBitmap.recycle();
 
                     // And finally, create a blurred copy for each keyframe.
                     for (int f = 1; f <= mBlurKeyframes; f++) {
-                        float desaturateAmount = mMaxGrey / 500f * f / mBlurKeyframes;
-                        Bitmap blurredBitmap = blurrer.blurBitmap(
-                                scaledBitmap, blurRadiusAtFrame(f), desaturateAmount);
+                        float desaturateAmount = mMaxGrey / 500f * f /
+                                mBlurKeyframes;
+                        Bitmap blurredBitmap = blurrer.blurBitmap(scaledBitmap,
+                                blurRadiusAtFrame(f), desaturateAmount);
                         mPictures[f] = new GLPicture(blurredBitmap);
                         blurredBitmap.recycle();
                     }
@@ -371,6 +403,7 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
             mCallbacks.requestRender();
         }
 
+
         private void recomputeTransformMatrices() {
             float screenToBitmapAspectRatio = mAspectRatio / mBitmapAspectRatio;
 
@@ -382,27 +415,38 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
             float totalScale = zoom / screenToBitmapAspectRatio;
 
             mCurrentViewport.left = MathUtil.interpolate(
-                    -1f * Math.min(1f, screenToBitmapAspectRatio), // remove screenToBitmapAspectRatio to unconstrain panning amount
+                    -1f * Math.min(1f, screenToBitmapAspectRatio),
+                    // remove screenToBitmapAspectRatio to unconstrain panning amount
                     1f * Math.min(1f, screenToBitmapAspectRatio),
                     mNormalOffsetX * (totalScale - 1) / totalScale);
             mCurrentViewport.right = mCurrentViewport.left + 2f / totalScale;
             mCurrentViewport.bottom = -1f / zoom;
             mCurrentViewport.top = 1f / zoom;
 
-            float focusAmount = (mBlurKeyframes - mBlurAnimator.currentValue()) / mBlurKeyframes;
+            float focusAmount =
+                    (mBlurKeyframes - mBlurAnimator.currentValue()) /
+                            mBlurKeyframes;
             if (mBlurRelatedToArtDetailMode && focusAmount > 0) {
-                RectF artDetailViewport = ArtDetailViewport.getInstance().getViewport(mId);
-                if (artDetailViewport.width() == 0 || artDetailViewport.height() == 0) {
+                RectF artDetailViewport = ArtDetailViewport.getInstance()
+                                                           .getViewport(mId);
+                if (artDetailViewport.width() == 0 ||
+                        artDetailViewport.height() == 0) {
                     if (!mDemoMode && !mPreview) {
                         // reset art detail viewport
-                        ArtDetailViewport.getInstance().setViewport(mId,
-                                MathUtil.uninterpolate(-1, 1, mCurrentViewport.left),
-                                MathUtil.uninterpolate(1, -1, mCurrentViewport.top),
-                                MathUtil.uninterpolate(-1, 1, mCurrentViewport.right),
-                                MathUtil.uninterpolate(1, -1, mCurrentViewport.bottom),
-                                false);
+                        ArtDetailViewport.getInstance()
+                                         .setViewport(mId,
+                                                 MathUtil.uninterpolate(-1, 1,
+                                                         mCurrentViewport.left),
+                                                 MathUtil.uninterpolate(1, -1,
+                                                         mCurrentViewport.top),
+                                                 MathUtil.uninterpolate(-1, 1,
+                                                         mCurrentViewport.right),
+                                                 MathUtil.uninterpolate(1, -1,
+                                                         mCurrentViewport.bottom),
+                                                 false);
                     }
-                } else {
+                }
+                else {
                     // interpolate
                     mCurrentViewport.left = MathUtil.interpolate(
                             mCurrentViewport.left,
@@ -413,21 +457,19 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
                             MathUtil.interpolate(1, -1, artDetailViewport.top),
                             focusAmount);
                     mCurrentViewport.right = MathUtil.interpolate(
-                            mCurrentViewport.right,
-                            MathUtil.interpolate(-1, 1, artDetailViewport.right),
-                            focusAmount);
+                            mCurrentViewport.right, MathUtil.interpolate(-1, 1,
+                                    artDetailViewport.right), focusAmount);
                     mCurrentViewport.bottom = MathUtil.interpolate(
-                            mCurrentViewport.bottom,
-                            MathUtil.interpolate(1, -1, artDetailViewport.bottom),
-                            focusAmount);
+                            mCurrentViewport.bottom, MathUtil.interpolate(1, -1,
+                                    artDetailViewport.bottom), focusAmount);
                 }
             }
 
-            Matrix.orthoM(mPMatrix, 0,
-                    mCurrentViewport.left, mCurrentViewport.right,
-                    mCurrentViewport.bottom, mCurrentViewport.top,
-                    1, 10);
+            Matrix.orthoM(mPMatrix, 0, mCurrentViewport.left,
+                    mCurrentViewport.right, mCurrentViewport.bottom,
+                    mCurrentViewport.top, 1, 10);
         }
+
 
         public void drawFrame(float globalAlpha) {
             if (!mHasBitmap) {
@@ -444,14 +486,17 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
             float localHiAlpha = (blurFrame - lo);
             if (globalAlpha <= 0) {
                 // Nothing to draw
-            } else if (lo == hi) {
+            }
+            else if (lo == hi) {
                 // Just draw one
                 mPictures[lo].draw(mMVPMatrix, globalAlpha);
-            } else if (globalAlpha == 1) {
+            }
+            else if (globalAlpha == 1) {
                 // Simple drawing
                 mPictures[lo].draw(mMVPMatrix, 1);
                 mPictures[hi].draw(mMVPMatrix, localHiAlpha);
-            } else {
+            }
+            else {
                 // If there's both a global and local alpha, re-compose alphas, to
                 // effectively compose hi and lo before composing the result
                 // with the background.
@@ -459,13 +504,14 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
                 // The math, where a1,a2 are previous alphas and b1,b2 are new alphas:
                 //   b1 = a1 * (a2 - 1) / (a1 * a2 - 1)
                 //   b2 = a1 * a2
-                float newLocalLoAlpha = globalAlpha * (localHiAlpha - 1)
-                        / (globalAlpha * localHiAlpha - 1);
+                float newLocalLoAlpha = globalAlpha * (localHiAlpha - 1) /
+                        (globalAlpha * localHiAlpha - 1);
                 float newLocalHiAlpha = globalAlpha * localHiAlpha;
                 mPictures[lo].draw(mMVPMatrix, newLocalLoAlpha);
                 mPictures[hi].draw(mMVPMatrix, newLocalHiAlpha);
             }
         }
+
 
         public void destroyPictures() {
             for (int i = 0; i < mPictures.length; i++) {
@@ -479,14 +525,17 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+
     public void destroy() {
         mCurrentGLPictureSet.destroyPictures();
         mNextGLPictureSet.destroyPictures();
     }
 
+
     public boolean isBlurred() {
         return mIsBlurred;
     }
+
 
     public void setIsBlurred(final boolean isBlurred, final boolean artDetailMode) {
         if (artDetailMode && !isBlurred && !mDemoMode && !mPreview) {
@@ -498,20 +547,20 @@ public class BlurRenderer implements GLSurfaceView.Renderer {
         mBlurRelatedToArtDetailMode = artDetailMode;
         mIsBlurred = isBlurred;
         mBlurAnimator.cancel();
-        mBlurAnimator
-                .to(isBlurred ? mBlurKeyframes : 0)
-                .withDuration(BLUR_ANIMATION_DURATION * (mDemoMode ? 5 : 1))
-                .withEndListener(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isBlurred && artDetailMode) {
-                            System.gc();
-                        }
-                    }
-                })
-                .start();
+        mBlurAnimator.to(isBlurred ? mBlurKeyframes : 0)
+                     .withDuration(
+                             BLUR_ANIMATION_DURATION * (mDemoMode ? 5 : 1))
+                     .withEndListener(new Runnable() {
+                         @Override public void run() {
+                             if (isBlurred && artDetailMode) {
+                                 System.gc();
+                             }
+                         }
+                     })
+                     .start();
         mCallbacks.requestRender();
     }
+
 
     public static interface Callbacks {
         void requestRender();

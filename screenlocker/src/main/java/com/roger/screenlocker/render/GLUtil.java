@@ -28,6 +28,7 @@ public class GLUtil {
 
     public static final int BYTES_PER_FLOAT = 4;
 
+
     public static int loadShader(int type, String shaderCode) {
         // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
         // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
@@ -40,8 +41,8 @@ public class GLUtil {
         return shaderHandle;
     }
 
-    public static int createAndLinkProgram(int vertexShaderHandle, int fragShaderHandle,
-                                           String[] attributes) {
+
+    public static int createAndLinkProgram(int vertexShaderHandle, int fragShaderHandle, String[] attributes) {
         int programHandle = GLES20.glCreateProgram();
         GLUtil.checkGlError("glCreateProgram");
         GLES20.glAttachShader(programHandle, vertexShaderHandle);
@@ -59,6 +60,7 @@ public class GLUtil {
         return programHandle;
     }
 
+
     public static int loadTexture(Bitmap bitmap) {
         final int[] textureHandle = new int[1];
 
@@ -70,14 +72,14 @@ public class GLUtil {
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle[0]);
 
             // Set filtering
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S,
-                    GLES20.GL_CLAMP_TO_EDGE);
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T,
-                    GLES20.GL_CLAMP_TO_EDGE);
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER,
-                    GLES20.GL_LINEAR);
-            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER,
-                    GLES20.GL_LINEAR);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,
+                    GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,
+                    GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,
+                    GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+            GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,
+                    GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
 
             // Load the bitmap into the bound texture.
             GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0);
@@ -90,11 +92,13 @@ public class GLUtil {
         return textureHandle[0];
     }
 
+
     public static void checkGlError(String glOperation) {
         int error;
         while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
         }
     }
+
 
     public static FloatBuffer asFloatBuffer(float[] array) {
         FloatBuffer buffer = newFloatBuffer(array.length);
@@ -103,10 +107,11 @@ public class GLUtil {
         return buffer;
     }
 
+
     public static FloatBuffer newFloatBuffer(int size) {
         FloatBuffer buffer = ByteBuffer.allocateDirect(size * BYTES_PER_FLOAT)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
+                                       .order(ByteOrder.nativeOrder())
+                                       .asFloatBuffer();
         buffer.position(0);
         return buffer;
     }

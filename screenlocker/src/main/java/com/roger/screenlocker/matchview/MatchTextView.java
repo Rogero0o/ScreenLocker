@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 
 import com.roger.screenlocker.R;
 
-
 /**
  * Description:MatchTextView
  * User: Lj
@@ -25,23 +24,28 @@ public class MatchTextView extends MatchView {
     float mTextSize;
     int mTextColor;
 
+
     public MatchTextView(Context context) {
         super(context);
         init();
     }
+
 
     public MatchTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(attrs);
     }
 
+
     public MatchTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(attrs);
     }
 
+
     void initAttrs(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.match);
+        TypedArray a = getContext().obtainStyledAttributes(attrs,
+                R.styleable.match);
         //获取尺寸属性值,默认大小为：25
         mTextSize = a.getDimension(R.styleable.match_textSize, 25);
         //获取颜色属性值,默认颜色为：Color.WHITE
@@ -50,6 +54,7 @@ public class MatchTextView extends MatchView {
         mContent = a.getString(R.styleable.match_text);
         init();
     }
+
 
     void init() {
         this.setBackgroundColor(Color.TRANSPARENT);
@@ -66,5 +71,4 @@ public class MatchTextView extends MatchView {
         this.mContent = text;
         init();
     }
-
 }

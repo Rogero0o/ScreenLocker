@@ -13,7 +13,6 @@ import java.util.Calendar;
 
 /**
  * 自定义DigitalClock输出格式
- *
  */
 public class DigitalClock extends android.widget.DigitalClock {
 
@@ -29,15 +28,18 @@ public class DigitalClock extends android.widget.DigitalClock {
 
     String mFormat;
 
+
     public DigitalClock(Context context) {
         super(context);
         initClock(context);
     }
 
+
     public DigitalClock(Context context, AttributeSet attrs) {
         super(context, attrs);
         initClock(context);
     }
+
 
     private void initClock(Context context) {
         Resources r = context.getResources();
@@ -47,14 +49,15 @@ public class DigitalClock extends android.widget.DigitalClock {
         }
 
         mFormatChangeObserver = new FormatChangeObserver();
-        getContext().getContentResolver().registerContentObserver(
-                Settings.System.CONTENT_URI, true, mFormatChangeObserver);
+        getContext().getContentResolver()
+                    .registerContentObserver(Settings.System.CONTENT_URI, true,
+                            mFormatChangeObserver);
 
         setFormat();
     }
 
-    @Override
-    protected void onAttachedToWindow() {
+
+    @Override protected void onAttachedToWindow() {
         mTickerStopped = false;
         super.onAttachedToWindow();
         mHandler = new Handler();
@@ -76,35 +79,39 @@ public class DigitalClock extends android.widget.DigitalClock {
         mTicker.run();
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
+
+    @Override protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mTickerStopped = true;
     }
+
 
     /**
      * Pulls 12/24 mode from system settings
      */
     private boolean get24HourMode() {
-//        return android.text.format.DateFormat.is24HourFormat(getContext());
+        //        return android.text.format.DateFormat.is24HourFormat(getContext());
         return true;
     }
+
 
     private void setFormat() {
         if (get24HourMode()) {
             mFormat = m24;
-        } else {
+        }
+        else {
             mFormat = m12;
         }
     }
+
 
     private class FormatChangeObserver extends ContentObserver {
         public FormatChangeObserver() {
             super(new Handler());
         }
 
-        @Override
-        public void onChange(boolean selfChange) {
+
+        @Override public void onChange(boolean selfChange) {
             setFormat();
         }
     }

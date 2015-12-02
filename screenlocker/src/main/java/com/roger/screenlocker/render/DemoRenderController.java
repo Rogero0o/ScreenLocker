@@ -41,27 +41,28 @@ public class DemoRenderController extends RenderController {
     private boolean mAllowFocus = true;
     private String mPictureName;
 
-    public DemoRenderController(Context context, BlurRenderer renderer,
-                                Callbacks callbacks, boolean allowFocus, String mPictureName) {
+
+    public DemoRenderController(Context context, BlurRenderer renderer, Callbacks callbacks, boolean allowFocus, String mPictureName) {
         super(context, renderer, callbacks);
         mAllowFocus = allowFocus;
         this.mPictureName = mPictureName;
         runAnimation();
     }
 
+
     private void runAnimation() {
         if (mCurrentScrollAnimator != null) {
             mCurrentScrollAnimator.cancel();
         }
 
-        mCurrentScrollAnimator = ObjectAnimator
-                .ofFloat(mRenderer, "normalOffsetX",
-                        mReverseDirection ? 1f : 0f, mReverseDirection ? 0f : 1f)
-                .setDuration(ANIMATION_CYCLE_TIME_MILLIS);
+        mCurrentScrollAnimator = ObjectAnimator.ofFloat(mRenderer,
+                "normalOffsetX", mReverseDirection ? 1f : 0f,
+                mReverseDirection ? 0f : 1f)
+                                               .setDuration(
+                                                       ANIMATION_CYCLE_TIME_MILLIS);
         mCurrentScrollAnimator.start();
         mCurrentScrollAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
+            @Override public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 mReverseDirection = !mReverseDirection;
                 runAnimation();
@@ -69,12 +70,10 @@ public class DemoRenderController extends RenderController {
         });
         if (mAllowFocus) {
             mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                     mRenderer.setIsBlurred(false, false);
                     mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                        @Override public void run() {
                             mRenderer.setIsBlurred(true, false);
                         }
                     }, FOCUS_TIME_MILLIS);
@@ -83,14 +82,15 @@ public class DemoRenderController extends RenderController {
         }
     }
 
-    @Override
-    public void destroy() {
+
+    @Override public void destroy() {
         super.destroy();
         if (mCurrentScrollAnimator != null) {
             mCurrentScrollAnimator.cancel();
         }
         mHandler.removeCallbacksAndMessages(null);
     }
+
 
     @Override
     protected BitmapRegionLoader openDownloadedCurrentArtwork(boolean forceReload) {

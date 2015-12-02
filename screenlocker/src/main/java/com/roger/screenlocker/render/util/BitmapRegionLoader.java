@@ -28,7 +28,8 @@ import java.io.InputStream;
 import static android.graphics.BitmapFactory.Options;
 
 /**
- * Wrapper for {@link android.graphics.BitmapRegionDecoder} with some extra functionality.
+ * Wrapper for {@link android.graphics.BitmapRegionDecoder} with some extra
+ * functionality.
  */
 public class BitmapRegionLoader {
     private boolean mValid = false;
@@ -40,9 +41,11 @@ public class BitmapRegionLoader {
     private volatile BitmapRegionDecoder mBitmapRegionDecoder;
     private Matrix mRotateMatrix;
 
+
     public static BitmapRegionLoader newInstance(InputStream in) {
         return newInstance(in, 0);
     }
+
 
     public static BitmapRegionLoader newInstance(InputStream in, int rotation) {
         if (in == null) {
@@ -63,6 +66,7 @@ public class BitmapRegionLoader {
         return null;
     }
 
+
     private BitmapRegionLoader(InputStream in) {
         mInputStream = in;
         try {
@@ -75,15 +79,19 @@ public class BitmapRegionLoader {
         }
     }
 
+
     /**
      * Key difference, aside from support for ration, from
-     * {@link android.graphics.BitmapRegionDecoder#decodeRegion(android.graphics.Rect, android.graphics.BitmapFactory.Options)} in this implementation is that even
+     * {@link android.graphics.BitmapRegionDecoder#decodeRegion(android.graphics.Rect,
+     * android.graphics.BitmapFactory.Options)} in this implementation is that
+     * even
      * if <code>inBitmap</code> is given, a sub-bitmap might be returned.
      */
     public synchronized Bitmap decodeRegion(Rect rect, Options options) {
         int unsampledInBitmapWidth = -1;
         int unsampledInBitmapHeight = -1;
-        int sampleSize = Math.max(1, options != null ? options.inSampleSize : 1);
+        int sampleSize = Math.max(1,
+                options != null ? options.inSampleSize : 1);
         if (options != null && options.inBitmap != null) {
             unsampledInBitmapWidth = options.inBitmap.getWidth() * sampleSize;
             unsampledInBitmapHeight = options.inBitmap.getHeight() * sampleSize;
@@ -92,20 +100,18 @@ public class BitmapRegionLoader {
         // Decode with rotation
         switch (mRotation) {
             case 90:
-                mTempRect.set(
-                        rect.top, mOriginalHeight - rect.right,
+                mTempRect.set(rect.top, mOriginalHeight - rect.right,
                         rect.bottom, mOriginalHeight - rect.left);
                 break;
 
             case 180:
-                mTempRect.set(
-                        mOriginalWidth - rect.right, mOriginalHeight - rect.bottom,
+                mTempRect.set(mOriginalWidth - rect.right,
+                        mOriginalHeight - rect.bottom,
                         mOriginalWidth - rect.left, mOriginalHeight - rect.top);
                 break;
 
             case 270:
-                mTempRect.set(
-                        mOriginalWidth - rect.bottom, rect.left,
+                mTempRect.set(mOriginalWidth - rect.bottom, rect.left,
                         mOriginalWidth - rect.top, rect.right);
                 break;
 
@@ -115,11 +121,10 @@ public class BitmapRegionLoader {
 
         Bitmap bitmap = mBitmapRegionDecoder.decodeRegion(mTempRect, options);
         if (options != null && options.inBitmap != null &&
-                ((mTempRect.width() != unsampledInBitmapWidth
-                        || mTempRect.height() != unsampledInBitmapHeight))) {
+                ((mTempRect.width() != unsampledInBitmapWidth ||
+                        mTempRect.height() != unsampledInBitmapHeight))) {
             // Need to extract the sub-bitmap
-            Bitmap subBitmap = Bitmap.createBitmap(
-                    bitmap, 0, 0,
+            Bitmap subBitmap = Bitmap.createBitmap(bitmap, 0, 0,
                     mTempRect.width() / sampleSize,
                     mTempRect.height() / sampleSize);
             if (bitmap != options.inBitmap) {
@@ -131,8 +136,7 @@ public class BitmapRegionLoader {
         if (mRotateMatrix != null) {
             // Rotate decoded bitmap
             Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0,
-                    bitmap.getWidth(), bitmap.getHeight(),
-                    mRotateMatrix, true);
+                    bitmap.getWidth(), bitmap.getHeight(), mRotateMatrix, true);
             if (options == null || bitmap != options.inBitmap) {
                 bitmap.recycle();
             }
@@ -142,13 +146,20 @@ public class BitmapRegionLoader {
         return bitmap;
     }
 
+
     public synchronized int getWidth() {
-        return (mRotation == 90 || mRotation == 270) ? mOriginalHeight : mOriginalWidth;
+        return (mRotation == 90 || mRotation == 270)
+               ? mOriginalHeight
+               : mOriginalWidth;
     }
 
+
     public synchronized int getHeight() {
-        return (mRotation == 90 || mRotation == 270) ? mOriginalWidth : mOriginalHeight;
+        return (mRotation == 90 || mRotation == 270)
+               ? mOriginalWidth
+               : mOriginalHeight;
     }
+
 
     public synchronized void destroy() {
         mBitmapRegionDecoder.recycle();

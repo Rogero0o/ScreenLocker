@@ -38,10 +38,8 @@ import com.roger.screenlocker.render.util.MathUtil;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-public class RendererFragment extends Fragment implements
-        RenderController.Callbacks,
-        BlurRenderer.Callbacks {
-
+public class RendererFragment extends Fragment
+        implements RenderController.Callbacks, BlurRenderer.Callbacks {
 
     private static final String ARG_DEMO_MODE = "demo_mode";
     private static final String ARG_DEMO_FOCUS = "demo_focus";
@@ -53,6 +51,7 @@ public class RendererFragment extends Fragment implements
     private boolean mDemoFocus;
     private String mPictureName;
 
+
     public static RendererFragment createInstance(String name) {
         RendererFragment fragment = new RendererFragment();
         Bundle args = new Bundle();
@@ -63,11 +62,12 @@ public class RendererFragment extends Fragment implements
         return fragment;
     }
 
+
     public RendererFragment() {
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mDemoMode = args.getBoolean(ARG_DEMO_MODE, false);
@@ -75,14 +75,15 @@ public class RendererFragment extends Fragment implements
         mPictureName = args.getString(ARG_DEMO_PICTURE);
     }
 
-    @Override
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+
+    @Override @TargetApi(Build.VERSION_CODES.KITKAT)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         boolean simpleDemoMode = false;
-        if (mDemoMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//判断系统版本是否小于4.4、或是RAM过小，则使用simpleMode
-            ActivityManager activityManager = (ActivityManager)
-                    getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        if (mDemoMode && Build.VERSION.SDK_INT >=
+                Build.VERSION_CODES.KITKAT) {//判断系统版本是否小于4.4、或是RAM过小，则使用simpleMode
+            ActivityManager activityManager
+                    = (ActivityManager) getActivity().getSystemService(
+                    Context.ACTIVITY_SERVICE);
             if (activityManager.isLowRamDevice()) {
                 simpleDemoMode = true;
             }
@@ -93,26 +94,31 @@ public class RendererFragment extends Fragment implements
             int targetWidth = dm.widthPixels;
             int targetHeight = dm.heightPixels;
             if (!mDemoFocus) {
-                targetHeight = MathUtil.roundMult4(ImageBlurrer.MAX_SUPPORTED_BLUR_PIXELS
-                        * 10000 / BlurRenderer.DEFAULT_BLUR);
+                targetHeight = MathUtil.roundMult4(
+                        ImageBlurrer.MAX_SUPPORTED_BLUR_PIXELS * 10000 /
+                                BlurRenderer.DEFAULT_BLUR);
                 targetWidth = MathUtil.roundMult4(
-                        (int) (dm.widthPixels * 1f / dm.heightPixels * targetHeight));
+                        (int) (dm.widthPixels * 1f / dm.heightPixels *
+                                targetHeight));
             }
 
             mSimpleDemoModeImageView = new ImageView(container.getContext());
-            mSimpleDemoModeImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            mSimpleDemoModeImageView.setScaleType(
+                    ImageView.ScaleType.CENTER_CROP);
             Picasso.with(getActivity())
-                    .load(mPictureName)
-                    .resize(targetWidth, targetHeight)
-                    .centerCrop()
-                    .into(mSimpleDemoModeLoadedTarget);
+                   .load(mPictureName)
+                   .resize(targetWidth, targetHeight)
+                   .centerCrop()
+                   .into(mSimpleDemoModeLoadedTarget);
             return mSimpleDemoModeImageView;
-        } else {
+        }
+        else {
             mView = new MuzeiView(getActivity(), mPictureName);
             mView.setPreserveEGLContextOnPause(true);
             return mView;
         }
     }
+
 
     private Target mSimpleDemoModeLoadedTarget = new Target() {
         @Override
@@ -125,8 +131,8 @@ public class RendererFragment extends Fragment implements
 
                 // Dim
                 Canvas c = new Canvas(blurred);
-                c.drawColor(Color.argb(255 - BlurRenderer.DEFAULT_MAX_DIM,
-                        0, 0, 0));
+                c.drawColor(Color.argb(255 - BlurRenderer.DEFAULT_MAX_DIM, 0, 0,
+                        0));
 
                 bitmap = blurred;
             }
@@ -134,17 +140,17 @@ public class RendererFragment extends Fragment implements
             mSimpleDemoModeImageView.setImageBitmap(bitmap);
         }
 
-        @Override
-        public void onBitmapFailed(Drawable drawable) {
+
+        @Override public void onBitmapFailed(Drawable drawable) {
         }
 
-        @Override
-        public void onPrepareLoad(Drawable drawable) {
+
+        @Override public void onPrepareLoad(Drawable drawable) {
         }
     };
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
+
+    @Override public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (mView == null) {
             return;
@@ -155,14 +161,14 @@ public class RendererFragment extends Fragment implements
         }
     }
 
-    @Override
-    public void onDestroyView() {
+
+    @Override public void onDestroyView() {
         super.onDestroyView();
         mView = null;
     }
 
-    @Override
-    public void onPause() {
+
+    @Override public void onPause() {
         super.onPause();
         if (mView == null) {
             return;
@@ -171,8 +177,8 @@ public class RendererFragment extends Fragment implements
         mView.onPause();
     }
 
-    @Override
-    public void onResume() {
+
+    @Override public void onResume() {
         super.onResume();
         if (mView == null) {
             return;
@@ -181,8 +187,8 @@ public class RendererFragment extends Fragment implements
         mView.onResume();
     }
 
-    @Override
-    public void queueEventOnGlThread(Runnable runnable) {
+
+    @Override public void queueEventOnGlThread(Runnable runnable) {
         if (mView == null) {
             return;
         }
@@ -190,8 +196,8 @@ public class RendererFragment extends Fragment implements
         mView.queueEvent(runnable);
     }
 
-    @Override
-    public void requestRender() {
+
+    @Override public void requestRender() {
         if (mView == null) {
             return;
         }
@@ -199,9 +205,11 @@ public class RendererFragment extends Fragment implements
         mView.requestRender();
     }
 
+
     private class MuzeiView extends GLTextureView {
         private BlurRenderer mRenderer;
         private RenderController mRenderController;
+
 
         public MuzeiView(Context context, String mPictureName) {
             super(context);
@@ -210,11 +218,12 @@ public class RendererFragment extends Fragment implements
             setEGLConfigChooser(8, 8, 8, 8, 0, 0);
             setRenderer(mRenderer);
             setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-            mRenderController = new DemoRenderController(getContext(), mRenderer,
-                    RendererFragment.this, mDemoFocus, mPictureName);
+            mRenderController = new DemoRenderController(getContext(),
+                    mRenderer, RendererFragment.this, mDemoFocus, mPictureName);
             mRenderer.setDemoMode(mDemoMode);
             mRenderController.setVisible(true);
         }
+
 
         @Override
         protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -223,17 +232,15 @@ public class RendererFragment extends Fragment implements
             mRenderController.reloadCurrentArtwork(true);
         }
 
-        @Override
-        protected void onDetachedFromWindow() {
+
+        @Override protected void onDetachedFromWindow() {
             super.onDetachedFromWindow();
             mRenderController.destroy();
             queueEventOnGlThread(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                     mRenderer.destroy();
                 }
             });
         }
-
     }
 }

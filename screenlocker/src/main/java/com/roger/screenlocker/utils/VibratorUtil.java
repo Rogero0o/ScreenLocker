@@ -17,8 +17,8 @@ public class VibratorUtil {
      */
 
     public static void Vibrate(final Context mContext, long milliseconds) {
-        Vibrator vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
+        Vibrator vib = (Vibrator) mContext.getSystemService(
+                Service.VIBRATOR_SERVICE);
         vib.vibrate(milliseconds);
     }
-
 }

@@ -78,19 +78,25 @@ public class PullSeparateListView extends ListView {
     private boolean reachTop, reachBottom, move;
     private OnScrollListener mScrollListener;
 
+
     public PullSeparateListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray t = context.obtainStyledAttributes(attrs, R.styleable.PullSeparateListView);
-        separateAll = t.getBoolean(R.styleable.PullSeparateListView_separate_all, false);
-        showDownAnim = t.getBoolean(R.styleable.PullSeparateListView_showDownAnim, true);
+        TypedArray t = context.obtainStyledAttributes(attrs,
+                R.styleable.PullSeparateListView);
+        separateAll = t.getBoolean(
+                R.styleable.PullSeparateListView_separate_all, false);
+        showDownAnim = t.getBoolean(
+                R.styleable.PullSeparateListView_showDownAnim, true);
         t.recycle();
         init();
     }
+
 
     public PullSeparateListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
+
 
     public PullSeparateListView(Context context) {
         super(context);
@@ -98,8 +104,7 @@ public class PullSeparateListView extends ListView {
     }
 
 
-    @SuppressWarnings("deprecation")
-    private void init() {
+    @SuppressWarnings("deprecation") private void init() {
         //不知道怎么让divider和selector和Item一起移动，所以去除，需要自己加分割线
         this.setDivider(null);
         this.setSelector(new BitmapDrawable());
@@ -108,19 +113,22 @@ public class PullSeparateListView extends ListView {
         super.setOnScrollListener(listener);
     }
 
+
     /**
      * 是否全部分离
      *
      * @param separateAll 如果为true,那么全部都会分离。否则的话，如果是顶部下拉，只有点击位置之前的Item会分离</br>
-     *                    如果是底部上拉，则只有点击位置之后的item会分离。默认为false
+     * 如果是底部上拉，则只有点击位置之后的item会分离。默认为false
      */
     public void setSeparateAll(boolean separateAll) {
         this.separateAll = separateAll;
     }
 
+
     public boolean isSeparateAll() {
         return separateAll;
     }
+
 
     /**
      * 设置是否显示按下的Item的动画效果
@@ -131,17 +139,19 @@ public class PullSeparateListView extends ListView {
         this.showDownAnim = showDownAnim;
     }
 
+
     public boolean isShowDownAnim() {
         return showDownAnim;
     }
+
 
     public void setOnScrollListener(OnScrollListener l) {
         mScrollListener = l;
     }
 
+
     //核心代码
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    @Override public boolean dispatchTouchEvent(MotionEvent ev) {
         float currentY = ev.getY();
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -195,6 +205,7 @@ public class PullSeparateListView extends ListView {
         return super.dispatchTouchEvent(ev);
     }
 
+
     private boolean separateFromTop(float currentY) {
         //不能放在外部，否则在顶部滑动没有Fling效果
         if (deltaY > touchSlop) {
@@ -206,7 +217,8 @@ public class PullSeparateListView extends ListView {
             startY = currentY - MAX_DELTAY;
             //超过最大距离时，出现overScroll效果//有问题
             //return super.dispatchTouchEvent(ev);
-        } else if (deltaY < 0) { //为负值时（说明反方向超过了起始位置startY）归0
+        }
+        else if (deltaY < 0) { //为负值时（说明反方向超过了起始位置startY）归0
             deltaY = 0;
             separate = false;
         }
@@ -235,6 +247,7 @@ public class PullSeparateListView extends ListView {
         return true;
     }
 
+
     private boolean separateFromBottom(float currentY) {
         if (Math.abs(deltaY) > touchSlop) {
             move = true;
@@ -245,7 +258,8 @@ public class PullSeparateListView extends ListView {
             startY = currentY + MAX_DELTAY;
             //超过最大距离时，出现overScroll效果
             //return super.dispatchTouchEvent(ev);
-        } else if (deltaY > 0) { //为正值时（说明反方向移动超过起始位置startY），归0
+        }
+        else if (deltaY > 0) { //为正值时（说明反方向移动超过起始位置startY），归0
             deltaY = 0;
             separate = false;
         }
@@ -274,6 +288,7 @@ public class PullSeparateListView extends ListView {
         return true;
     }
 
+
     /**
      * 恢复
      */
@@ -281,10 +296,12 @@ public class PullSeparateListView extends ListView {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             ViewPropertyAnimator.animate(child)
-                    .translationY(0).setDuration(SEPARATE_RECOVER_DURATION)
-                    .setInterpolator(new AccelerateInterpolator());
+                                .translationY(0)
+                                .setDuration(SEPARATE_RECOVER_DURATION)
+                                .setInterpolator(new AccelerateInterpolator());
         }
     }
+
 
     /**
      * 按下的动画
@@ -295,10 +312,13 @@ public class PullSeparateListView extends ListView {
         downView = getChildAt(downPosition);
         if (downView != null) {
             ViewPropertyAnimator.animate(downView)
-                    .scaleX(SCALEX).scaleY(SCALEY).setDuration(50)
-                    .setInterpolator(new AccelerateInterpolator());
+                                .scaleX(SCALEX)
+                                .scaleY(SCALEY)
+                                .setDuration(50)
+                                .setInterpolator(new AccelerateInterpolator());
         }
     }
+
 
     /**
      * 恢复点击的View
@@ -306,10 +326,15 @@ public class PullSeparateListView extends ListView {
     private void recoverDownView() {
         if (showDownAnim && downView != null) {
             ViewPropertyAnimator.animate(downView)
-                    .scaleX(1f).scaleY(1f).setDuration(separate ? SEPARATE_RECOVER_DURATION : 100)
-                    .setInterpolator(new AccelerateInterpolator());
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(separate
+                                             ? SEPARATE_RECOVER_DURATION
+                                             : 100)
+                                .setInterpolator(new AccelerateInterpolator());
         }
     }
+
 
     private OnScrollListener listener = new OnScrollListener() {
         @Override
@@ -319,76 +344,82 @@ public class PullSeparateListView extends ListView {
             }
         }
 
+
         @Override
-        public void onScroll(AbsListView view, int firstVisibleItem,
-                             int visibleItemCount, int totalItemCount) {
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             if (mScrollListener != null) {
-                mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+                mScrollListener.onScroll(view, firstVisibleItem,
+                        visibleItemCount, totalItemCount);
             }
 
             //是否到达顶部
             if (firstVisibleItem == 0) {
                 View firstView = getChildAt(firstVisibleItem);
-                if (firstView != null && (firstView.getTop() + getPaddingTop()) >= 0) {
+                if (firstView != null &&
+                        (firstView.getTop() + getPaddingTop()) >= 0) {
                     downPosition = originDownPosition;
                     reachTop = true;
-                } else {
+                }
+                else {
                     reachTop = false;
                 }
-            } else {
+            }
+            else {
                 reachTop = false;
             }
             //是否到达底部
             if (firstVisibleItem + visibleItemCount == getCount()) {
                 View lastView = getChildAt(visibleItemCount - 1);
-                if (lastView != null && (lastView.getBottom() + getPaddingBottom()) <= getHeight() && getCount() > getChildCount()) {
+                if (lastView != null &&
+                        (lastView.getBottom() + getPaddingBottom()) <=
+                                getHeight() && getCount() > getChildCount()) {
                     downPosition = originDownPosition - firstVisibleItem;
                     reachBottom = true;
-                } else {
+                }
+                else {
                     reachBottom = false;
                 }
-            } else {
+            }
+            else {
                 reachBottom = false;
             }
         }
     };
 
+
     /**
      * 是否到达顶部
-     *
-     * @return
      */
-    @Deprecated
-    protected boolean isReachTopBound() {
+    @Deprecated protected boolean isReachTopBound() {
         int firstVisPos = getFirstVisiblePosition();
         if (firstVisPos == 0) {
             View firstView = getChildAt(firstVisPos);
             if (firstView != null && firstView.getTop() >= 0) {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         }
         return false;
     }
+
 
     /**
      * 是否到达底部
-     *
-     * @return
      */
-    @Deprecated
-    protected boolean isReachBottomBound() {
+    @Deprecated protected boolean isReachBottomBound() {
         int lastVisPos = getLastVisiblePosition();
         if (lastVisPos == getCount() - 1) {
             View lastView = getChildAt(getChildCount() - 1);
-            if (lastView != null && lastView.getBottom() <= getHeight() && getCount() > getChildCount()) {
+            if (lastView != null && lastView.getBottom() <= getHeight() &&
+                    getCount() > getChildCount()) {
                 return true;
-            } else {
+            }
+            else {
                 return false;
             }
         }
         return false;
     }
-
 }

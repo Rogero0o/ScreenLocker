@@ -18,7 +18,6 @@ package com.roger.screenlocker.render.util;
 
 import android.graphics.RectF;
 
-
 // Singleton that also behaves as an event
 public class ArtDetailViewport {
     private volatile RectF mViewport0 = new RectF();
@@ -27,47 +26,49 @@ public class ArtDetailViewport {
 
     private static ArtDetailViewport sInstance = new ArtDetailViewport();
 
+
     public static ArtDetailViewport getInstance() {
         return sInstance;
     }
 
+
     private ArtDetailViewport() {
     }
+
 
     public RectF getViewport(int id) {
         return (id == 0) ? mViewport0 : mViewport1;
     }
 
+
     public ArtDetailViewport setViewport(int id, RectF viewport, boolean fromUser) {
-        return setViewport(id, viewport.left, viewport.top, viewport.right, viewport.bottom,
-                fromUser);
+        return setViewport(id, viewport.left, viewport.top, viewport.right,
+                viewport.bottom, fromUser);
     }
 
-    public ArtDetailViewport setViewport(int id, float left, float top, float right, float bottom,
-            boolean fromUser) {
+
+    public ArtDetailViewport setViewport(int id, float left, float top, float right, float bottom, boolean fromUser) {
         mFromUser = fromUser;
         getViewport(id).set(left, top, right, bottom);
         return this;
     }
 
+
     public boolean isFromUser() {
         return mFromUser;
     }
 
-    public ArtDetailViewport setDefaultViewport(int id, float bitmapAspectRatio,
-            float screenAspectRatio) {
+
+    public ArtDetailViewport setDefaultViewport(int id, float bitmapAspectRatio, float screenAspectRatio) {
         mFromUser = false;
         if (bitmapAspectRatio > screenAspectRatio) {
             getViewport(id).set(
-                    0.5f - screenAspectRatio / bitmapAspectRatio / 2,
-                    0,
-                    0.5f + screenAspectRatio / bitmapAspectRatio / 2,
-                    1);
-        } else {
-            getViewport(id).set(
-                    0,
-                    0.5f - bitmapAspectRatio / screenAspectRatio / 2,
-                    1,
+                    0.5f - screenAspectRatio / bitmapAspectRatio / 2, 0,
+                    0.5f + screenAspectRatio / bitmapAspectRatio / 2, 1);
+        }
+        else {
+            getViewport(id).set(0,
+                    0.5f - bitmapAspectRatio / screenAspectRatio / 2, 1,
                     0.5f + bitmapAspectRatio / screenAspectRatio / 2);
         }
         return this;

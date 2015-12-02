@@ -30,66 +30,75 @@ import android.view.animation.OvershootInterpolator;
 
 import com.roger.screenlocker.R;
 
-
-@SuppressLint("NewApi")
-public class AnimatedMuzeiLogoFragment extends Fragment {
+@SuppressLint("NewApi") public class AnimatedMuzeiLogoFragment
+        extends Fragment {
     private View mRootView;
     private Runnable mOnFillStartedCallback;
     private View mSubtitleView;
     private AnimatedMuzeiLogoView mLogoView;
     private float mInitialLogoOffset;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+
+    @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mInitialLogoOffset = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16,
+        mInitialLogoOffset = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 16,
                 getResources().getDisplayMetrics());
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.animated_logo_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRootView = inflater.inflate(R.layout.animated_logo_fragment, container,
+                false);
         mSubtitleView = mRootView.findViewById(R.id.logo_subtitle);
 
-        mLogoView = (AnimatedMuzeiLogoView) mRootView.findViewById(R.id.animated_logo);
-        mLogoView.setOnStateChangeListener(new AnimatedMuzeiLogoView.OnStateChangeListener() {
-            @Override
-            public void onStateChange(int state) {
-                if (state == AnimatedMuzeiLogoView.STATE_FILL_STARTED) {
-                    mSubtitleView.setAlpha(0);
-                    mSubtitleView.setVisibility(View.VISIBLE);
-                    mSubtitleView.setTranslationY(-mSubtitleView.getHeight());
+        mLogoView = (AnimatedMuzeiLogoView) mRootView.findViewById(
+                R.id.animated_logo);
+        mLogoView.setOnStateChangeListener(
+                new AnimatedMuzeiLogoView.OnStateChangeListener() {
+                    @Override public void onStateChange(int state) {
+                        if (state == AnimatedMuzeiLogoView.STATE_FILL_STARTED) {
+                            mSubtitleView.setAlpha(0);
+                            mSubtitleView.setVisibility(View.VISIBLE);
+                            mSubtitleView.setTranslationY(
+                                    -mSubtitleView.getHeight());
 
-                    // Bug in older versions where set.setInterpolator didn't work
-                    AnimatorSet set = new AnimatorSet();
-                    Interpolator interpolator = new OvershootInterpolator();
-                    ObjectAnimator a1 = ObjectAnimator.ofFloat(mLogoView, View.TRANSLATION_Y, 0);
-                    ObjectAnimator a2 = ObjectAnimator.ofFloat(mSubtitleView,
-                            View.TRANSLATION_Y, 0);
-                    ObjectAnimator a3 = ObjectAnimator.ofFloat(mSubtitleView, View.ALPHA, 1);
-                    a1.setInterpolator(interpolator);
-                    a2.setInterpolator(interpolator);
-                    set.setDuration(500).playTogether(a1, a2, a3);
-                    set.start();
+                            // Bug in older versions where set.setInterpolator didn't work
+                            AnimatorSet set = new AnimatorSet();
+                            Interpolator interpolator
+                                    = new OvershootInterpolator();
+                            ObjectAnimator a1 = ObjectAnimator.ofFloat(
+                                    mLogoView, View.TRANSLATION_Y, 0);
+                            ObjectAnimator a2 = ObjectAnimator.ofFloat(
+                                    mSubtitleView, View.TRANSLATION_Y, 0);
+                            ObjectAnimator a3 = ObjectAnimator.ofFloat(
+                                    mSubtitleView, View.ALPHA, 1);
+                            a1.setInterpolator(interpolator);
+                            a2.setInterpolator(interpolator);
+                            set.setDuration(500).playTogether(a1, a2, a3);
+                            set.start();
 
-                    if (mOnFillStartedCallback != null) {
-                        mOnFillStartedCallback.run();
+                            if (mOnFillStartedCallback != null) {
+                                mOnFillStartedCallback.run();
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
         reset();
         return mRootView;
     }
+
 
     public void start() {
         mLogoView.start();
     }
 
+
     public void setOnFillStartedCallback(Runnable fillStartedCallback) {
         mOnFillStartedCallback = fillStartedCallback;
     }
+
 
     public void reset() {
         mLogoView.reset();

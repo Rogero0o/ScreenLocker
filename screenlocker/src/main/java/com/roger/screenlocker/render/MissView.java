@@ -7,9 +7,8 @@ import android.util.AttributeSet;
 /**
  * Created by Administrator on 2015/4/30.
  */
-public class MissView extends GLTextureView implements
-        RenderController.Callbacks,
-        BlurRenderer.Callbacks {
+public class MissView extends GLTextureView
+        implements RenderController.Callbacks, BlurRenderer.Callbacks {
     private BlurRenderer mRenderer;
     private RenderController mRenderController;
 
@@ -19,10 +18,12 @@ public class MissView extends GLTextureView implements
         init();
     }
 
+
     public MissView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
+
 
     private void init() {
         mRenderer = new BlurRenderer(getContext(), this);
@@ -32,6 +33,7 @@ public class MissView extends GLTextureView implements
         setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
     }
 
+
     public void initPicture(String mPictureName) {
         mRenderController = new DemoRenderController(getContext(), mRenderer,
                 this, true, mPictureName);
@@ -39,41 +41,39 @@ public class MissView extends GLTextureView implements
         mRenderController.setVisible(true);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mRenderer.hintViewportSize(w, h);
         mRenderController.reloadCurrentArtwork(true);
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
+
+    @Override protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         if (null != mRenderController) {
             mRenderController.destroy();
             queueEventOnGlThread(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                     mRenderer.destroy();
                 }
             });
         }
     }
 
-    @Override
-    public void queueEventOnGlThread(Runnable runnable) {
+
+    @Override public void queueEventOnGlThread(Runnable runnable) {
         if (this == null) {
             return;
         }
         super.queueEvent(runnable);
     }
 
-    @Override
-    public void requestRender() {
+
+    @Override public void requestRender() {
         if (this == null) {
             return;
         }
         super.requestRender();
     }
-
 }

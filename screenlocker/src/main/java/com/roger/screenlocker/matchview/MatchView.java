@@ -1,6 +1,5 @@
 package com.roger.screenlocker.matchview;
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -65,13 +64,16 @@ public class MatchView extends View {
     private MatchInListener mMatchInListener;
     private MatchOutListener mMatchOutListener;
 
+
     public void setMatchInListener(MatchInListener mMatchInListener) {
         this.mMatchInListener = mMatchInListener;
     }
 
+
     public void setMatchOutListener(MatchOutListener mMatchOutListener) {
         this.mMatchOutListener = mMatchOutListener;
     }
+
 
     public MatchView(Context context) {
 
@@ -79,15 +81,18 @@ public class MatchView extends View {
         initView();
     }
 
+
     public MatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
+
     public MatchView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
+
 
     private void initView() {
         this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -99,29 +104,33 @@ public class MatchView extends View {
         setPadding(0, Utils.dp2px(mPaddingTop), 0, Utils.dp2px(mPaddingTop));
 
         mHandler = new Handler() {
-            @Override
-            public void dispatchMessage(Message msg) {
+            @Override public void dispatchMessage(Message msg) {
                 super.dispatchMessage(msg);
                 if (STATE == 1) {//划入
                     if (progress < 100) {
                         progress++;
                         setProgress((progress * 1f / (100)));
-                        mHandler.sendEmptyMessageDelayed(0, (long) (mInTime * 10));
-                    } else {
+                        mHandler.sendEmptyMessageDelayed(0,
+                                (long) (mInTime * 10));
+                    }
+                    else {
                         STATE = 2;
                         if (mMatchInListener != null) {
                             mMatchInListener.onFinish();
                         }
                     }
-                } else if (STATE == 2) {//划出
+                }
+                else if (STATE == 2) {//划出
                     if (mIsInLoading) {
                         lightFinish();
                     }
                     if (progress > 0) {
                         progress--;
                         setProgress((progress * 1f / (100)));
-                        mHandler.sendEmptyMessageDelayed(0, (long) (mOutTime * 10));
-                    } else {
+                        mHandler.sendEmptyMessageDelayed(0,
+                                (long) (mOutTime * 10));
+                    }
+                    else {
                         progress = 0;
                         if (mMatchOutListener != null) {
                             mMatchOutListener.onFinish();
@@ -133,6 +142,7 @@ public class MatchView extends View {
         };
     }
 
+
     /**
      * 设置划入动画时长
      *
@@ -141,6 +151,7 @@ public class MatchView extends View {
     public void setInTime(float mTime) {
         mInTime = mTime;
     }
+
 
     /**
      * 设置划出动画时长
@@ -151,32 +162,30 @@ public class MatchView extends View {
         mOutTime = mTime;
     }
 
+
     /**
      * 划入后是否开始闪光
-     *
-     * @param isLight
      */
     public void setLight(boolean isLight) {
         isBeginLight = isLight;
     }
 
+
     /**
      * 设置划入动画的高度
-     *
-     * @param dp
      */
     public void setPaddingTop(int dp) {
         mPaddingTop = dp;
     }
 
+
     /**
      * 设置字体大小
-     *
-     * @param mTextSize
      */
     public void setTextSize(float mTextSize) {
         this.mTextSize = mTextSize;
     }
+
 
     protected void show() {
         if (mItemList.size() == 0) {
@@ -189,6 +198,7 @@ public class MatchView extends View {
         }
     }
 
+
     public void hide() {
         if (mMatchOutListener != null) {
             mMatchOutListener.onBegin();
@@ -196,10 +206,12 @@ public class MatchView extends View {
         mHandler.sendEmptyMessage(0);
     }
 
+
     public void setProgress(float progress) {
         if (mMatchInListener != null && STATE == 1) {
             mMatchInListener.onProgressUpdate(progress);
-        } else if (mMatchOutListener != null && STATE == 2) {
+        }
+        else if (mMatchOutListener != null && STATE == 2) {
             mMatchOutListener.onProgressUpdate(progress);
         }
 
@@ -207,21 +219,25 @@ public class MatchView extends View {
             if (isBeginLight) {
                 beginLight();
             }
-        } else if (mIsInLoading) {
+        }
+        else if (mIsInLoading) {
             lightFinish();
         }
         mProgress = progress;
         postInvalidate();
     }
 
+
     public int getLoadingAniDuration() {
         return mLoadingAniDuration;
     }
+
 
     public void setLoadingAniDuration(int duration) {
         mLoadingAniDuration = duration;
         mLoadingAniSegDuration = duration;
     }
+
 
     public MatchView setLineWidth(int width) {
         mLineWidth = width;
@@ -231,6 +247,7 @@ public class MatchView extends View {
         return this;
     }
 
+
     public MatchView setTextColor(int color) {
         mTextColor = color;
         for (int i = 0; i < mItemList.size(); i++) {
@@ -239,15 +256,18 @@ public class MatchView extends View {
         return this;
     }
 
+
     public MatchView setDropHeight(int height) {
         mDropHeight = height;
         return this;
     }
 
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = getTopOffset() + mDrawZoneHeight + getBottomOffset();
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
+                MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         mOffsetX = (getMeasuredWidth() - mDrawZoneWidth) / 2;
@@ -255,22 +275,28 @@ public class MatchView extends View {
         mDropHeight = getTopOffset();
     }
 
+
     private int getTopOffset() {
         return getPaddingTop() + Utils.dp2px(10);
     }
+
 
     private int getBottomOffset() {
         return getPaddingBottom() + Utils.dp2px(10);
     }
 
+
     public void initWithString(String str) {
         initWithString(str, mTextSize);
     }
 
+
     public void initWithString(String str, float fontSize) {
-        ArrayList<float[]> pointList = MatchPath.getPath(str, fontSize * 0.01f, 14);
+        ArrayList<float[]> pointList = MatchPath.getPath(str, fontSize * 0.01f,
+                14);
         initWithPointList(pointList);
     }
+
 
     public void initWithStringArray(int id) {
         String[] points = getResources().getStringArray(id);
@@ -286,13 +312,16 @@ public class MatchView extends View {
         initWithPointList(pointList);
     }
 
+
     public float getScale() {
         return mScale;
     }
 
+
     public void setScale(float scale) {
         mScale = scale;
     }
+
 
     public void initWithPointList(ArrayList<float[]> pointList) {
 
@@ -302,8 +331,10 @@ public class MatchView extends View {
         mItemList.clear();
         for (int i = 0; i < pointList.size(); i++) {
             float[] line = pointList.get(i);
-            PointF startPoint = new PointF(Utils.dp2px(line[0]) * mScale, Utils.dp2px(line[1]) * mScale);
-            PointF endPoint = new PointF(Utils.dp2px(line[2]) * mScale, Utils.dp2px(line[3]) * mScale);
+            PointF startPoint = new PointF(Utils.dp2px(line[0]) * mScale,
+                    Utils.dp2px(line[1]) * mScale);
+            PointF endPoint = new PointF(Utils.dp2px(line[2]) * mScale,
+                    Utils.dp2px(line[3]) * mScale);
 
             drawWidth = Math.max(drawWidth, startPoint.x);
             drawWidth = Math.max(drawWidth, endPoint.x);
@@ -311,7 +342,8 @@ public class MatchView extends View {
             drawHeight = Math.max(drawHeight, startPoint.y);
             drawHeight = Math.max(drawHeight, endPoint.y);
 
-            MatchItem item = new MatchItem(i, startPoint, endPoint, mTextColor, mLineWidth);
+            MatchItem item = new MatchItem(i, startPoint, endPoint, mTextColor,
+                    mLineWidth);
             item.resetPosition(horizontalRandomness);
             mItemList.add(item);
         }
@@ -322,19 +354,21 @@ public class MatchView extends View {
         }
     }
 
+
     public void beginLight() {
         mIsInLoading = true;
         mAniController.start();
         invalidate();
     }
 
+
     public void lightFinish() {
         mIsInLoading = false;
         mAniController.stop();
     }
 
-    @Override
-    public void onDraw(Canvas canvas) {
+
+    @Override public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         float progress = mProgress;
         int c1 = canvas.save();
@@ -346,9 +380,11 @@ public class MatchView extends View {
             float offsetY = mOffsetY + LoadingViewItem.midPoint.y;
 
             if (mIsInLoading) {
-                LoadingViewItem.getTransformation(getDrawingTime(), mTransformation);
+                LoadingViewItem.getTransformation(getDrawingTime(),
+                        mTransformation);
                 canvas.translate(offsetX, offsetY);
-            } else {
+            }
+            else {
 
                 if (progress == 0) {
                     LoadingViewItem.resetPosition(horizontalRandomness);
@@ -362,14 +398,18 @@ public class MatchView extends View {
                 if (progress == 1 || progress >= 1 - endPadding) {
                     canvas.translate(offsetX, offsetY);
                     LoadingViewItem.setAlpha(mBarDarkAlpha);
-                } else {
+                }
+                else {
                     float realProgress;
                     if (progress <= startPadding) {
                         realProgress = 0;
-                    } else {
-                        realProgress = Math.min(1, (progress - startPadding) / internalAnimationFactor);
                     }
-                    offsetX += LoadingViewItem.translationX * (1 - realProgress);
+                    else {
+                        realProgress = Math.min(1, (progress - startPadding) /
+                                internalAnimationFactor);
+                    }
+                    offsetX += LoadingViewItem.translationX *
+                            (1 - realProgress);
                     offsetY += -mDropHeight * (1 - realProgress);
                     Matrix matrix = new Matrix();
                     matrix.postRotate(360 * realProgress);
@@ -388,6 +428,7 @@ public class MatchView extends View {
         canvas.restoreToCount(c1);
     }
 
+
     private class AniController implements Runnable {
 
         private int mTick = 0;
@@ -395,6 +436,7 @@ public class MatchView extends View {
         private int mSegCount = 0;
         private int mInterval = 0;
         private boolean mRunning = true;
+
 
         private void start() {
             mRunning = true;
@@ -406,8 +448,8 @@ public class MatchView extends View {
             run();
         }
 
-        @Override
-        public void run() {
+
+        @Override public void run() {
 
             int pos = mTick % mCountPerSeg;
             for (int i = 0; i < mSegCount; i++) {
@@ -432,6 +474,7 @@ public class MatchView extends View {
                 postDelayed(this, mInterval);
             }
         }
+
 
         private void stop() {
             mRunning = false;

@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 
 import com.roger.screenlocker.render.util.BitmapRegionLoader;
 
-
 public abstract class RenderController {
     protected Context mContext;
     protected BlurRenderer mRenderer;
@@ -29,11 +28,13 @@ public abstract class RenderController {
     protected boolean mVisible;
     private BitmapRegionLoader mQueuedBitmapRegionLoader;
 
+
     public RenderController(Context context, BlurRenderer renderer, Callbacks callbacks) {
         mRenderer = renderer;
         mContext = context;
         mCallbacks = callbacks;
     }
+
 
     public void destroy() {
         if (mQueuedBitmapRegionLoader != null) {
@@ -44,6 +45,7 @@ public abstract class RenderController {
 
     protected abstract BitmapRegionLoader openDownloadedCurrentArtwork(boolean forceReload);
 
+
     public void reloadCurrentArtwork(final boolean forceReload) {
         new AsyncTask<Void, Void, BitmapRegionLoader>() {
             @Override
@@ -52,6 +54,7 @@ public abstract class RenderController {
                 return openDownloadedCurrentArtwork(forceReload);
             }
 
+
             @Override
             protected void onPostExecute(final BitmapRegionLoader bitmapRegionLoader) {
                 if (bitmapRegionLoader == null) {
@@ -59,11 +62,12 @@ public abstract class RenderController {
                 }
 
                 mCallbacks.queueEventOnGlThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    @Override public void run() {
                         if (mVisible) {
-                            mRenderer.setAndConsumeBitmapRegionLoader(bitmapRegionLoader);
-                        } else {
+                            mRenderer.setAndConsumeBitmapRegionLoader(
+                                    bitmapRegionLoader);
+                        }
+                        else {
                             mQueuedBitmapRegionLoader = bitmapRegionLoader;
                         }
                     }
@@ -72,14 +76,15 @@ public abstract class RenderController {
         }.execute((Void) null);
     }
 
+
     public void setVisible(boolean visible) {
         mVisible = visible;
         if (visible) {
             mCallbacks.queueEventOnGlThread(new Runnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
                     if (mQueuedBitmapRegionLoader != null) {
-                        mRenderer.setAndConsumeBitmapRegionLoader(mQueuedBitmapRegionLoader);
+                        mRenderer.setAndConsumeBitmapRegionLoader(
+                                mQueuedBitmapRegionLoader);
                         mQueuedBitmapRegionLoader = null;
                     }
                 }
@@ -87,6 +92,7 @@ public abstract class RenderController {
             mCallbacks.requestRender();
         }
     }
+
 
     public static interface Callbacks {
         void queueEventOnGlThread(Runnable runnable);

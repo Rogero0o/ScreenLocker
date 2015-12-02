@@ -8,7 +8,6 @@ import android.view.animation.Transformation;
 
 import java.util.Random;
 
-
 public class MatchItem extends Animation {
 
     public PointF midPoint;
@@ -20,6 +19,7 @@ public class MatchItem extends Animation {
     private float mToAlpha = 0.4f;
     private PointF mCStartPoint;
     private PointF mCEndPoint;
+
 
     public MatchItem(int index, PointF start, PointF end, int color, int lineWidth) {
         this.index = index;
@@ -35,19 +35,24 @@ public class MatchItem extends Animation {
         mPaint.setStyle(Paint.Style.STROKE);
     }
 
+
     public void setLineWidth(int width) {
         mPaint.setStrokeWidth(width);
     }
+
 
     public void setColor(int color) {
         mPaint.setColor(color);
     }
 
+
     public void resetPosition(int horizontalRandomness) {
         Random random = new Random();
-        int randomNumber = -random.nextInt(horizontalRandomness) + horizontalRandomness;
+        int randomNumber = -random.nextInt(horizontalRandomness) +
+                horizontalRandomness;
         translationX = randomNumber;
     }
+
 
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -56,17 +61,21 @@ public class MatchItem extends Animation {
         setAlpha(alpha);
     }
 
+
     public void start(float fromAlpha, float toAlpha) {
         mFromAlpha = fromAlpha;
         mToAlpha = toAlpha;
         super.start();
     }
 
+
     public void setAlpha(float alpha) {
         mPaint.setAlpha((int) (alpha * 255));
     }
 
+
     public void draw(Canvas canvas) {
-        canvas.drawLine(mCStartPoint.x, mCStartPoint.y, mCEndPoint.x, mCEndPoint.y, mPaint);
+        canvas.drawLine(mCStartPoint.x, mCStartPoint.y, mCEndPoint.x,
+                mCEndPoint.y, mPaint);
     }
 }

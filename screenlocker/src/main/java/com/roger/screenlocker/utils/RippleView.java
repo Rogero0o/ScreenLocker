@@ -36,8 +36,8 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.view.ViewHelper;
 import com.roger.screenlocker.R;
 
-@SuppressLint("ClickableViewAccessibility")
-public class RippleView extends Button {
+@SuppressLint("ClickableViewAccessibility") public class RippleView
+        extends Button {
 
     private float mDownX;
     private float mDownY;
@@ -54,17 +54,21 @@ public class RippleView extends Button {
     private Paint mPaint;
     private ObjectAnimator mRadiusAnimator;
 
+
     private int dp(int dp) {
         return (int) (dp * mDensity + 0.5f);
     }
+
 
     public RippleView(Context context) {
         this(context, null);
     }
 
+
     public RippleView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
 
     public RippleView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -79,53 +83,57 @@ public class RippleView extends Button {
         a.recycle();
     }
 
+
     public void init() {
         mDensity = getContext().getResources().getDisplayMetrics().density;
 
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setAlpha(100);
         setRippleColor(Color.BLACK, 0.2f);
-
     }
+
 
     public void setRippleColor(int rippleColor, float alphaFactor) {
         mRippleColor = rippleColor;
         mAlphaFactor = alphaFactor;
     }
 
+
     public void setHover(boolean enabled) {
         mHover = enabled;
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mMaxRadius = (float) Math.sqrt(w * w + h * h);
     }
 
+
     private boolean mAnimationIsCancel;
     private Rect mRect;
 
-    @Override
-    public boolean onTouchEvent(final MotionEvent event) {
+
+    @Override public boolean onTouchEvent(final MotionEvent event) {
         boolean superResult = super.onTouchEvent(event);
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN
-                && this.isEnabled() && mHover) {
+        if (event.getActionMasked() == MotionEvent.ACTION_DOWN &&
+                this.isEnabled() && mHover) {
             mRect = new Rect(getLeft(), getTop(), getRight(), getBottom());
             mAnimationIsCancel = false;
             mDownX = event.getX();
             mDownY = event.getY();
 
             mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", 0, dp(20))
-                    .setDuration(400);
-            mRadiusAnimator
-                    .setInterpolator(new AccelerateDecelerateInterpolator());
+                                            .setDuration(400);
+            mRadiusAnimator.setInterpolator(
+                    new AccelerateDecelerateInterpolator());
             mRadiusAnimator.start();
             if (!superResult) {
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE
-                && this.isEnabled() && mHover) {
+        }
+        else if (event.getActionMasked() == MotionEvent.ACTION_MOVE &&
+                this.isEnabled() && mHover) {
             mDownX = event.getX();
             mDownY = event.getY();
 
@@ -134,19 +142,21 @@ public class RippleView extends Button {
                     getLeft() + (int) event.getX(),
                     getTop() + (int) event.getY())) {
                 setRadius(0);
-            } else {
+            }
+            else {
                 setRadius(dp(20));
             }
             if (!superResult) {
                 return true;
             }
-        } else if (event.getActionMasked() == MotionEvent.ACTION_UP
-                && !mAnimationIsCancel && this.isEnabled()) {
+        }
+        else if (event.getActionMasked() == MotionEvent.ACTION_UP &&
+                !mAnimationIsCancel && this.isEnabled()) {
             mDownX = event.getX();
             mDownY = event.getY();
 
-            final float tempRadius = (float) Math.sqrt(mDownX * mDownX + mDownY
-                    * mDownY);
+            final float tempRadius = (float) Math.sqrt(
+                    mDownX * mDownX + mDownY * mDownY);
             float targetRadius = Math.max(tempRadius, mMaxRadius);
 
             if (mIsAnimating) {
@@ -155,28 +165,27 @@ public class RippleView extends Button {
             mRadiusAnimator = ObjectAnimator.ofFloat(this, "radius", dp(20),
                     targetRadius);
             mRadiusAnimator.setDuration(300);
-            mRadiusAnimator
-                    .setInterpolator(new AccelerateDecelerateInterpolator());
+            mRadiusAnimator.setInterpolator(
+                    new AccelerateDecelerateInterpolator());
             mRadiusAnimator.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
+                @Override public void onAnimationStart(Animator animator) {
                     mIsAnimating = true;
                 }
 
-                @Override
-                public void onAnimationEnd(Animator animator) {
+
+                @Override public void onAnimationEnd(Animator animator) {
                     setRadius(0);
                     ViewHelper.setAlpha(RippleView.this, 1);
                     mIsAnimating = false;
                 }
 
-                @Override
-                public void onAnimationCancel(Animator animator) {
+
+                @Override public void onAnimationCancel(Animator animator) {
 
                 }
 
-                @Override
-                public void onAnimationRepeat(Animator animator) {
+
+                @Override public void onAnimationRepeat(Animator animator) {
 
                 }
             });
@@ -188,6 +197,7 @@ public class RippleView extends Button {
         return superResult;
     }
 
+
     public int adjustAlpha(int color, float factor) {
         int alpha = Math.round(Color.alpha(color) * factor);
         int red = Color.red(color);
@@ -195,6 +205,7 @@ public class RippleView extends Button {
         int blue = Color.blue(color);
         return Color.argb(alpha, red, green, blue);
     }
+
 
     public void setRadius(final float radius) {
         mRadius = radius;
@@ -207,10 +218,11 @@ public class RippleView extends Button {
         invalidate();
     }
 
+
     private Path mPath = new Path();
 
-    @Override
-    protected void onDraw(final Canvas canvas) {
+
+    @Override protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
 
         if (isInEditMode()) {
@@ -227,5 +239,4 @@ public class RippleView extends Button {
 
         canvas.drawCircle(mDownX, mDownY, mRadius, mPaint);
     }
-
 }

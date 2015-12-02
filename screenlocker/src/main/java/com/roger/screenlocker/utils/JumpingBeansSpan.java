@@ -26,7 +26,8 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-/*package*/ final class JumpingBeansSpan extends SuperscriptSpan implements ValueAnimator.AnimatorUpdateListener {
+/*package*/ final class JumpingBeansSpan extends SuperscriptSpan
+        implements ValueAnimator.AnimatorUpdateListener {
 
     private ValueAnimator jumpAnimator;
     private WeakReference<TextView> textView;
@@ -35,25 +36,26 @@ import java.lang.ref.WeakReference;
     private int loopDuration;
     private float animatedRange;
 
-    public JumpingBeansSpan(TextView textView, int loopDuration, int position, int waveCharOffset,
-                            float animatedRange) {
+
+    public JumpingBeansSpan(TextView textView, int loopDuration, int position, int waveCharOffset, float animatedRange) {
         this.textView = new WeakReference<TextView>(textView);
         this.delay = waveCharOffset * position;
         this.loopDuration = loopDuration;
         this.animatedRange = animatedRange;
     }
 
-    @Override
-    public void updateMeasureState(TextPaint tp) {
+
+    @Override public void updateMeasureState(TextPaint tp) {
         initIfNecessary(tp);
         tp.baselineShift = shift;
     }
 
-    @Override
-    public void updateDrawState(TextPaint tp) {
+
+    @Override public void updateDrawState(TextPaint tp) {
         initIfNecessary(tp);
         tp.baselineShift = shift;
     }
+
 
     private void initIfNecessary(TextPaint tp) {
         if (jumpAnimator != null) {
@@ -62,9 +64,7 @@ import java.lang.ref.WeakReference;
 
         shift = (int) tp.ascent() / 2;
         jumpAnimator = ValueAnimator.ofInt(0, shift, 0);
-        jumpAnimator
-                .setDuration(loopDuration)
-                .setStartDelay(delay);
+        jumpAnimator.setDuration(loopDuration).setStartDelay(delay);
         jumpAnimator.setInterpolator(new JumpInterpolator(animatedRange));
         jumpAnimator.setRepeatCount(ValueAnimator.INFINITE);
         jumpAnimator.setRepeatMode(ValueAnimator.RESTART);
@@ -72,31 +72,36 @@ import java.lang.ref.WeakReference;
         jumpAnimator.start();
     }
 
-    @Override
-    public void onAnimationUpdate(ValueAnimator animation) {
+
+    @Override public void onAnimationUpdate(ValueAnimator animation) {
         // No need for synchronization as this always run on main thread anyway
         TextView v = textView.get();
         if (v != null) {
             if (isAttachedToHierarchy(v)) {
                 shift = (Integer) animation.getAnimatedValue();
                 v.invalidate();
-            } else {
+            }
+            else {
                 animation.setCurrentPlayTime(0);
                 animation.start();
             }
-        } else {
+        }
+        else {
             // The textview has been destroyed and teardown() hasn't been called
             teardown();
         }
     }
 
+
     private boolean isAttachedToHierarchy(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             return v.isAttachedToWindow();
-        } else {
+        }
+        else {
             return v.getParent() != null;   // Best-effort fallback
         }
     }
+
 
     /*package*/ void teardown() {
         if (jumpAnimator != null) {
@@ -108,25 +113,29 @@ import java.lang.ref.WeakReference;
         }
     }
 
+
     /**
      * A tweaked {@link android.view.animation.AccelerateDecelerateInterpolator}
-     * that covers the full range in a fraction of its input range, and holds on
-     * the final value on the rest of the input range. By default, this fraction
+     * that covers the full range in a fraction of its input range, and holds
+     * on
+     * the final value on the rest of the input range. By default, this
+     * fraction
      * is half of the full range.
-     *
      */
     private class JumpInterpolator implements TimeInterpolator {
 
         private float animRange;
 
+
         public JumpInterpolator(float animatedRange) {
             animRange = Math.abs(animatedRange);
         }
 
-        @Override
-        public float getInterpolation(float input) {
+
+        @Override public float getInterpolation(float input) {
             if (input <= animRange) {
-                return (float) (Math.cos((input / animRange + 1) * Math.PI) / 2f) + 0.5f;
+                return (float) (Math.cos((input / animRange + 1) * Math.PI) /
+                        2f) + 0.5f;
             }
             return 1.0f;
         }

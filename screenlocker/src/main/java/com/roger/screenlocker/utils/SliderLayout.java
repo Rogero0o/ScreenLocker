@@ -24,11 +24,13 @@ public class SliderLayout extends RelativeLayout {
     private MatchTextView mMatchTextView;
     private OnUnlockListener mOnUnlockListener;
 
+
     public SliderLayout(Context context) {
         super(context);
         SliderLayout.this.context = context;
         init();
     }
+
 
     public SliderLayout(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
@@ -36,40 +38,44 @@ public class SliderLayout extends RelativeLayout {
         init();
     }
 
-    public SliderLayout(Context context, AttributeSet attrs,
-                        int defStyle) {
+
+    public SliderLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         SliderLayout.this.context = context;
         init();
     }
 
+
     public void setOnUnlockListener(OnUnlockListener mOnUnlockListener) {
         this.mOnUnlockListener = mOnUnlockListener;
     }
+
 
     private void init() {
         locationX = getScreenWidth() / 2;
 
         handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
+            @Override public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if (BackX >= 0) {
                     BackX = BackX - 5;
                     if (BackX > 0) {
                         mMatchView.scrollTo(BackX, Y);
                         handler.sendEmptyMessageDelayed(0, BACK_DURATION);
-                    } else {
+                    }
+                    else {
                         BackX = 0;
                         mMatchView.scrollTo(X, Y);
                     }
-                } else {
+                }
+                else {
                     BackX = BackX + 5;
 
                     if (BackX < 0) {
                         mMatchView.scrollTo(BackX, Y);
                         handler.sendEmptyMessageDelayed(0, BACK_DURATION);
-                    } else {
+                    }
+                    else {
                         BackX = 0;
                         mMatchView.scrollTo(X, Y);
                     }
@@ -77,7 +83,8 @@ public class SliderLayout extends RelativeLayout {
                 float progress = 1 - Math.abs(BackX) * 1f / Math.abs(UnlockX);
                 if (progress >= 1) {
                     progress = 1;
-                } else if (progress <= 0) {
+                }
+                else if (progress <= 0) {
                     progress = 0.1f;
                 }
                 mMatchTextView.setProgress(progress);
@@ -89,8 +96,7 @@ public class SliderLayout extends RelativeLayout {
     /**
      * 这个方法里可以得到一个其他资源
      */
-    @Override
-    protected void onFinishInflate() {
+    @Override protected void onFinishInflate() {
         super.onFinishInflate();
         mMatchView = (RelativeLayout) findViewById(R.id.matchview);
         mMatchTextView = (MatchTextView) findViewById(R.id.mMatchTextView);
@@ -99,6 +105,7 @@ public class SliderLayout extends RelativeLayout {
         UnlockX = getScreenWidth() / 4;
     }
 
+
     int X = 0;
     int Y = 0;
     int UnlockX = 0;
@@ -106,11 +113,11 @@ public class SliderLayout extends RelativeLayout {
     int moveX = 0;
     private boolean isUnLock = false;
 
+
     /**
      * 对拖拽图片不同的点击事件处理
      */
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    @Override public boolean onTouchEvent(MotionEvent event) {
         if (isUnLock) {
             return super.onTouchEvent(event);
         }
@@ -124,14 +131,17 @@ public class SliderLayout extends RelativeLayout {
                 moveX = X + locationX - (int) event.getX();
                 if (!isUnLocked(moveX)) {
                     mMatchView.scrollTo(moveX, Y);
-                    float progress = 1 - Math.abs(moveX) * 1f / Math.abs(UnlockX);
+                    float progress = 1 -
+                            Math.abs(moveX) * 1f / Math.abs(UnlockX);
                     if (progress >= 1) {
                         progress = 1;
-                    } else if (progress <= 0) {
+                    }
+                    else if (progress <= 0) {
                         progress = 0.1f;
                     }
                     mMatchTextView.setProgress(progress);
-                } else {
+                }
+                else {
                     isUnLock = true;
                     mOnUnlockListener.onUnlock();
                 }
@@ -145,11 +155,9 @@ public class SliderLayout extends RelativeLayout {
         return super.onTouchEvent(event);
     }
 
+
     /**
      * 判断是否点击到了滑动区域
-     *
-     * @param event
-     * @return
      */
     private boolean isActionDown(MotionEvent event) {
         Rect rect = new Rect();
@@ -161,6 +169,7 @@ public class SliderLayout extends RelativeLayout {
         return false;
     }
 
+
     /**
      * 判断是否解锁
      */
@@ -171,16 +180,17 @@ public class SliderLayout extends RelativeLayout {
         return false;
     }
 
+
     /**
      * 获取屏幕宽度
-     *
-     * @return
      */
     private int getScreenWidth() {
-        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager manager = (WindowManager) context.getSystemService(
+                Context.WINDOW_SERVICE);
         int width = manager.getDefaultDisplay().getWidth();
         return width;
     }
+
 
     public interface OnUnlockListener {
         public void onUnlock();

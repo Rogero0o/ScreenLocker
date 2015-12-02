@@ -33,19 +33,20 @@ import android.view.animation.Interpolator;
 
 import java.text.ParseException;
 
-@SuppressLint("NewApi")
-public class AnimatedMuzeiLogoView extends View {
+@SuppressLint("NewApi") public class AnimatedMuzeiLogoView extends View {
 
     private static final int TRACE_TIME = 2000;//微量调整时间
     private static final int TRACE_TIME_PER_GLYPH = 1000;
     private static final int FILL_START = 1200;
     private static final int FILL_TIME = 2000;
     private static final int MARKER_LENGTH_DIP = 16;
-    private static final int TRACE_RESIDUE_COLOR = Color.argb(50, 255, 255, 255);//实线的颜色
+    private static final int TRACE_RESIDUE_COLOR = Color.argb(50, 255, 255,
+            255);//实线的颜色
     private static final int TRACE_COLOR = Color.WHITE;//白块的颜色
     private static final PointF VIEWPORT = new PointF(1000, 300);
 
-    private static final Interpolator INTERPOLATOR = new DecelerateInterpolator();
+    private static final Interpolator INTERPOLATOR
+            = new DecelerateInterpolator();
 
     private Paint mFillPaint;
     private GlyphData[] mGlyphData;
@@ -62,20 +63,24 @@ public class AnimatedMuzeiLogoView extends View {
     private int mState = STATE_NOT_STARTED;
     private OnStateChangeListener mOnStateChangeListener;
 
+
     public AnimatedMuzeiLogoView(Context context) {
         super(context);
         init();
     }
+
 
     public AnimatedMuzeiLogoView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+
     public AnimatedMuzeiLogoView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
+
 
     private void init() {
         mFillPaint = new Paint();
@@ -97,11 +102,13 @@ public class AnimatedMuzeiLogoView extends View {
         setLayerType(LAYER_TYPE_SOFTWARE, null);//此View 通过软件渲染为一个bitmap
     }
 
+
     public void start() {
         mStartTime = System.currentTimeMillis();
         changeState(STATE_TRACE_STARTED);//设置状态为开始
         postInvalidateOnAnimation();//请求重绘，开始调用onDraw()
     }
+
 
     public void reset() {
         mStartTime = 0;
@@ -109,29 +116,30 @@ public class AnimatedMuzeiLogoView extends View {
         postInvalidateOnAnimation();
     }
 
+
     public void setToFinishedFrame() {
         mStartTime = 1;
         changeState(STATE_FINISHED);
         postInvalidateOnAnimation();
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mWidth = w;
         mHeight = h;
         rebuildGlyphData();
     }
 
+
     private void rebuildGlyphData() {
         SvgPathParser parser = new SvgPathParser() {
-            @Override
-            protected float transformX(float x) {
+            @Override protected float transformX(float x) {
                 return x * mWidth / VIEWPORT.x;
             }
 
-            @Override
-            protected float transformY(float y) {
+
+            @Override protected float transformY(float y) {
                 return y * mHeight / VIEWPORT.y;
             }
         };
@@ -146,7 +154,8 @@ public class AnimatedMuzeiLogoView extends View {
             }
             PathMeasure pm = new PathMeasure(mGlyphData[i].path, true);
             while (true) {
-                mGlyphData[i].length = Math.max(mGlyphData[i].length, pm.getLength());
+                mGlyphData[i].length = Math.max(mGlyphData[i].length,
+                        pm.getLength());
                 if (!pm.nextContour()) {
                     break;
                 }
@@ -161,8 +170,8 @@ public class AnimatedMuzeiLogoView extends View {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mState == STATE_NOT_STARTED || mGlyphData == null) {
             return;
@@ -172,19 +181,21 @@ public class AnimatedMuzeiLogoView extends View {
 
         // Draw outlines (starts as traced)
         for (int i = 0; i < mGlyphData.length; i++) {
-            float phase = MathUtil.constrain(0, 1,
-                    (t - (TRACE_TIME - TRACE_TIME_PER_GLYPH) * i * 1f / mGlyphData.length)
-                            * 1f / TRACE_TIME_PER_GLYPH);
-            float distance = INTERPOLATOR.getInterpolation(phase) * mGlyphData[i].length;
+            float phase = MathUtil.constrain(0, 1, (t -
+                    (TRACE_TIME - TRACE_TIME_PER_GLYPH) * i * 1f /
+                            mGlyphData.length) * 1f / TRACE_TIME_PER_GLYPH);
+            float distance = INTERPOLATOR.getInterpolation(phase) *
+                    mGlyphData[i].length;
             mGlyphData[i].paint.setColor(TRACE_RESIDUE_COLOR);
             mGlyphData[i].paint.setPathEffect(new DashPathEffect(
-                    new float[]{distance, mGlyphData[i].length}, 0));//背后实线的画笔
+                    new float[] { distance, mGlyphData[i].length },
+                    0));//背后实线的画笔
             canvas.drawPath(mGlyphData[i].path, mGlyphData[i].paint);
 
             mGlyphData[i].paint.setColor(TRACE_COLOR);
             mGlyphData[i].paint.setPathEffect(new DashPathEffect(
-                    new float[]{0, distance, phase > 0 ? mMarkerLength : 0,
-                            mGlyphData[i].length}, 0));//线条前端白块的画笔
+                    new float[] { 0, distance, phase > 0 ? mMarkerLength : 0,
+                            mGlyphData[i].length }, 0));//线条前端白块的画笔
             canvas.drawPath(mGlyphData[i].path, mGlyphData[i].paint);
         }
 
@@ -194,7 +205,8 @@ public class AnimatedMuzeiLogoView extends View {
             }
 
             // If after fill start, draw fill
-            float phase = MathUtil.constrain(0, 1, (t - FILL_START) * 1f / FILL_TIME);//根据时间计算透明度的值
+            float phase = MathUtil.constrain(0, 1,
+                    (t - FILL_START) * 1f / FILL_TIME);//根据时间计算透明度的值
             mFillPaint.setARGB((int) (phase * 255), 255, 255, 255);
             for (GlyphData glyphData : mGlyphData) {
                 canvas.drawPath(glyphData.path, mFillPaint);
@@ -204,10 +216,12 @@ public class AnimatedMuzeiLogoView extends View {
         if (t < FILL_START + FILL_TIME) {
             // draw next frame if animation isn't finished
             postInvalidateOnAnimation();//继续画，直到结束
-        } else {
+        }
+        else {
             changeState(STATE_FINISHED);
         }
     }
+
 
     private void changeState(int state) {
         if (mState == state) {
@@ -220,9 +234,11 @@ public class AnimatedMuzeiLogoView extends View {
         }
     }
 
+
     public void setOnStateChangeListener(OnStateChangeListener onStateChangeListener) {
         mOnStateChangeListener = onStateChangeListener;
     }
+
 
     public static interface OnStateChangeListener {
         void onStateChange(int state);

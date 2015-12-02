@@ -19,7 +19,6 @@ package com.roger.screenlocker.render;
 import android.graphics.Color;
 import android.opengl.GLES20;
 
-
 import java.nio.FloatBuffer;
 
 class GLColorOverlay {
@@ -42,16 +41,16 @@ class GLColorOverlay {
 
     // number of coordinates per vertex in this array
     private static final int COORDS_PER_VERTEX = 3;
-    private static final int VERTEX_STRIDE_BYTES = COORDS_PER_VERTEX * GLUtil.BYTES_PER_FLOAT;
+    private static final int VERTEX_STRIDE_BYTES = COORDS_PER_VERTEX *
+            GLUtil.BYTES_PER_FLOAT;
 
-    private float mVertices[] = {
-            -1,  1, 0,   // top left
+    private float mVertices[] = { -1, 1, 0,   // top left
             -1, -1, 0,   // bottom left
-             1, -1, 0,   // bottom right
+            1, -1, 0,   // bottom right
 
-            -1,  1, 0,   // top left
-             1, -1, 0,   // bottom right
-             1,  1, 0,   // top right
+            -1, 1, 0,   // top left
+            1, -1, 0,   // bottom right
+            1, 1, 0,   // top right
     };
 
     private int mColor;
@@ -63,22 +62,31 @@ class GLColorOverlay {
     private static int sUniformColorHandle;
     private static int sUniformMVPMatrixHandle;
 
+
     public GLColorOverlay(int color) {
         mColor = color;
 
         mVertexBuffer = GLUtil.asFloatBuffer(mVertices);
     }
 
+
     public static void initGl() {
         // Initialize shaders and create/link program
-        int vertexShaderHandle = GLUtil.loadShader(GLES20.GL_VERTEX_SHADER, VERTEX_SHADER_CODE);
-        int fragShaderHandle = GLUtil.loadShader(GLES20.GL_FRAGMENT_SHADER, FRAGMENT_SHADER_CODE);
+        int vertexShaderHandle = GLUtil.loadShader(GLES20.GL_VERTEX_SHADER,
+                VERTEX_SHADER_CODE);
+        int fragShaderHandle = GLUtil.loadShader(GLES20.GL_FRAGMENT_SHADER,
+                FRAGMENT_SHADER_CODE);
 
-        sProgramHandle = GLUtil.createAndLinkProgram(vertexShaderHandle, fragShaderHandle, null);
-        sAttribPositionHandle = GLES20.glGetAttribLocation(sProgramHandle, "aPosition");
-        sUniformMVPMatrixHandle = GLES20.glGetUniformLocation(sProgramHandle, "uMVPMatrix");
-        sUniformColorHandle = GLES20.glGetUniformLocation(sProgramHandle, "uColor");
+        sProgramHandle = GLUtil.createAndLinkProgram(vertexShaderHandle,
+                fragShaderHandle, null);
+        sAttribPositionHandle = GLES20.glGetAttribLocation(sProgramHandle,
+                "aPosition");
+        sUniformMVPMatrixHandle = GLES20.glGetUniformLocation(sProgramHandle,
+                "uMVPMatrix");
+        sUniformColorHandle = GLES20.glGetUniformLocation(sProgramHandle,
+                "uColor");
     }
+
 
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL ES environment
@@ -86,12 +94,12 @@ class GLColorOverlay {
 
         // Pass in the vertex information
         GLES20.glEnableVertexAttribArray(sAttribPositionHandle);
-        GLES20.glVertexAttribPointer(sAttribPositionHandle,
-                COORDS_PER_VERTEX, GLES20.GL_FLOAT, false,
-                VERTEX_STRIDE_BYTES, mVertexBuffer);
+        GLES20.glVertexAttribPointer(sAttribPositionHandle, COORDS_PER_VERTEX,
+                GLES20.GL_FLOAT, false, VERTEX_STRIDE_BYTES, mVertexBuffer);
 
         // Apply the projection and view transformation
-        GLES20.glUniformMatrix4fv(sUniformMVPMatrixHandle, 1, false, mvpMatrix, 0);
+        GLES20.glUniformMatrix4fv(sUniformMVPMatrixHandle, 1, false, mvpMatrix,
+                0);
         GLUtil.checkGlError("glUniformMatrix4fv");
 
         // Set the alpha
@@ -102,14 +110,17 @@ class GLColorOverlay {
         GLES20.glUniform4f(sUniformColorHandle, r, g, b, a);
 
         // Draw the triangle
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, mVertices.length / COORDS_PER_VERTEX);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0,
+                mVertices.length / COORDS_PER_VERTEX);
 
         GLES20.glDisableVertexAttribArray(sAttribPositionHandle);
     }
 
+
     public void setColor(int color) {
         mColor = color;
     }
+
 
     public void destroy() {
     }

@@ -26,7 +26,8 @@ import com.roger.screenlocker.R;
 public class ShimmerFrameLayout extends FrameLayout {
 
     private static final String TAG = "ShimmerFrameLayout";
-    private static final PorterDuffXfermode DST_IN_PORTER_DUFF_XFERMODE = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
+    private static final PorterDuffXfermode DST_IN_PORTER_DUFF_XFERMODE
+            = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
 
     // enum specifying the shape of the highlight mask applied to the contained view
     public enum MaskShape {
@@ -55,16 +56,22 @@ public class ShimmerFrameLayout extends FrameLayout {
         public float relativeHeight;
         public MaskShape shape;
 
+
         public int maskWidth(int width) {
             return fixedWidth > 0 ? fixedWidth : (int) (width * relativeWidth);
         }
 
+
         public int maskHeight(int height) {
-            return fixedHeight > 0 ? fixedHeight : (int) (height * relativeHeight);
+            return fixedHeight > 0
+                   ? fixedHeight
+                   : (int) (height * relativeHeight);
         }
 
+
         /**
-         * Get the array of colors to be distributed along the gradient of the mask bitmap
+         * Get the array of colors to be distributed along the gradient of the
+         * mask bitmap
          *
          * @return An array of black and transparent colors
          */
@@ -72,14 +79,18 @@ public class ShimmerFrameLayout extends FrameLayout {
             switch (shape) {
                 default:
                 case LINEAR:
-                    return new int[]{Color.TRANSPARENT, Color.BLACK, Color.BLACK, Color.TRANSPARENT};
+                    return new int[] { Color.TRANSPARENT, Color.BLACK,
+                            Color.BLACK, Color.TRANSPARENT };
                 case RADIAL:
-                    return new int[]{Color.BLACK, Color.BLACK, Color.TRANSPARENT};
+                    return new int[] { Color.BLACK, Color.BLACK,
+                            Color.TRANSPARENT };
             }
         }
 
+
         /**
-         * Get the array of relative positions [0..1] of each corresponding color in the colors array
+         * Get the array of relative positions [0..1] of each corresponding
+         * color in the colors array
          *
          * @return A array of float values in the [0..1] range
          */
@@ -87,16 +98,14 @@ public class ShimmerFrameLayout extends FrameLayout {
             switch (shape) {
                 default:
                 case LINEAR:
-                    return new float[]{
+                    return new float[] {
                             Math.max((1.0f - intensity - dropoff) / 2, 0.0f),
                             Math.max((1.0f - intensity) / 2, 0.0f),
                             Math.min((1.0f + intensity) / 2, 1.0f),
-                            Math.min((1.0f + intensity + dropoff) / 2, 1.0f)};
+                            Math.min((1.0f + intensity + dropoff) / 2, 1.0f) };
                 case RADIAL:
-                    return new float[]{
-                            0.0f,
-                            Math.min(intensity, 1.0f),
-                            Math.min(intensity + dropoff, 1.0f)};
+                    return new float[] { 0.0f, Math.min(intensity, 1.0f),
+                            Math.min(intensity + dropoff, 1.0f) };
             }
         }
     }
@@ -108,6 +117,7 @@ public class ShimmerFrameLayout extends FrameLayout {
         public int fromY;
         public int toX;
         public int toY;
+
 
         public void set(int fromX, int fromY, int toX, int toY) {
             this.fromX = fromX;
@@ -141,13 +151,16 @@ public class ShimmerFrameLayout extends FrameLayout {
     protected ValueAnimator mAnimator;
     protected Bitmap mMaskBitmap;
 
+
     public ShimmerFrameLayout(Context context) {
         this(context, null, 0);
     }
 
+
     public ShimmerFrameLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
 
     public ShimmerFrameLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -165,29 +178,39 @@ public class ShimmerFrameLayout extends FrameLayout {
         useDefaults();
 
         if (attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ShimmerFrameLayout, 0, 0);
+            TypedArray a = context.obtainStyledAttributes(attrs,
+                    R.styleable.ShimmerFrameLayout, 0, 0);
             try {
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_auto_start)) {
-                    setAutoStart(a.getBoolean(R.styleable.ShimmerFrameLayout_auto_start, false));
+                    setAutoStart(a.getBoolean(
+                            R.styleable.ShimmerFrameLayout_auto_start, false));
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_base_alpha)) {
-                    setBaseAlpha(a.getFloat(R.styleable.ShimmerFrameLayout_base_alpha, 0));
+                    setBaseAlpha(a.getFloat(
+                            R.styleable.ShimmerFrameLayout_base_alpha, 0));
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_duration)) {
-                    setDuration(a.getInt(R.styleable.ShimmerFrameLayout_duration, 0));
+                    setDuration(
+                            a.getInt(R.styleable.ShimmerFrameLayout_duration,
+                                    0));
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_repeat_count)) {
-                    setRepeatCount(a.getInt(R.styleable.ShimmerFrameLayout_repeat_count, 0));
+                    setRepeatCount(a.getInt(
+                            R.styleable.ShimmerFrameLayout_repeat_count, 0));
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_repeat_delay)) {
-                    setRepeatDelay(a.getInt(R.styleable.ShimmerFrameLayout_repeat_delay, 0));
+                    setRepeatDelay(a.getInt(
+                            R.styleable.ShimmerFrameLayout_repeat_delay, 0));
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_repeat_mode)) {
-                    setRepeatMode(a.getInt(R.styleable.ShimmerFrameLayout_repeat_mode, 0));
+                    setRepeatMode(
+                            a.getInt(R.styleable.ShimmerFrameLayout_repeat_mode,
+                                    0));
                 }
 
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_angle)) {
-                    int angle = a.getInt(R.styleable.ShimmerFrameLayout_angle, 0);
+                    int angle = a.getInt(R.styleable.ShimmerFrameLayout_angle,
+                            0);
                     switch (angle) {
                         default:
                         case 0:
@@ -206,7 +229,8 @@ public class ShimmerFrameLayout extends FrameLayout {
                 }
 
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_shape)) {
-                    int shape = a.getInt(R.styleable.ShimmerFrameLayout_shape, 0);
+                    int shape = a.getInt(R.styleable.ShimmerFrameLayout_shape,
+                            0);
                     switch (shape) {
                         default:
                         case 0:
@@ -219,25 +243,33 @@ public class ShimmerFrameLayout extends FrameLayout {
                 }
 
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_dropoff)) {
-                    mMask.dropoff = a.getFloat(R.styleable.ShimmerFrameLayout_dropoff, 0);
+                    mMask.dropoff = a.getFloat(
+                            R.styleable.ShimmerFrameLayout_dropoff, 0);
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_fixed_width)) {
-                    mMask.fixedWidth = a.getDimensionPixelSize(R.styleable.ShimmerFrameLayout_fixed_width, 0);
+                    mMask.fixedWidth = a.getDimensionPixelSize(
+                            R.styleable.ShimmerFrameLayout_fixed_width, 0);
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_fixed_height)) {
-                    mMask.fixedHeight = a.getDimensionPixelSize(R.styleable.ShimmerFrameLayout_fixed_height, 0);
+                    mMask.fixedHeight = a.getDimensionPixelSize(
+                            R.styleable.ShimmerFrameLayout_fixed_height, 0);
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_intensity)) {
-                    mMask.intensity = a.getFloat(R.styleable.ShimmerFrameLayout_intensity, 0);
+                    mMask.intensity = a.getFloat(
+                            R.styleable.ShimmerFrameLayout_intensity, 0);
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_relative_width)) {
-                    mMask.relativeWidth = a.getFloat(R.styleable.ShimmerFrameLayout_relative_width, 0);
+                    mMask.relativeWidth = a.getFloat(
+                            R.styleable.ShimmerFrameLayout_relative_width, 0);
                 }
-                if (a.hasValue(R.styleable.ShimmerFrameLayout_relative_height)) {
-                    mMask.relativeHeight = a.getFloat(R.styleable.ShimmerFrameLayout_relative_height, 0);
+                if (a.hasValue(
+                        R.styleable.ShimmerFrameLayout_relative_height)) {
+                    mMask.relativeHeight = a.getFloat(
+                            R.styleable.ShimmerFrameLayout_relative_height, 0);
                 }
                 if (a.hasValue(R.styleable.ShimmerFrameLayout_tilt)) {
-                    mMask.tilt = a.getFloat(R.styleable.ShimmerFrameLayout_tilt, 0);
+                    mMask.tilt = a.getFloat(R.styleable.ShimmerFrameLayout_tilt,
+                            0);
                 }
             } finally {
                 a.recycle();
@@ -245,9 +277,12 @@ public class ShimmerFrameLayout extends FrameLayout {
         }
     }
 
+
     /**
-     * Resets the layout to its default state. Any parameters that were set or modified will be reverted back to their
-     * original value. Also, stops the shimmer animation if it is currently playing.
+     * Resets the layout to its default state. Any parameters that were set or
+     * modified will be reverted back to their
+     * original value. Also, stops the shimmer animation if it is currently
+     * playing.
      */
     public void useDefaults() {
         // Set defaults
@@ -274,8 +309,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Is 'auto start' enabled for this layout. When auto start is enabled, the layout will start animating automatically
+     * Is 'auto start' enabled for this layout. When auto start is enabled, the
+     * layout will start animating automatically
      * whenever it is attached to the current window.
      *
      * @return True if 'auto start' is enabled, false otherwise
@@ -284,8 +321,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mAutoStart;
     }
 
+
     /**
-     * Enable or disable 'auto start' for this layout. When auto start is enabled, the layout will start animating
+     * Enable or disable 'auto start' for this layout. When auto start is
+     * enabled, the layout will start animating
      * automatically whenever it is attached to the current window.
      *
      * @param autoStart Whether auto start should be enabled or not
@@ -295,8 +334,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the alpha currently used to render the base view i.e. the unhighlighted view over which the highlight is drawn.
+     * Get the alpha currently used to render the base view i.e. the
+     * unhighlighted view over which the highlight is drawn.
      *
      * @return Alpha (opacity) of the base view
      */
@@ -304,8 +345,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return (float) mAlphaPaint.getAlpha() / 0xff;
     }
 
+
     /**
-     * Set the alpha to be used to render the base view i.e. the unhighlighted view over which the highlight is drawn.
+     * Set the alpha to be used to render the base view i.e. the unhighlighted
+     * view over which the highlight is drawn.
      *
      * @param alpha Alpha (opacity) of the base view
      */
@@ -314,8 +357,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the duration of the current animation i.e. the time it takes for the highlight to move from one end
+     * Get the duration of the current animation i.e. the time it takes for the
+     * highlight to move from one end
      * of the layout to the other. The default value is 1000 ms.
      *
      * @return Duration of the animation, in milliseconds
@@ -324,8 +369,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mDuration;
     }
 
+
     /**
-     * Set the duration of the animation i.e. the time it will take for the highlight to move from one end of the layout
+     * Set the duration of the animation i.e. the time it will take for the
+     * highlight to move from one end of the layout
      * to the other.
      *
      * @param duration Duration of the animation, in milliseconds
@@ -335,50 +382,64 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the number of times of the current animation will repeat. The default value is -1, which means the animation
+     * Get the number of times of the current animation will repeat. The default
+     * value is -1, which means the animation
      * will repeat indefinitely.
      *
-     * @return Number of times the current animation will repeat, or -1 for indefinite.
+     * @return Number of times the current animation will repeat, or -1 for
+     * indefinite.
      */
     public int getRepeatCount() {
         return mRepeatCount;
     }
 
+
     /**
-     * Set the number of times the animation should repeat. If the repeat count is 0, the animation stops after reaching
-     * the end. If greater than 0, or -1 (for infinite), the repeat mode is taken into account.
+     * Set the number of times the animation should repeat. If the repeat count
+     * is 0, the animation stops after reaching
+     * the end. If greater than 0, or -1 (for infinite), the repeat mode is
+     * taken into account.
      *
-     * @param repeatCount Number of times the current animation should repeat, or -1 for indefinite.
+     * @param repeatCount Number of times the current animation should repeat,
+     * or -1 for indefinite.
      */
     public void setRepeatCount(int repeatCount) {
         mRepeatCount = repeatCount;
         resetAll();
     }
 
+
     /**
-     * Get the delay after which the current animation will repeat. The default value is 0, which means the animation
+     * Get the delay after which the current animation will repeat. The default
+     * value is 0, which means the animation
      * will repeat immediately, unless it has ended.
      *
-     * @return Delay after which the current animation will repeat, in milliseconds.
+     * @return Delay after which the current animation will repeat, in
+     * milliseconds.
      */
     public int getRepeatDelay() {
         return mRepeatDelay;
     }
 
+
     /**
      * Set the delay after which the animation repeat, unless it has ended.
      *
-     * @param repeatDelay Delay after which the animation should repeat, in milliseconds.
+     * @param repeatDelay Delay after which the animation should repeat, in
+     * milliseconds.
      */
     public void setRepeatDelay(int repeatDelay) {
         mRepeatDelay = repeatDelay;
         resetAll();
     }
 
+
     /**
      * Get what the current animation will do after reaching the end. One of
-     * <a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#REVERSE">REVERSE</a> or
+     * <a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#REVERSE">REVERSE</a>
+     * or
      * <a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#RESTART">RESTART</a>
      *
      * @return Repeat mode of the current animation
@@ -387,9 +448,11 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mRepeatMode;
     }
 
+
     /**
      * Set what the animation should do after reaching the end. One of
-     * <a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#REVERSE">REVERSE</a> or
+     * <a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#REVERSE">REVERSE</a>
+     * or
      * <a href="http://developer.android.com/reference/android/animation/ValueAnimator.html#RESTART">RESTART</a>
      *
      * @param repeatMode Repeat mode of the animation
@@ -399,8 +462,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the shape of the current animation's highlight mask. One of {@link MaskShape#LINEAR} or
+     * Get the shape of the current animation's highlight mask. One of {@link
+     * MaskShape#LINEAR} or
      * {@link MaskShape#RADIAL}
      *
      * @return The shape of the highlight mask
@@ -409,8 +474,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.shape;
     }
 
+
     /**
-     * Set the shape of the animation's highlight mask. One of {@link MaskShape#LINEAR} or {@link MaskShape#RADIAL}
+     * Set the shape of the animation's highlight mask. One of {@link
+     * MaskShape#LINEAR} or {@link MaskShape#RADIAL}
      *
      * @param shape The shape of the highlight mask
      */
@@ -418,6 +485,7 @@ public class ShimmerFrameLayout extends FrameLayout {
         mMask.shape = shape;
         resetAll();
     }
+
 
     /**
      * Get the angle at which the highlight mask is animated. One of:
@@ -433,6 +501,7 @@ public class ShimmerFrameLayout extends FrameLayout {
     public MaskAngle getAngle() {
         return mMask.angle;
     }
+
 
     /**
      * Set the angle of the highlight mask animation. One of:
@@ -450,8 +519,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the dropoff of the current animation's highlight mask. Dropoff controls the size of the fading edge of the
+     * Get the dropoff of the current animation's highlight mask. Dropoff
+     * controls the size of the fading edge of the
      * highlight.
      * <p/>
      * The default value of dropoff is 0.5.
@@ -462,23 +533,29 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.dropoff;
     }
 
+
     /**
-     * Set the dropoff of the animation's highlight mask, which defines the size of the highlight's fading edge.
+     * Set the dropoff of the animation's highlight mask, which defines the size
+     * of the highlight's fading edge.
      * <p/>
-     * It is the relative distance from the center at which the highlight mask's opacity is 0 i.e it is fully transparent.
-     * For a linear mask, the distance is relative to the center towards the edges. For a radial mask, the distance is
-     * relative to the center towards the circumference. So a dropoff of 0.5 on a linear mask will create a band that
-     * is half the size of the corresponding edge (depending on the {@link MaskAngle}), centered in the layout.
-     *
-     * @param dropoff
+     * It is the relative distance from the center at which the highlight mask's
+     * opacity is 0 i.e it is fully transparent.
+     * For a linear mask, the distance is relative to the center towards the
+     * edges. For a radial mask, the distance is
+     * relative to the center towards the circumference. So a dropoff of 0.5 on
+     * a linear mask will create a band that
+     * is half the size of the corresponding edge (depending on the {@link
+     * MaskAngle}), centered in the layout.
      */
     public void setDropoff(float dropoff) {
         mMask.dropoff = dropoff;
         resetAll();
     }
 
+
     /**
-     * Get the fixed width of the highlight mask, or 0 if it is not set. By default it is 0.
+     * Get the fixed width of the highlight mask, or 0 if it is not set. By
+     * default it is 0.
      *
      * @return The width of the highlight mask if set, in pixels.
      */
@@ -486,8 +563,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.fixedWidth;
     }
 
+
     /**
-     * Set the fixed width of the highlight mask, regardless of the size of the layout.
+     * Set the fixed width of the highlight mask, regardless of the size of the
+     * layout.
      *
      * @param fixedWidth The width of the highlight mask in pixels.
      */
@@ -496,8 +575,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the fixed height of the highlight mask, or 0 if it is not set. By default it is 0.
+     * Get the fixed height of the highlight mask, or 0 if it is not set. By
+     * default it is 0.
      *
      * @return The height of the highlight mask if set, in pixels.
      */
@@ -505,8 +586,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.fixedHeight;
     }
 
+
     /**
-     * Set the fixed height of the highlight mask, regardless of the size of the layout.
+     * Set the fixed height of the highlight mask, regardless of the size of the
+     * layout.
      *
      * @param fixedHeight The height of the highlight mask in pixels.
      */
@@ -515,9 +598,12 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the intensity of the highlight mask, in the [0..1] range. The intensity controls the brightness of the
-     * highlight; the higher it is, the greater is the opaque region in the highlight. The default value is 0.
+     * Get the intensity of the highlight mask, in the [0..1] range. The
+     * intensity controls the brightness of the
+     * highlight; the higher it is, the greater is the opaque region in the
+     * highlight. The default value is 0.
      *
      * @return The intensity of the highlight mask
      */
@@ -525,11 +611,14 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.intensity;
     }
 
+
     /**
      * Set the intensity of the highlight mask, in the [0..1] range.
      * <p/>
-     * Intensity is the point relative to the center where opacity starts dropping off, so an intensity of 0 would mean
-     * that the highlight starts becoming translucent immediately from the center (the spread is controlled by 'dropoff').
+     * Intensity is the point relative to the center where opacity starts
+     * dropping off, so an intensity of 0 would mean
+     * that the highlight starts becoming translucent immediately from the
+     * center (the spread is controlled by 'dropoff').
      *
      * @param intensity The intensity of the highlight mask.
      */
@@ -538,8 +627,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the width of the highlight mask relative to the layout's width. The default is 1.0, meaning that the mask is
+     * Get the width of the highlight mask relative to the layout's width. The
+     * default is 1.0, meaning that the mask is
      * of the same width as the layout.
      *
      * @return Relative width of the highlight mask.
@@ -548,8 +639,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.relativeWidth;
     }
 
+
     /**
-     * Set the width of the highlight mask relative to the layout's width, in the [0..1] range.
+     * Set the width of the highlight mask relative to the layout's width, in
+     * the [0..1] range.
      *
      * @param relativeWidth Relative width of the highlight mask.
      */
@@ -558,8 +651,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the height of the highlight mask relative to the layout's height. The default is 1.0, meaning that the mask is
+     * Get the height of the highlight mask relative to the layout's height. The
+     * default is 1.0, meaning that the mask is
      * of the same height as the layout.
      *
      * @return Relative height of the highlight mask.
@@ -568,8 +663,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mMask.relativeHeight;
     }
 
+
     /**
-     * Set the height of the highlight mask relative to the layout's height, in the [0..1] range.
+     * Set the height of the highlight mask relative to the layout's height, in
+     * the [0..1] range.
      *
      * @param relativeHeight Relative height of the highlight mask.
      */
@@ -578,14 +675,17 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Get the tilt angle of the highlight, in degrees. The default value is 20.
+     * Get the tilt angle of the highlight, in degrees. The default value is
+     * 20.
      *
      * @return The highlight's tilt angle, in degrees.
      */
     public float getTilt() {
         return mMask.tilt;
     }
+
 
     /**
      * Set the tile angle of the highlight, in degrees.
@@ -597,9 +697,12 @@ public class ShimmerFrameLayout extends FrameLayout {
         resetAll();
     }
 
+
     /**
-     * Start the shimmer animation. If the 'auto start' property is set, this method is called automatically when the
-     * layout is attached to the current window. Calling this method has no effect if the animation is already playing.
+     * Start the shimmer animation. If the 'auto start' property is set, this
+     * method is called automatically when the
+     * layout is attached to the current window. Calling this method has no
+     * effect if the animation is already playing.
      */
     public void startShimmerAnimation() {
         if (mAnimationStarted) {
@@ -610,8 +713,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         mAnimationStarted = true;
     }
 
+
     /**
-     * Stop the shimmer animation. Calling this method has no effect if the animation hasn't been started yet.
+     * Stop the shimmer animation. Calling this method has no effect if the
+     * animation hasn't been started yet.
      */
     public void stopShimmerAnimation() {
         if (mAnimator != null) {
@@ -623,6 +728,7 @@ public class ShimmerFrameLayout extends FrameLayout {
         mAnimationStarted = false;
     }
 
+
     /**
      * Whether the shimmer animation is currently underway.
      *
@@ -631,6 +737,7 @@ public class ShimmerFrameLayout extends FrameLayout {
     public boolean isAnimationStarted() {
         return mAnimationStarted;
     }
+
 
     /**
      * Translate the mask offset horizontally. Used by the animator.
@@ -645,6 +752,7 @@ public class ShimmerFrameLayout extends FrameLayout {
         invalidate();
     }
 
+
     /**
      * Translate the mask offset vertically. Used by the animator.
      *
@@ -658,8 +766,8 @@ public class ShimmerFrameLayout extends FrameLayout {
         invalidate();
     }
 
-    @Override
-    protected void onAttachedToWindow() {
+
+    @Override protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         if (mGlobalLayoutListener == null) {
             mGlobalLayoutListener = getLayoutListener();
@@ -667,10 +775,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 
+
     private ViewTreeObserver.OnGlobalLayoutListener getLayoutListener() {
         return new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
+            @Override public void onGlobalLayout() {
                 boolean animationStarted = mAnimationStarted;
                 resetAll();
                 if (mAutoStart || animationStarted) {
@@ -680,18 +788,19 @@ public class ShimmerFrameLayout extends FrameLayout {
         };
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
+
+    @Override protected void onDetachedFromWindow() {
         stopShimmerAnimation();
         if (mGlobalLayoutListener != null) {
-            getViewTreeObserver().removeGlobalOnLayoutListener(mGlobalLayoutListener);
+            getViewTreeObserver().removeGlobalOnLayoutListener(
+                    mGlobalLayoutListener);
             mGlobalLayoutListener = null;
         }
         super.onDetachedFromWindow();
     }
 
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
+
+    @Override protected void dispatchDraw(Canvas canvas) {
         if (!mAnimationStarted || getWidth() <= 0 || getHeight() <= 0) {
             super.dispatchDraw(canvas);
             return;
@@ -699,14 +808,17 @@ public class ShimmerFrameLayout extends FrameLayout {
         dispatchDrawUsingBitmap(canvas);
     }
 
+
     private static float clamp(float min, float max, float value) {
         return Math.min(max, Math.max(min, value));
     }
 
+
     /**
      * Draws and masks the children using a Bitmap.
      *
-     * @param canvas Canvas that the masked children will end up being drawn to.
+     * @param canvas Canvas that the masked children will end up being drawn
+     * to.
      */
     private boolean dispatchDrawUsingBitmap(Canvas canvas) {
         Bitmap unmaskBitmap = tryObtainRenderUnmaskBitmap();
@@ -725,12 +837,14 @@ public class ShimmerFrameLayout extends FrameLayout {
         return true;
     }
 
+
     private Bitmap tryObtainRenderUnmaskBitmap() {
         if (mRenderUnmaskBitmap == null) {
             mRenderUnmaskBitmap = tryCreateRenderBitmap();
         }
         return mRenderUnmaskBitmap;
     }
+
 
     private Bitmap tryObtainRenderMaskBitmap() {
         if (mRenderMaskBitmap == null) {
@@ -739,21 +853,24 @@ public class ShimmerFrameLayout extends FrameLayout {
         return mRenderMaskBitmap;
     }
 
+
     private Bitmap tryCreateRenderBitmap() {
         int width = getWidth();
         int height = getHeight();
         try {
             return createBitmapAndGcIfNecessary(width, height);
         } catch (OutOfMemoryError e) {
-            String logMessage = "ShimmerFrameLayout failed to create working bitmap";
-            StringBuilder logMessageStringBuilder = new StringBuilder(logMessage);
+            String logMessage
+                    = "ShimmerFrameLayout failed to create working bitmap";
+            StringBuilder logMessageStringBuilder = new StringBuilder(
+                    logMessage);
             logMessageStringBuilder.append(" (width = ");
             logMessageStringBuilder.append(width);
             logMessageStringBuilder.append(", height = ");
             logMessageStringBuilder.append(height);
             logMessageStringBuilder.append(")\n\n");
-            for (StackTraceElement stackTraceElement :
-                    Thread.currentThread().getStackTrace()) {
+            for (StackTraceElement stackTraceElement : Thread.currentThread()
+                                                             .getStackTrace()) {
                 logMessageStringBuilder.append(stackTraceElement.toString());
                 logMessageStringBuilder.append("\n");
             }
@@ -763,10 +880,12 @@ public class ShimmerFrameLayout extends FrameLayout {
         return null;
     }
 
+
     // Draws the children without any mask.
     private void drawUnmasked(Canvas renderCanvas) {
         super.dispatchDraw(renderCanvas);
     }
+
 
     // Draws the children and masks them on the given Canvas.
     private void drawMasked(Canvas renderCanvas) {
@@ -775,21 +894,22 @@ public class ShimmerFrameLayout extends FrameLayout {
             return;
         }
 
-        renderCanvas.clipRect(
-                mMaskOffsetX,
-                mMaskOffsetY,
+        renderCanvas.clipRect(mMaskOffsetX, mMaskOffsetY,
                 mMaskOffsetX + maskBitmap.getWidth(),
                 mMaskOffsetY + maskBitmap.getHeight());
         super.dispatchDraw(renderCanvas);
 
-        renderCanvas.drawBitmap(maskBitmap, mMaskOffsetX, mMaskOffsetY, mMaskPaint);
+        renderCanvas.drawBitmap(maskBitmap, mMaskOffsetX, mMaskOffsetY,
+                mMaskPaint);
     }
+
 
     private void resetAll() {
         stopShimmerAnimation();
         resetMaskBitmap();
         resetRenderedView();
     }
+
 
     // If a mask bitmap was created, it's recycled and set to null so it will be recreated when needed.
     private void resetMaskBitmap() {
@@ -798,6 +918,7 @@ public class ShimmerFrameLayout extends FrameLayout {
             mMaskBitmap = null;
         }
     }
+
 
     // If a working bitmap was created, it's recycled and set to null so it will be recreated when needed.
     private void resetRenderedView() {
@@ -811,6 +932,7 @@ public class ShimmerFrameLayout extends FrameLayout {
             mRenderMaskBitmap = null;
         }
     }
+
 
     // Return the mask bitmap, creating it if necessary.
     private Bitmap getMaskBitmap() {
@@ -856,26 +978,18 @@ public class ShimmerFrameLayout extends FrameLayout {
                         y2 = 0;
                         break;
                 }
-                gradient =
-                        new LinearGradient(
-                                x1, y1,
-                                x2, y2,
-                                mMask.getGradientColors(),
-                                mMask.getGradientPositions(),
-                                Shader.TileMode.REPEAT);
+                gradient = new LinearGradient(x1, y1, x2, y2,
+                        mMask.getGradientColors(), mMask.getGradientPositions(),
+                        Shader.TileMode.REPEAT);
                 break;
             }
             case RADIAL: {
                 int x = width / 2;
                 int y = height / 2;
-                gradient =
-                        new RadialGradient(
-                                x,
-                                y,
-                                (float) (Math.max(width, height) / Math.sqrt(2)),
-                                mMask.getGradientColors(),
-                                mMask.getGradientPositions(),
-                                Shader.TileMode.REPEAT);
+                gradient = new RadialGradient(x, y,
+                        (float) (Math.max(width, height) / Math.sqrt(2)),
+                        mMask.getGradientColors(), mMask.getGradientPositions(),
+                        Shader.TileMode.REPEAT);
                 break;
             }
         }
@@ -884,10 +998,12 @@ public class ShimmerFrameLayout extends FrameLayout {
         paint.setShader(gradient);
         // We need to increase the rect size to account for the tilt
         int padding = (int) (Math.sqrt(2) * Math.max(width, height)) / 2;
-        canvas.drawRect(-padding, -padding, width + padding, height + padding, paint);
+        canvas.drawRect(-padding, -padding, width + padding, height + padding,
+                paint);
 
         return mMaskBitmap;
     }
+
 
     // Get the shimmer <a href="http://developer.android.com/reference/android/animation/Animator.html">Animator</a>
     // object, which is responsible for driving the highlight mask animation.
@@ -916,28 +1032,33 @@ public class ShimmerFrameLayout extends FrameLayout {
                         break;
                 }
         }
-        mAnimator = ValueAnimator.ofFloat(0.0f, 1.0f + (float) mRepeatDelay / mDuration);
+        mAnimator = ValueAnimator.ofFloat(0.0f,
+                1.0f + (float) mRepeatDelay / mDuration);
         mAnimator.setDuration(mDuration + mRepeatDelay);
         mAnimator.setRepeatCount(mRepeatCount);
         mAnimator.setRepeatMode(mRepeatMode);
         mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float value = Math.max(0.0f, Math.min(1.0f, (Float) animation.getAnimatedValue()));
-                setMaskOffsetX((int) (mMaskTranslation.fromX * (1 - value) + mMaskTranslation.toX * value));
-                setMaskOffsetY((int) (mMaskTranslation.fromY * (1 - value) + mMaskTranslation.toY * value));
+            @Override public void onAnimationUpdate(ValueAnimator animation) {
+                float value = Math.max(0.0f,
+                        Math.min(1.0f, (Float) animation.getAnimatedValue()));
+                setMaskOffsetX((int) (mMaskTranslation.fromX * (1 - value) +
+                        mMaskTranslation.toX * value));
+                setMaskOffsetY((int) (mMaskTranslation.fromY * (1 - value) +
+                        mMaskTranslation.toY * value));
             }
         });
         return mAnimator;
     }
 
+
     /**
      * Creates a bitmap with the given width and height.
      * <p/>
-     * If it fails with an OutOfMemory error, it will force a GC and then try to create the bitmap
+     * If it fails with an OutOfMemory error, it will force a GC and then try to
+     * create the bitmap
      * one more time.
      *
-     * @param width  width of the bitmap
+     * @param width width of the bitmap
      * @param height height of the bitmap
      */
     protected static Bitmap createBitmapAndGcIfNecessary(int width, int height) {

@@ -89,20 +89,24 @@ public class GestureLockView extends View {
      */
     private final int TOUCH_COLOR = Color.parseColor("#409DE5"); // 选中内圆颜色
 
+
     //=================================start=构造方法========================
     public GestureLockView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
+
     public GestureLockView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
+
 
     public GestureLockView(Context context) {
         this(context, null);
     }
     //===============================end=构造方法========================
+
 
     /**
      * 初始化
@@ -117,12 +121,10 @@ public class GestureLockView extends View {
         paintInnerCycle.setAntiAlias(true);
         paintInnerCycle.setStyle(Paint.Style.FILL);
 
-
         paintLines = new Paint();
         paintLines.setAntiAlias(true);
         paintLines.setStyle(Paint.Style.STROKE);
         paintLines.setStrokeWidth(10);
-
     }
 
 
@@ -130,14 +132,14 @@ public class GestureLockView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int specMode = MeasureSpec.getMode(widthMeasureSpec);
         int spceSize = MeasureSpec.getSize(widthMeasureSpec);
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec((int) (spceSize * 0.85 + 0.5f), specMode);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                (int) (spceSize * 0.85 + 0.5f), specMode);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right,
-                            int bottom) {
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         int perWidthSize = getWidth() / 7;
         int perHeightSize = getHeight() / 6;
@@ -155,24 +157,28 @@ public class GestureLockView extends View {
                 }
             }
         }
-
     }
+
 
     public void setSettingMode(boolean isSettingMode) {
         this.isSettingMode = isSettingMode;
     }
 
+
     public void setKey(String key) {
         this.key = key;
     }
+
 
     public void setOnGestureFinishListener(OnGestureFinishListener onGestureFinishListener) {
         this.onGestureFinishListener = onGestureFinishListener;
     }
 
+
     public void setShowLine(boolean isShowLine) {
         this.isShowLine = isShowLine;
     }
+
 
     /**
      * 手势输入完成后回调接口
@@ -184,11 +190,11 @@ public class GestureLockView extends View {
         public void OnGestureFinish(boolean success, String key);
     }
 
+
     /**
      * 监听手势
      */
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    @Override public boolean onTouchEvent(MotionEvent event) {
         if (canContinue) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -217,8 +223,7 @@ public class GestureLockView extends View {
                         if (!result) {
                             timer = new Timer();
                             timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
+                                @Override public void run() {
                                     eventX = eventY = 0;
                                     for (int i = 0; i < 9; i++) {
                                         cycles[i].setOnTouch(false);
@@ -230,12 +235,15 @@ public class GestureLockView extends View {
                                 }
                             }, 1000);
                         }
-                    } else {
+                    }
+                    else {
                         result = true;
                     }
 
-                    if (onGestureFinishListener != null && linedCycles.size() > 0) {
-                        onGestureFinishListener.OnGestureFinish(result, stringBuffer.toString());
+                    if (onGestureFinishListener != null &&
+                            linedCycles.size() > 0) {
+                        onGestureFinishListener.OnGestureFinish(result,
+                                stringBuffer.toString());
                     }
                     break;
             }
@@ -243,6 +251,7 @@ public class GestureLockView extends View {
         }
         return true;
     }
+
 
     //重置绘图
     public void resetView() {
@@ -257,8 +266,7 @@ public class GestureLockView extends View {
     }
 
 
-    @Override
-    protected void onDraw(Canvas canvas) {
+    @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int cycleSize = cycles.length;
         for (int i = 0; i < cycleSize; i++) {
@@ -267,28 +275,33 @@ public class GestureLockView extends View {
                 if (cycles[i].isOnTouch()) {
                     drawInnerCycle(cycles[i], canvas, ERROE_COLOR);
                     drawOutsideCycle(cycles[i], canvas, ERROE_COLOR);
-                } else
+                }
+                else {
                     drawOutsideCycle(cycles[i], canvas, NORMAL_COLOR);
+                }
             }
             //绘画中
             else {
                 if (cycles[i].isOnTouch()) {
                     drawInnerCycle(cycles[i], canvas, TOUCH_COLOR);
                     drawOutsideCycle(cycles[i], canvas, TOUCH_COLOR);
-                } else
+                }
+                else {
                     drawOutsideCycle(cycles[i], canvas, NORMAL_COLOR);
+                }
             }
         }
 
         if (isShowLine) {
             if (!canContinue && !result) {
                 drawLine(canvas, ERROE_COLOR);
-            } else {
+            }
+            else {
                 drawLine(canvas, TOUCH_COLOR);
             }
         }
-
     }
+
 
     /**
      * 画空心圆
@@ -298,6 +311,7 @@ public class GestureLockView extends View {
         canvas.drawCircle(lockCircle.getOx(), lockCircle.getOy(),
                 lockCircle.getR(), paintNormal);
     }
+
 
     /**
      * 画横线
@@ -313,19 +327,25 @@ public class GestureLockView extends View {
                 float y = cycles[index].getOy();
                 if (i == 0) {
                     linePath.moveTo(x, y);
-                } else {
+                }
+                else {
                     linePath.lineTo(x, y);
                 }
             }
             if (canContinue) {
                 linePath.lineTo(eventX, eventY);
-            } else {
-                linePath.lineTo(cycles[linedCycles.get(linedCycles.size() - 1)].getOx(), cycles[linedCycles.get(linedCycles.size() - 1)].getOy());
+            }
+            else {
+                linePath.lineTo(
+                        cycles[linedCycles.get(linedCycles.size() - 1)].getOx(),
+                        cycles[linedCycles.get(
+                                linedCycles.size() - 1)].getOy());
             }
             paintLines.setColor(color);
             canvas.drawPath(linePath, paintLines);
         }
     }
+
 
     /**
      * 画中心圆圆
@@ -335,6 +355,7 @@ public class GestureLockView extends View {
         canvas.drawCircle(myCycle.getOx(), myCycle.getOy(), myCycle.getR() / 3f,
                 paintInnerCycle);
     }
+
 
     /**
      * 每个圆点类
@@ -365,55 +386,68 @@ public class GestureLockView extends View {
          */
         private boolean onTouch;
 
+
         public float getOx() {
             return ox;
         }
+
 
         public void setOx(float ox) {
             this.ox = ox;
         }
 
+
         public float getOy() {
             return oy;
         }
+
 
         public void setOy(float oy) {
             this.oy = oy;
         }
 
+
         public void setOy(int oy) {
             this.oy = oy;
         }
+
 
         public float getR() {
             return r;
         }
 
+
         public void setR(float r) {
             this.r = r;
         }
+
 
         public Integer getNum() {
             return num;
         }
 
+
         public void setNum(Integer num) {
             this.num = num;
         }
+
 
         public boolean isOnTouch() {
             return onTouch;
         }
 
+
         public void setOnTouch(boolean onTouch) {
             this.onTouch = onTouch;
         }
+
 
         /**
          * 判读传入位置是否在圆心内部
          */
         public boolean isPointIn(int x, int y) {
-            double distance = Math.sqrt((x - ox) * (x - ox) + (y - oy) * (y - oy));
+            double distance = Math.sqrt(
+                    (x - ox) * (x - ox) + (y - oy) * (y - oy));
             return distance < r;
         }
     }

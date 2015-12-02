@@ -36,17 +36,18 @@ public class ImageUtil {
             for (x = 0; x < width; x++) {
                 ++n;
                 color = bitmap.getPixel(x, y);
-                totalLum += (0.21f * Color.red(color)
-                        + 0.71f * Color.green(color)
-                        + 0.07f * Color.blue(color));
+                totalLum += (0.21f * Color.red(color) +
+                        0.71f * Color.green(color) + 0.07f * Color.blue(color));
             }
         }
 
         return (totalLum / n) / 256f;
     }
 
+
     private ImageUtil() {
     }
+
 
     public static int calculateSampleSize(int rawHeight, int targetHeight) {
         int sampleSize = 1;

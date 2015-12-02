@@ -29,11 +29,14 @@ public class TickingFloatAnimator {
     private long mStartTime;
     private int mDuration = 1000;
     private Runnable mEndCallback;
-    private TimeInterpolator mInterpolator = new AccelerateDecelerateInterpolator();
+    private TimeInterpolator mInterpolator
+            = new AccelerateDecelerateInterpolator();
+
 
     public static TickingFloatAnimator create() {
         return new TickingFloatAnimator();
     }
+
 
     public TickingFloatAnimator from(float startValue) {
         cancel();
@@ -42,30 +45,36 @@ public class TickingFloatAnimator {
         return this;
     }
 
+
     public TickingFloatAnimator to(float endValue) {
         mEndValue = endValue;
         return this;
     }
+
 
     public TickingFloatAnimator withDuration(int duration) {
         mDuration = Math.max(0, duration);
         return this;
     }
 
+
     public TickingFloatAnimator withInterpolator(TimeInterpolator interpolator) {
         mInterpolator = interpolator;
         return this;
     }
+
 
     public TickingFloatAnimator withEndListener(Runnable listener) {
         mEndCallback = listener;
         return this;
     }
 
+
     public void cancel() {
         mRunning = false;
         mEndValue = mCurrentValue;
     }
+
 
     public boolean tick() {
         if (!mRunning) {
@@ -75,8 +84,10 @@ public class TickingFloatAnimator {
         float t;
         if (mDuration <= 0) {
             t = 1;
-        } else {
-            t = (float) (SystemClock.elapsedRealtime() - mStartTime) * 1f / mDuration;
+        }
+        else {
+            t = (float) (SystemClock.elapsedRealtime() - mStartTime) * 1f /
+                    mDuration;
             if (t >= 1) {
                 t = 1;
             }
@@ -93,10 +104,12 @@ public class TickingFloatAnimator {
         }
 
         // Still running; compute value
-        mCurrentValue = mStartValue + mInterpolator.getInterpolation(t) * (mEndValue - mStartValue);
+        mCurrentValue = mStartValue +
+                mInterpolator.getInterpolation(t) * (mEndValue - mStartValue);
         mRunning = true;
         return true;
     }
+
 
     public void start() {
         mRunning = true;
@@ -105,13 +118,16 @@ public class TickingFloatAnimator {
         tick();
     }
 
+
     public boolean isRunning() {
         return mRunning;
     }
 
+
     public float currentValue() {
         return mCurrentValue;
     }
+
 
     private TickingFloatAnimator() {
     }
