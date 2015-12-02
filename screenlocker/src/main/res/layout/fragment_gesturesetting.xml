@@ -7,11 +7,10 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-
     <FrameLayout
         android:id="@+id/frame_init"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -26,8 +25,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/gesture_setting_note"
             android:textColor="#ffffff"
-            android:textSize="16sp"
-             />
+            android:textSize="16sp"/>
 
         <com.roger.screenlocker.utils.GestureLockView
             android:id="@+id/gestureLockView"
@@ -41,7 +39,7 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <com.roger.screenlocker.utils.RippleView
+            <Button
                 android:layout_marginLeft="40dp"
                 android:id="@+id/btn_gesturereset"
                 android:layout_width="wrap_content"
@@ -51,17 +49,14 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:background="@drawable/button_item_shap_no_corners"
                 android:gravity="center"
-                android:padding="10dp"
-                ripple:alphaFactor="0.7"
-                ripple:rippleColor="#58FAAC"
-                ripple:hover="true" />
+                android:padding="10dp"/>
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"></FrameLayout>
 
-            <com.roger.screenlocker.utils.RippleView
+            <Button
                 android:textColor="@color/color_999999"
                 android:layout_marginRight="40dp"
                 android:id="@+id/btn_gestureset"
@@ -72,10 +67,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:background="@drawable/button_item_shap_no_corners"
                 android:gravity="center"
-                android:padding="10dp"
-                ripple:alphaFactor="0.7"
-                ripple:rippleColor="#58FAAC"
-                ripple:hover="true" />
+                android:padding="10dp"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -3,13 +3,12 @@ package com.roger.screenlocker.fragment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.GestureLockView;
-import com.roger.screenlocker.utils.RippleView;
 
 public class GestureSettingFragment extends BaseFragment
         implements View.OnClickListener {
@@ -19,8 +18,8 @@ public class GestureSettingFragment extends BaseFragment
     private final static int MSG_OPEN_MENU = 2;
     private GestureLockView gestureLockView;
 
-    private RippleView btn_gesturereset;
-    private RippleView btn_gestureset;
+    private Button btn_gesturereset;
+    private Button btn_gestureset;
     private int setGestureTimes = 0;//设置手势图形次数，初始为0
     private String firstkey;//密码
     private String key;//密码
@@ -68,9 +67,9 @@ public class GestureSettingFragment extends BaseFragment
      */
     public void init() {
         mTextView = (TextView) mView.findViewById(R.id.textview);
-        btn_gesturereset = (RippleView) mView.findViewById(
+        btn_gesturereset = (Button) mView.findViewById(
                 R.id.btn_gesturereset);
-        btn_gestureset = (RippleView) mView.findViewById(R.id.btn_gestureset);
+        btn_gestureset = (Button) mView.findViewById(R.id.btn_gestureset);
         btn_gesturereset.setOnClickListener(this);
         btn_gestureset.setOnClickListener(this);
         btn_gestureset.setClickable(false);
