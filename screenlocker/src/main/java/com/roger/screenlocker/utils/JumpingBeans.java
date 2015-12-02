@@ -20,7 +20,6 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.widget.TextView;
-
 import java.lang.ref.WeakReference;
 
 /**

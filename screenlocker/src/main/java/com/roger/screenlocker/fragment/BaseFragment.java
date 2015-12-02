@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.roger.screenlocker.BaseActivity;
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.R;

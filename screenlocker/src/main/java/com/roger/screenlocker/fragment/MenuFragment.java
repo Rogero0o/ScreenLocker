@@ -2,23 +2,18 @@ package com.roger.screenlocker.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.roger.screenlocker.HomeActivity;
-import com.roger.screenlocker.LockScreenService;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.PullSeparateListView;
-import com.roger.screenlocker.utils.Px2DpUntil;
 import com.roger.screenlocker.utils.switchbutton.SwitchButton;
 
 public class MenuFragment extends Fragment {

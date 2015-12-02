@@ -20,9 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.opengl.GLES20;
-
 import com.roger.screenlocker.render.util.BitmapRegionLoader;
-
 import java.nio.FloatBuffer;
 
 class GLPicture {

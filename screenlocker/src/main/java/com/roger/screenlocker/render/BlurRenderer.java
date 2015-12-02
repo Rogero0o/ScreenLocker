@@ -32,14 +32,12 @@ import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
-
 import com.roger.screenlocker.render.util.ArtDetailViewport;
 import com.roger.screenlocker.render.util.BitmapRegionLoader;
 import com.roger.screenlocker.render.util.ImageBlurrer;
 import com.roger.screenlocker.render.util.ImageUtil;
 import com.roger.screenlocker.render.util.MathUtil;
 import com.roger.screenlocker.render.util.TickingFloatAnimator;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 

@@ -1,7 +1,6 @@
 package com.roger.screenlocker.matchview;
 
 import android.util.SparseArray;
-
 import java.util.ArrayList;
 
 public class MatchPath {

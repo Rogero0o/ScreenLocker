@@ -5,7 +5,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-
 import java.util.Random;
 
 public class MatchItem extends Animation {

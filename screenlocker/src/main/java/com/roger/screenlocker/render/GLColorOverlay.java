@@ -18,7 +18,6 @@ package com.roger.screenlocker.render;
 
 import android.graphics.Color;
 import android.opengl.GLES20;
-
 import java.nio.FloatBuffer;
 
 class GLColorOverlay {

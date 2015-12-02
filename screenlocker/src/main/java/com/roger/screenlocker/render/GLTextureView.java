@@ -24,11 +24,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.TextureView;
-
 import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGL11;
 import javax.microedition.khronos.egl.EGLConfig;

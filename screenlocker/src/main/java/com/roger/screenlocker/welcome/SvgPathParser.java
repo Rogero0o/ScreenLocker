@@ -18,7 +18,6 @@ package com.roger.screenlocker.welcome;
 
 import android.graphics.Path;
 import android.graphics.PointF;
-
 import java.text.ParseException;
 
 class SvgPathParser {

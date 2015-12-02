@@ -20,9 +20,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.CompoundButton;
-import com.roger.screenlocker.utils.switchbutton.AnimationController.OnAnimateListener;
-
 import com.roger.screenlocker.R;
+import com.roger.screenlocker.utils.switchbutton.AnimationController.OnAnimateListener;
 
 /**
  * SwitchButton widget which is easy to use

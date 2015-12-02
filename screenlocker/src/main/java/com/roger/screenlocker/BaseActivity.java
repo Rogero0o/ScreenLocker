@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
-
 import com.umeng.analytics.MobclickAgent;
 
 /**

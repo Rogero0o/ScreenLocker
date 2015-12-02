@@ -3,7 +3,6 @@ package com.roger.screenlocker.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.ShimmerFrameLayout;
 

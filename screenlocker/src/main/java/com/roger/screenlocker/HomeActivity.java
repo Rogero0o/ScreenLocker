@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
-
 import com.roger.screenlocker.fragment.AboutFragment;
 import com.roger.screenlocker.fragment.DetialSettingFragment;
 import com.roger.screenlocker.fragment.GestureSettingFragment;
@@ -25,7 +24,6 @@ import com.roger.screenlocker.render.RendererFragment;
 import com.roger.screenlocker.render.util.UriUtil;
 import com.roger.screenlocker.utils.ActionBarDrawerToggle;
 import com.roger.screenlocker.utils.DrawerArrowDrawable;
-
 import java.io.File;
 
 public class HomeActivity extends BaseActivity {
@@ -45,7 +43,7 @@ public class HomeActivity extends BaseActivity {
     private Fragment mDetialSettingFragment;
     private Fragment mGestureSettingFragment;
     private Fragment mAboutFragment;
-    
+
     RendererFragment mRendererFragment;
 
     @Override protected void onCreate(Bundle savedInstanceState) {

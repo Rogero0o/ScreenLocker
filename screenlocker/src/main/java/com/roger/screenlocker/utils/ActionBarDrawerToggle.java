@@ -12,9 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.roger.screenlocker.R;
-
 import java.lang.reflect.Method;
 
 public class ActionBarDrawerToggle

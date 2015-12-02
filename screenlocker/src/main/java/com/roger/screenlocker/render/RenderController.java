@@ -18,7 +18,6 @@ package com.roger.screenlocker.render;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
 import com.roger.screenlocker.render.util.BitmapRegionLoader;
 
 public abstract class RenderController {

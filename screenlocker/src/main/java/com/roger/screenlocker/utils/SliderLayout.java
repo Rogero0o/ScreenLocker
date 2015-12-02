@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
-
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.matchview.MatchTextView;
 

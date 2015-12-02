@@ -25,7 +25,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.roger.screenlocker.fragment.MenuFragment;
@@ -35,7 +34,6 @@ import com.roger.screenlocker.utils.DataString;
 import com.roger.screenlocker.utils.GestureLockView;
 import com.roger.screenlocker.utils.SliderLayout;
 import com.roger.screenlocker.utils.VibratorUtil;
-
 import java.io.File;
 
 @SuppressWarnings("deprecation") public class LockScreenService

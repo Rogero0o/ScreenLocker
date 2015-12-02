@@ -7,7 +7,6 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
-
 import com.roger.screenlocker.render.RendererFragment;
 import com.roger.screenlocker.render.util.UriUtil;
 import com.roger.screenlocker.utils.ShimmerFrameLayout;

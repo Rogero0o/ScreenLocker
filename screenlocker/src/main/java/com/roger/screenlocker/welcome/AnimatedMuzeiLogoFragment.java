@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.OvershootInterpolator;
-
 import com.roger.screenlocker.R;
 
 @SuppressLint("NewApi") public class AnimatedMuzeiLogoFragment

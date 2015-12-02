@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.FrameLayout;
-
 import com.roger.screenlocker.welcome.AnimatedMuzeiLogoFragment;
 
 public class WelcomeActivity extends BaseActivity {

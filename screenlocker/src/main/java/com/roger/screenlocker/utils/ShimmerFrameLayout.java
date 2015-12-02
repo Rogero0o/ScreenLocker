@@ -20,7 +20,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-
 import com.roger.screenlocker.R;
 
 public class ShimmerFrameLayout extends FrameLayout {

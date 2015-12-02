@@ -30,7 +30,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
-
 import java.text.ParseException;
 
 @SuppressLint("NewApi") public class AnimatedMuzeiLogoView extends View {

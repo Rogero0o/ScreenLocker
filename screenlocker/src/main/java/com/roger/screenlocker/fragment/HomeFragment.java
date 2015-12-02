@@ -6,14 +6,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.roger.screenlocker.BaseActivity;
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.LockScreenService;

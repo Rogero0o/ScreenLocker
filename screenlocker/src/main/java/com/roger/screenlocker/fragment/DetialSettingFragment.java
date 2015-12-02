@@ -2,7 +2,6 @@ package com.roger.screenlocker.fragment;
 
 import android.text.TextUtils;
 import android.widget.CompoundButton;
-
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.switchbutton.SwitchButton;

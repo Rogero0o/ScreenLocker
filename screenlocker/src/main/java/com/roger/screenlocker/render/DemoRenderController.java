@@ -21,9 +21,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
-
 import com.roger.screenlocker.render.util.BitmapRegionLoader;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;

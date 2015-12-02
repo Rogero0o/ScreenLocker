@@ -21,7 +21,6 @@ import android.graphics.BitmapRegionDecoder;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.util.Log;
-
 import java.io.IOException;
 import java.io.InputStream;
 

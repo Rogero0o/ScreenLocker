@@ -8,7 +8,6 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-
 import com.roger.screenlocker.R;
 
 public abstract class DrawerArrowDrawable extends Drawable {

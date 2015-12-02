@@ -23,7 +23,6 @@ import android.text.TextPaint;
 import android.text.style.SuperscriptSpan;
 import android.view.View;
 import android.widget.TextView;
-
 import java.lang.ref.WeakReference;
 
 /*package*/ final class JumpingBeansSpan extends SuperscriptSpan
