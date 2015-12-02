@@ -19,6 +19,7 @@ import com.roger.screenlocker.fragment.AboutFragment;
 import com.roger.screenlocker.fragment.DetialSettingFragment;
 import com.roger.screenlocker.fragment.GestureSettingFragment;
 import com.roger.screenlocker.fragment.HomeFragment;
+import com.roger.screenlocker.fragment.InitFragment;
 import com.roger.screenlocker.fragment.MenuFragment;
 import com.roger.screenlocker.render.RendererFragment;
 import com.roger.screenlocker.render.util.UriUtil;
@@ -41,10 +42,12 @@ public class HomeActivity extends BaseActivity {
     private Fragment mContent;
     private Fragment mHomeFragment;
     private Fragment mDetialSettingFragment;
+    private Fragment mInitSettingFragment;
     private Fragment mGestureSettingFragment;
     private Fragment mAboutFragment;
 
     RendererFragment mRendererFragment;
+
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,10 +129,11 @@ public class HomeActivity extends BaseActivity {
                         mContent = mGestureSettingFragment;
                         break;
                     case 3:
-                        Intent i = new Intent();
-                        i.setClass(HomeActivity.this, InitSysActivity.class);
-                        startActivity(i);
-                        return;
+                        if (mInitSettingFragment == null) {
+                            mInitSettingFragment = new InitFragment();
+                        }
+                        mContent = mInitSettingFragment;
+                        break;
                     case 4:
                         Toast.makeText(mActivity,
                                 getResources().getString(R.string.update),
@@ -144,11 +148,10 @@ public class HomeActivity extends BaseActivity {
                     default:
                         return;
                 }
-                if (3 != position) {
-                    getFragmentManager().beginTransaction()
-                                        .replace(R.id.content_frame, mContent)
-                                        .commit();
-                }
+                
+                getFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, mContent)
+                                    .commit();
             }
 
 
@@ -166,13 +169,11 @@ public class HomeActivity extends BaseActivity {
                             .replace(R.id.content_frame, mHomeFragment)
                             .commit();
 
-
         mRendererFragment = RendererFragment.createInstance(
                 UriUtil.getImageAbsolutePath(this, BaseActivity.mUri));
         getFragmentManager().beginTransaction()
                             .add(R.id.frame_init, mRendererFragment)
                             .commit();
-
 
         setTitle(getResources().getString(R.string.app_name));
     }

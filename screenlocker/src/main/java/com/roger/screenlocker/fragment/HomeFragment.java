@@ -85,12 +85,6 @@ public class HomeFragment extends BaseFragment {
                                             Toast.LENGTH_SHORT).show();
                                     mHandler.sendEmptyMessageDelayed(0, 500);
                                 }
-                                else {
-                                    Toast.makeText(mContext,
-                                            getResources().getString(
-                                                    R.string.home_mode_gesture),
-                                            Toast.LENGTH_SHORT).show();
-                                }
                             }
                         }
                     }

@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <com.roger.screenlocker.utils.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            shimmer:duration="5000">
+
+            <TextView
+                android:textColor="#ffffffff"
+                android:id="@+id/text_init1"
+                android:textSize="30sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/initSys"/>
+
+        </com.roger.screenlocker.utils.ShimmerFrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_closesys"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/button_item_shap"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:id="@+id/text_init2"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/closeSyslock"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_item_shap"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_width="fill_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_init3"
+                android:layout_marginTop="10dp"
+                android:layout_centerInParent="true"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice1"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice2"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice3"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice4"/>
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notice5"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+

@@ -19,7 +19,7 @@
     <string name="home_mode_gesture">手势解锁</string>
     <string name="home_blackground">请设置背景图片:</string>
     <string name="home_chose_image">点击选择图片</string>
-    <string name="home_notice">自动跳转手势设置界面</string>
+    <string name="home_notice">未设置手势,自动跳转手势设置界面</string>
 
     <string name="detial_setting_detial">详细设置</string>
     <string name="detial_setting_showmenu">锁屏显示状态栏</string>
