@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.Toast;
 import com.roger.screenlocker.fragment.AboutFragment;
 import com.roger.screenlocker.fragment.DetialSettingFragment;
+import com.roger.screenlocker.fragment.FaceSettingFragment;
 import com.roger.screenlocker.fragment.GestureSettingFragment;
 import com.roger.screenlocker.fragment.HomeFragment;
 import com.roger.screenlocker.fragment.InitFragment;
@@ -45,6 +46,7 @@ public class HomeActivity extends BaseActivity {
     private Fragment mDetialSettingFragment;
     private Fragment mInitSettingFragment;
     private Fragment mGestureSettingFragment;
+    private Fragment mFaceSettingFragment;
     private Fragment mAboutFragment;
 
     RendererFragment mRendererFragment;
@@ -133,17 +135,23 @@ public class HomeActivity extends BaseActivity {
                         mContent = mGestureSettingFragment;
                         break;
                     case 3:
+                        if (mFaceSettingFragment == null) {
+                            mFaceSettingFragment = new FaceSettingFragment();
+                        }
+                        mContent = mFaceSettingFragment;
+                        break;
+                    case 4:
                         if (mInitSettingFragment == null) {
                             mInitSettingFragment = new InitFragment();
                         }
                         mContent = mInitSettingFragment;
                         break;
-                    case 4:
+                    case 5:
                         Toast.makeText(mActivity,
                                 getResources().getString(R.string.update),
                                 Toast.LENGTH_LONG).show();
                         return;
-                    case 5:
+                    case 6:
                         if (mAboutFragment == null) {
                             mAboutFragment = new AboutFragment();
                         }

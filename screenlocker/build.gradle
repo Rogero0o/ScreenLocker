@@ -27,6 +27,10 @@ android {
         }
     }
 
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
 }
 
 dependencies {
@@ -34,4 +38,8 @@ dependencies {
     compile files('libs/viewanimations.jar')
     compile files('libs/umeng-analytics-v5.5.2.jar')
     compile files('libs/umeng-update-v2.6.0.1.jar')
+    compile files('libs/faceppofflinesdk.jar')
+    compile files('libs/faceppsdk.jar')
+    compile files('libs/fastjson-1.1.33.jar')
+    compile files('libs/fastjson-1.1.33-sources.jar')
 }

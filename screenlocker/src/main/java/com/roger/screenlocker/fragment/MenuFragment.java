@@ -45,8 +45,8 @@ public class MenuFragment extends Fragment {
         sListView.setAdapter(new MenuAdapter());
         sListView.setSeparateAll(true);
         sImageId = new int[] { R.drawable.menu_1, R.drawable.menu_2,
-                R.drawable.menu_3, R.drawable.menu_4, R.drawable.menu_5,
-                R.drawable.menu_6 };
+                R.drawable.menu_3, R.drawable.menu_face, R.drawable.menu_4,
+                R.drawable.menu_5, R.drawable.menu_6 };
         mHomeActivity = (HomeActivity) getActivity();
         isOpen = mHomeActivity.localSharedPreferences.getBoolean(
                 mHomeActivity.PREFS_IS_OPEN, false);
