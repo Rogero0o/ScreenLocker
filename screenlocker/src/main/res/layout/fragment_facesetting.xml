@@ -7,12 +7,12 @@
     <FrameLayout
         android:id="@+id/frame_init"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <SurfaceView
         android:id="@+id/camera_preview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <com.roger.screenlocker.utils.faceutil.FaceMask
         android:id="@+id/mask"
@@ -20,16 +20,17 @@
         android:layout_height="wrap_content"></com.roger.screenlocker.utils.faceutil.FaceMask>
 
     <Button
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/btn_gesturereset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
         android:layout_weight="1"
-        android:text="@string/gesture_setting_reset"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:background="@drawable/button_item_shap_no_corners"
         android:gravity="center"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:text="@string/gesture_setting_reset"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

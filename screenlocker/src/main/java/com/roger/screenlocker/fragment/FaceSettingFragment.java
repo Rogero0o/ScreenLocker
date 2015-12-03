@@ -70,8 +70,6 @@ public class FaceSettingFragment extends BaseFragment
         switch (v.getId()) {
             case R.id.btn_gesturereset:
                 break;
-            case R.id.btn_gestureset:
-                break;
         }
     }
 
