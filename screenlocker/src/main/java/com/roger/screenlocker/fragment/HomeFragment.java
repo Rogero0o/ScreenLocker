@@ -64,16 +64,14 @@ public class HomeFragment extends BaseFragment {
                                     LockScreenService.class));
                             if (position == 1) {
                                 BaseActivity.localSharedPreferences.edit()
-                                                                   .putBoolean(
-                                                                           BaseActivity.PREFS_IS_SLIDE_MODE,
-                                                                           true)
+                                                                   .putInt(BaseActivity.PREFS_MODE,
+                                                                           1)
                                                                    .commit();//设置滑动解锁
                             }
                             else if (position == 2) {
                                 BaseActivity.localSharedPreferences.edit()
-                                                                   .putBoolean(
-                                                                           BaseActivity.PREFS_IS_SLIDE_MODE,
-                                                                           false)
+                                                                   .putInt(BaseActivity.PREFS_MODE,
+                                                                           2)
                                                                    .commit();
                                 if (TextUtils.isEmpty(
                                         BaseActivity.localSharedPreferences.getString(
@@ -100,12 +98,9 @@ public class HomeFragment extends BaseFragment {
                 mHomeActivity.PREFS_IS_OPEN, false)) {
             mSpinner.setSelection(0);
         }
-        else if (BaseActivity.localSharedPreferences.getBoolean(
-                BaseActivity.PREFS_IS_SLIDE_MODE, true)) {
-            mSpinner.setSelection(1);
-        }
         else {
-            mSpinner.setSelection(2);
+            mSpinner.setSelection(BaseActivity.localSharedPreferences.getInt(
+                    BaseActivity.PREFS_MODE, 0));
         }
 
         mHandler = new Handler() {

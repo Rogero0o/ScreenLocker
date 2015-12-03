@@ -23,7 +23,7 @@ public class BaseActivity extends Activity {
     public static final String PREFS_SETTING_SHAKE = "setting_shake";
     public static final String PREFS_SETTING_SHOWLINE = "setting_showline";
     public static final String PREFS_GESTURE = "gesture";
-    public static final String PREFS_IS_SLIDE_MODE = "home_mode";//解锁模式
+    public static final String PREFS_MODE = "home_mode";//解锁模式
     public static final String PREFS_IMAGE_PATH = "image_path";//图片地址
 
     public static SharedPreferences localSharedPreferences;

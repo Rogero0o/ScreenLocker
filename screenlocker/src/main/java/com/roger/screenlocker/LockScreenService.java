@@ -171,12 +171,13 @@ import java.io.File;
             mGestureLockView.setShowLine(true);
         }
 
-        if (BaseActivity.localSharedPreferences.getBoolean(
-                BaseActivity.PREFS_IS_SLIDE_MODE, true)) {//是否为滑动解锁
+        if (BaseActivity.localSharedPreferences.getInt(BaseActivity.PREFS_MODE,
+                0) == 1) {//是否为滑动解锁
             mSliderLayout.setVisibility(View.VISIBLE);
             mGestureLockView.setVisibility(View.GONE);
         }
-        else {
+        else if (BaseActivity.localSharedPreferences.getInt(
+                BaseActivity.PREFS_MODE, 0) == 2) {
             mSliderLayout.setVisibility(View.GONE);
             mGestureLockView.setVisibility(View.VISIBLE);
         }
