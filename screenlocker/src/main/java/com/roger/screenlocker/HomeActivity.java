@@ -99,17 +99,14 @@ public class HomeActivity extends BaseActivity {
 
             public void onDrawerClosed(View view) {
 
-                if (3 != position) {
-
-                    if (position == oldPosition) {
-                        return;
-                    }
-                    else {
-                        oldPosition = position;
-                    }
-
-                    setTitle(sNewsList[position]);
+                if (position == oldPosition) {
+                    return;
                 }
+                else {
+                    oldPosition = position;
+                }
+
+                setTitle(sNewsList[position]);
 
                 invalidateOptionsMenu(); // creates call to
 

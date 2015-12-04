@@ -7,30 +7,48 @@
     <FrameLayout
         android:id="@+id/frame_init"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <SurfaceView
         android:id="@+id/camera_preview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <com.roger.screenlocker.utils.faceutil.FaceMask
         android:id="@+id/mask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></com.roger.screenlocker.utils.faceutil.FaceMask>
 
-    <Button
-        android:id="@+id/btn_gesturereset"
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/btn_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:layout_weight="1"
-        android:background="@drawable/button_item_shap_no_corners"
+        android:background="@drawable/check"
         android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/gesture_setting_reset"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/text_saved"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:textColor="#ffffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已保存"/>
+
+    <TextView
+        android:textColor="#ffffffff"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请出现在镜头中\n系统将自动检测"/>
 
 </RelativeLayout>
