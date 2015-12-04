@@ -66,4 +66,18 @@
 
     </com.roger.screenlocker.utils.SliderLayout>
 
+
+
+    <SurfaceView
+        android:id="@+id/camera_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.roger.screenlocker.utils.faceutil.FaceMask
+        android:id="@+id/mask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></com.roger.screenlocker.utils.faceutil.FaceMask>
+
+
+
 </RelativeLayout>

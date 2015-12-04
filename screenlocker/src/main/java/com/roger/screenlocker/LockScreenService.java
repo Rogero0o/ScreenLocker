@@ -16,17 +16,31 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
+import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.IBinder;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.faceplusplus.api.FaceDetecter;
+import com.roger.screenlocker.fragment.FaceSettingFragment;
 import com.roger.screenlocker.fragment.MenuFragment;
 import com.roger.screenlocker.render.MissView;
 import com.roger.screenlocker.render.util.UriUtil;
@@ -34,14 +48,29 @@ import com.roger.screenlocker.utils.DataString;
 import com.roger.screenlocker.utils.GestureLockView;
 import com.roger.screenlocker.utils.SliderLayout;
 import com.roger.screenlocker.utils.VibratorUtil;
+import com.roger.screenlocker.utils.faceutil.BitmapUtil;
+import com.roger.screenlocker.utils.faceutil.FaceCompareRequest;
+import com.roger.screenlocker.utils.faceutil.FaceMask;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 
-@SuppressWarnings("deprecation") public class LockScreenService
-        extends Service {
+@SuppressWarnings("deprecation") public class LockScreenService extends Service
+        implements SurfaceHolder.Callback, Camera.PreviewCallback {
     private KeyguardManager keyguardManager = null;
     private KeyguardManager.KeyguardLock keyguardLock = null;
     private boolean isShow;//标示是否已经显示
 
+    SurfaceView camerasurface = null;
+    FaceMask mask = null;
+    Camera camera = null;
+    HandlerThread handleThread = null;
+    Handler detectHandler = null;
+    private int width = 320;
+    private int height = 240;
+    FaceDetecter facedetecter = null;
+    private View mView;
+    private FaceCompareRequest request;
 
     @Override public IBinder onBind(Intent intent) {
         return null;
@@ -210,6 +239,140 @@ import java.io.File;
                         }
                     }
                 });
+
+        initFace(mFloatView);
+        mView = mFloatView;
         windowManager.addView(mFloatView, wmParams);
+        startFace();
+    }
+
+
+    private void initFace(View mView) {
+        camerasurface = (SurfaceView) mView.findViewById(R.id.camera_preview);
+        mask = (FaceMask) mView.findViewById(R.id.mask);
+        RelativeLayout.LayoutParams para = new RelativeLayout.LayoutParams(480,
+                800);
+        handleThread = new HandlerThread("dt");
+        handleThread.start();
+        detectHandler = new Handler(handleThread.getLooper());
+        para.addRule(RelativeLayout.CENTER_IN_PARENT);
+        camerasurface.setLayoutParams(para);
+        mask.setLayoutParams(para);
+        camerasurface.getHolder().addCallback(this);
+        camerasurface.setKeepScreenOn(true);
+
+        facedetecter = new FaceDetecter();
+        if (!facedetecter.init(this, "af622c0acdccd2d794f90243cb033465")) {
+            Log.e("diff", "有错误 ");
+        }
+        facedetecter.setTrackingMode(true);
+    }
+
+
+    private void startFace() {
+        camera = Camera.open(1);
+        Camera.Parameters para = camera.getParameters();
+        para.setPreviewSize(width, height);
+        camera.setParameters(para);
+    }
+
+
+    private void stopFace() {
+        if (camera != null) {
+            camera.setPreviewCallback(null);
+            camera.stopPreview();
+            camera.release();
+            this.onDestroy();
+        }
+    }
+
+
+    @Override public void surfaceCreated(SurfaceHolder holder) {
+    }
+
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+        try {
+            camera.setPreviewDisplay(holder);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        camera.setDisplayOrientation(90);
+        camera.startPreview();
+        camera.setPreviewCallback(this);
+    }
+
+
+    @Override public void surfaceDestroyed(SurfaceHolder holder) {
+
+    }
+
+
+    @Override public void onPreviewFrame(final byte[] data, Camera camera) {
+        camera.setPreviewCallback(null);
+        detectHandler.post(new Runnable() {
+
+            @Override public void run() {
+                byte[] ori = new byte[width * height];
+                int is = 0;
+                for (int x = width - 1; x >= 0; x--) {
+
+                    for (int y = height - 1; y >= 0; y--) {
+
+                        ori[is] = data[y * width + x];
+
+                        is++;
+                    }
+                }
+
+                final FaceDetecter.Face[] faceinfo = facedetecter.findFaces(ori,
+                        height, width);
+
+                mView.post(new Runnable() {
+
+                    @Override public void run() {
+                        mask.setFaceInfo(faceinfo);
+                    }
+                });
+
+                Log.i("Tag", "faceinfo:" +
+                        (faceinfo == null ? null : data.length + ""));
+                if (faceinfo != null && faceinfo.length >= 1) {
+
+                    // Convert to JPG
+                    Camera.Size previewSize
+                            = LockScreenService.this.camera.getParameters()
+                                                           .getPreviewSize();
+                    YuvImage yuvimage = new YuvImage(data, ImageFormat.NV21,
+                            previewSize.width, previewSize.height, null);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width,
+                            previewSize.height), 80, baos);
+                    byte[] jdata = baos.toByteArray();
+
+                    // Convert to Bitmap
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(jdata, 0,
+                            jdata.length);
+
+                    if (bitmap == null) {
+                        Toast.makeText(LockScreenService.this, "未检测到人脸.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        String faceImageBase64Str = BitmapUtil.bitmaptoString(
+                                bitmap);
+                        BaseActivity.localSharedPreferences.edit()
+                                                           .putString(
+                                                                   HomeActivity.PREFS_FACE_STRING,
+                                                                   faceImageBase64Str)
+                                                           .commit();
+                    }
+                }
+                LockScreenService.this.camera.setPreviewCallback(
+                        LockScreenService.this);
+            }
+        });
     }
 }
