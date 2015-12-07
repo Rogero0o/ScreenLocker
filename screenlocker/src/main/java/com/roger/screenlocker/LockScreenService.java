@@ -29,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.alibaba.fastjson.JSON;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.faceplusplus.api.FaceDetecter;
@@ -44,9 +43,7 @@ import com.roger.screenlocker.utils.GestureLockView;
 import com.roger.screenlocker.utils.SliderLayout;
 import com.roger.screenlocker.utils.VibratorUtil;
 import com.roger.screenlocker.utils.faceutil.BitmapUtil;
-import com.roger.screenlocker.utils.faceutil.Client;
 import com.roger.screenlocker.utils.faceutil.FaceCompareRequest;
-import com.roger.screenlocker.utils.faceutil.FaceCompareResult;
 import com.roger.screenlocker.utils.faceutil.FaceMask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -70,8 +67,6 @@ import org.json.JSONObject;
     private int height = 240;
     FaceDetecter facedetecter = null;
     private View mView;
-    private FaceCompareRequest request;
-    private String requestStr;
 
 
     @Override public IBinder onBind(Intent intent) {
@@ -287,9 +282,8 @@ import org.json.JSONObject;
         if (!facedetecter.init(this, "af622c0acdccd2d794f90243cb033465")) {
             Log.e("diff", "有错误 ");
         }
-        facedetecter.setTrackingMode(true);
 
-        request = new FaceCompareRequest();
+        facedetecter.setTrackingMode(true);
 
         myHandler = new Handler() {
             @Override public void handleMessage(Message msg) {
