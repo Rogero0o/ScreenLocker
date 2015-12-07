@@ -53,8 +53,10 @@ public class HomeFragment extends BaseFragment {
                                                                 .commit();
                             mHomeActivity.stopService(new Intent(mHomeActivity,
                                     LockScreenService.class));
+                            MenuFragment.isOpen = false;
                         }
                         else {//选择方式，则打开service
+                            MenuFragment.isOpen = true;
                             mHomeActivity.localSharedPreferences.edit()
                                                                 .putBoolean(
                                                                         mHomeActivity.PREFS_IS_OPEN,

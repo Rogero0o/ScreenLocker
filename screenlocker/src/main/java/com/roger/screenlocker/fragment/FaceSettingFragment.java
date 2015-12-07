@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.faceplusplus.api.FaceDetecter;
+import com.roger.screenlocker.MrApplication;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.faceutil.BitmapUtil;
 import com.roger.screenlocker.utils.faceutil.FaceMask;
@@ -180,28 +181,25 @@ public class FaceSettingFragment extends BaseFragment
                     yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width,
                             previewSize.height), 80, baos);
                     byte[] jdata = baos.toByteArray();
-
                     // Convert to Bitmap
                     Bitmap bitmap = BitmapFactory.decodeByteArray(jdata, 0,
                             jdata.length);
-
+                    bitmap = BitmapUtil.rotateBitMap(bitmap, 270);
                     if (bitmap == null) {
                         Toast.makeText(getActivity(), "未检测到人脸.",
                                 Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        String faceImageBase64Str = BitmapUtil.bitmaptoString(
-                                bitmap);
-                        Log.i("Tag",
-                                "strlength:" + faceImageBase64Str.length());
+                        isSaveed = true;
+                        BitmapUtil.onlySaveBitmap(MrApplication.facePath,
+                                bitmap);//先保存
                         mHomeActivity.localSharedPreferences.edit()
                                                             .putString(
                                                                     mHomeActivity.PREFS_FACE_STRING,
-                                                                    faceImageBase64Str)
+                                                                    "true")
                                                             .commit();
                         Toast.makeText(getActivity(), "保存成功.",
                                 Toast.LENGTH_SHORT).show();
-                        isSaveed = true;
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override public void run() {

@@ -152,6 +152,18 @@ public class BitmapUtil {
     }
 
 
+    public static Bitmap rotateBitMap(Bitmap bp, int digree) {
+        if (digree != 0) {
+            // 旋转图片
+            Matrix m = new Matrix();
+            m.postRotate(digree);
+            bp = Bitmap.createBitmap(bp, 0, 0, bp.getWidth(), bp.getHeight(), m,
+                    true);
+        }
+        return bp;
+    }
+
+
     private Bitmap comp(Bitmap image) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

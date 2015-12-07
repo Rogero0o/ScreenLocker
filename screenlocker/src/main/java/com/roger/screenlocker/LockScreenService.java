@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
@@ -32,6 +33,9 @@ import com.alibaba.fastjson.JSON;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.faceplusplus.api.FaceDetecter;
+import com.facepp.error.FaceppParseException;
+import com.facepp.http.HttpRequests;
+import com.facepp.http.PostParameters;
 import com.roger.screenlocker.fragment.MenuFragment;
 import com.roger.screenlocker.render.MissView;
 import com.roger.screenlocker.render.util.UriUtil;
@@ -47,6 +51,8 @@ import com.roger.screenlocker.utils.faceutil.FaceMask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @SuppressWarnings("deprecation") public class LockScreenService extends Service
         implements SurfaceHolder.Callback, Camera.PreviewCallback {
@@ -113,7 +119,10 @@ import java.io.IOException;
                 keyguardLock.disableKeyguard();
                 if (BaseActivity.localSharedPreferences.getBoolean(
                         BaseActivity.PREFS_IS_OPEN, false)) {
-                    if (!isShow) CreateFloatView();
+                    if (!isShow) {
+                        Log.i("Tag", "CreateFloatView");
+                        CreateFloatView();
+                    }
                 }
             }
         }
@@ -319,7 +328,6 @@ import java.io.IOException;
             camera.setPreviewCallback(null);
             camera.stopPreview();
             camera.release();
-            this.onDestroy();
         }
     }
 
@@ -344,6 +352,13 @@ import java.io.IOException;
 
     @Override public void surfaceDestroyed(SurfaceHolder holder) {
 
+    }
+
+
+    public byte[] Bitmap2Bytes(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        return baos.toByteArray();
     }
 
 
@@ -376,7 +391,6 @@ import java.io.IOException;
 
                 if (faceinfo != null && faceinfo.length >= 1 && isShow) {
 
-                    // Convert to JPG
                     Camera.Size previewSize
                             = LockScreenService.this.camera.getParameters()
                                                            .getPreviewSize();
@@ -385,63 +399,58 @@ import java.io.IOException;
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width,
                             previewSize.height), 80, baos);
-                    byte[] jdata = baos.toByteArray();
+                    byte[] array2 = baos.toByteArray();
 
-                    // Convert to Bitmap
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(jdata, 0,
-                            jdata.length);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(array2, 0,
+                            array2.length);
+                    bitmap = BitmapUtil.rotateBitMap(bitmap, 270);
 
+                    array2 = Bitmap2Bytes(bitmap);
                     if (bitmap == null) {
                         Toast.makeText(LockScreenService.this, "未检测到人脸.",
                                 Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        String faceImageBase64Str = BitmapUtil.bitmaptoString(
-                                bitmap);
-                        String faceImageBase64Str2
-                                = BaseActivity.localSharedPreferences.getString(
-                                HomeActivity.PREFS_FACE_STRING, null);
+                        HttpRequests httpRequests = new HttpRequests(
+                                "af622c0acdccd2d794f90243cb033465",
+                                "ysY5joJFm4lqDONwHle36_9YSGj03iAn", true, true);
 
-                        Log.i("Tag", "faceImageBase64Str:" +
-                                faceImageBase64Str.length() + ":" +
-                                faceImageBase64Str2.length());
-                        if (TextUtils.isEmpty(faceImageBase64Str) ||
-                                TextUtils.isEmpty(faceImageBase64Str2)) {
-                            Toast.makeText(LockScreenService.this,
-                                    "人脸识别错误,请重试.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        request.setFaceimage1(faceImageBase64Str);
-                        request.setFaceimage2(faceImageBase64Str2);
-                        requestStr = JSON.toJSONString(request);
+                        try {
+                            byte[] array1 = imageProcessing(
+                                    MrApplication.facePath);
+                            JSONObject result1 = httpRequests.detectionDetect(
+                                    new PostParameters().setImg(array1));
+                            String face1 = result1.getJSONArray("face")
+                                                  .getJSONObject(0)
+                                                  .getString("face_id");
+                            JSONObject result2 = httpRequests.detectionDetect(
+                                    new PostParameters().setImg(array2));
+                            String face2 = result2.getJSONArray("face")
+                                                  .getJSONObject(0)
+                                                  .getString("face_id");
+                            JSONObject Compare
+                                    = httpRequests.recognitionCompare(
+                                    new PostParameters().setFaceId1(face1)
+                                                        .setFaceId2(face2));
+                            final Double smilar = Double.valueOf(
+                                    Compare.getString("similarity"));
 
-                        if (!isComparing) {
-                            new Thread() {
-
-                                public void run() {
-                                    isComparing = true;
-                                    Client client = new Client();
-                                    try {
-                                        String value = client.PostMethod(
-                                                FaceCompareUrl, requestStr);
-                                        FaceCompareResult f = JSON.parseObject(
-                                                value, FaceCompareResult.class);
-                                        Log.i("Tag", "f:" + f.getSimilar());
-                                        if (f.getSimilar() > 0 &&
-                                                f.getSimilar() >= 0.99f) {
-                                            myHandler.sendEmptyMessage(0);
-                                        }
-                                        else {
-                                            myHandler.sendEmptyMessage(1);
-                                        }
-                                    } catch (IOException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    } finally {
-                                        isComparing = false;
-                                    }
-                                }
-                            }.start();
+                            Log.i("Tag", "smilar:" + smilar);
+                            if (smilar > 0 && smilar >= 80d) {
+                                myHandler.sendEmptyMessage(0);
+                            }
+                            else {
+                                myHandler.sendEmptyMessage(1);
+                            }
+                        } catch (NumberFormatException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (FaceppParseException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -455,4 +464,30 @@ import java.io.IOException;
     private boolean isComparing;
 
     private Handler myHandler;
+    private Bitmap img;
+
+
+    private byte[] imageProcessing(final String Path) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        img = BitmapFactory.decodeFile(Path, options);
+        options.inSampleSize = Math.max(1, (int) Math.ceil(
+                Math.max((double) options.outWidth / 1024f,
+                        (double) options.outHeight / 1024f)));
+
+        options.inJustDecodeBounds = false;
+        img = BitmapFactory.decodeFile(Path, options);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        float scale = Math.min(1,
+                Math.min(600f / img.getWidth(), 600f / img.getHeight()));
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+
+        Bitmap imgSmall = Bitmap.createBitmap(img, 0, 0, img.getWidth(),
+                img.getHeight(), matrix, false);
+
+        imgSmall.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        byte[] array = stream.toByteArray();
+        return array;
+    }
 }

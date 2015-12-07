@@ -16,8 +16,12 @@ import java.io.OutputStream;
  */
 public class MrApplication extends Application {
     public static final String PREFS = "locker_pref";
-    private final String DIR_NAME = "Mrlocker_img";
+    public static final String DIR_NAME = "Mrlocker_img";
+    public static final String FACEIMG_NAME = "Face_img.jpeg";
     private final String IMAGE_NAME = "night2.jpg";
+    public static String facePath = MrApplication.getSDPath() + "/" +
+            MrApplication.DIR_NAME + "/" +
+            MrApplication.FACEIMG_NAME;
 
 
     @Override public void onCreate() {
@@ -77,7 +81,7 @@ public class MrApplication extends Application {
     }
 
 
-    public String getSDPath() {
+    public static String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
                                          .equals(android.os.Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
