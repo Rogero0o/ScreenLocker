@@ -294,15 +294,10 @@ import org.json.JSONObject;
         myHandler = new Handler() {
             @Override public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                Log.i("Tag", "msg.what = " + msg.what);
                 if (msg.what == 0) {
                     stopFace();
                     mWindowManager.removeView(finalFloatView);
                     isShow = false;
-                }
-                else if (msg.what == 1) {
-                    Toast.makeText(getApplication(), "匹配失败,请重试.",
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -436,9 +431,6 @@ import org.json.JSONObject;
                             if (smilar > 0 && smilar >= 80d) {
                                 myHandler.sendEmptyMessage(0);
                             }
-                            else {
-                                myHandler.sendEmptyMessage(1);
-                            }
                         } catch (NumberFormatException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
@@ -458,7 +450,6 @@ import org.json.JSONObject;
     }
 
 
-    private boolean isComparing;
 
     private Handler myHandler;
     private Bitmap img;
