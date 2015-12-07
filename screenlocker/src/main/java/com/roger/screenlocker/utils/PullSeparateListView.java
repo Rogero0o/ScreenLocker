@@ -370,7 +370,7 @@ public class PullSeparateListView extends ListView {
                 View lastView = getChildAt(visibleItemCount - 1);
                 if (lastView != null &&
                         (lastView.getBottom() + getPaddingBottom()) <=
-                                getHeight() && getCount() > getChildCount()) {
+                                getHeight() && getCount() >= getChildCount()) {
                     downPosition = originDownPosition - firstVisibleItem;
                     reachBottom = true;
                 }

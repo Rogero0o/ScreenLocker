@@ -57,9 +57,6 @@ import org.json.JSONObject;
 @SuppressWarnings("deprecation") public class LockScreenService extends Service
         implements SurfaceHolder.Callback, Camera.PreviewCallback {
 
-    public static String FaceCompareUrl
-            = "http://api.facecore.cn/api/facedetectandcompare?appkey=c34e7a2059d771d00b9300de725029f7";
-
     private KeyguardManager keyguardManager = null;
     private KeyguardManager.KeyguardLock keyguardLock = null;
     private boolean isShow;//标示是否已经显示
