@@ -21,7 +21,7 @@ public class HomeFragment extends BaseFragment {
     private Spinner mSpinner;
     private Handler mHandler;
 
-    final String arr[] = new String[] { "无", "滑动解锁", "手势解锁" };
+    final String arr[] = new String[] { "无", "滑动解锁", "手势解锁", "人脸识别" };
 
 
     @Override int getLayoutId() {
@@ -81,7 +81,23 @@ public class HomeFragment extends BaseFragment {
                                             getResources().getString(
                                                     R.string.home_notice),
                                             Toast.LENGTH_SHORT).show();
-                                    mHandler.sendEmptyMessageDelayed(0, 500);
+                                    mHandler.sendEmptyMessageDelayed(2, 500);
+                                }
+                            }
+                            else if (position == 3) {
+                                BaseActivity.localSharedPreferences.edit()
+                                                                   .putInt(BaseActivity.PREFS_MODE,
+                                                                           3)
+                                                                   .commit();
+                                if (TextUtils.isEmpty(
+                                        BaseActivity.localSharedPreferences.getString(
+                                                HomeActivity.PREFS_FACE_STRING,
+                                                ""))) {
+                                    Toast.makeText(mContext,
+                                            getResources().getString(
+                                                    R.string.home_face_notice),
+                                            Toast.LENGTH_SHORT).show();
+                                    mHandler.sendEmptyMessageDelayed(3, 500);
                                 }
                             }
                         }
@@ -106,7 +122,7 @@ public class HomeFragment extends BaseFragment {
         mHandler = new Handler() {
             @Override public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                toGesture();
+                toGesture(msg.what);
             }
         };
 
@@ -146,12 +162,17 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    private void toGesture() {
+    private void toGesture(int i) {
         if (getActivity() == null) return;
         if (getActivity() instanceof HomeActivity) {
             HomeActivity ra = (HomeActivity) getActivity();
-            ra.position = 2;
-            ra.toGesture();
+            ra.position = i;
+            if (i == 2) {
+                ra.toGesture();
+            }
+            else {
+                ra.toFace();
+            }
         }
     }
 }

@@ -168,8 +168,6 @@ public class FaceSettingFragment extends BaseFragment
                     }
                 });
 
-                Log.i("Tag", "faceinfo:" +
-                        (faceinfo == null ? null : data.length + ""));
                 if (faceinfo != null && faceinfo.length >= 1 && !isSaveed) {
 
                     // Convert to JPG
@@ -194,6 +192,8 @@ public class FaceSettingFragment extends BaseFragment
                     else {
                         String faceImageBase64Str = BitmapUtil.bitmaptoString(
                                 bitmap);
+                        Log.i("Tag",
+                                "strlength:" + faceImageBase64Str.length());
                         mHomeActivity.localSharedPreferences.edit()
                                                             .putString(
                                                                     mHomeActivity.PREFS_FACE_STRING,

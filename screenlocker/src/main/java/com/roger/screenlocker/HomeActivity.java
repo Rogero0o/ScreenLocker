@@ -201,6 +201,17 @@ public class HomeActivity extends BaseActivity {
                             .replace(R.id.content_frame,
                                     mGestureSettingFragment)
                             .commit();
+        oldPosition = 2;
+    }
+
+    public void toFace() {
+        if (mFaceSettingFragment == null) {
+            mFaceSettingFragment = new FaceSettingFragment();
+        }
+        getFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame,
+                                    mFaceSettingFragment)
+                            .commit();
         oldPosition = 3;
     }
 

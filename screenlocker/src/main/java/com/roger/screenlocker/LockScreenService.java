@@ -1,13 +1,3 @@
-/**
- * ʹ�÷�ʽ��
- * 1����manifest��ע��Ȩ�ޣ�<uses-permission android:name="android.permission.DISABLE_KEYGUARD"
- * />
- * 2����manifest��ע��˷���
- * 3����toMainIntent���ó�Ҫ��ת���Ľ��棨��Ctrl+F����"#"�ַ�ɿ��ٶ�λ��
- * 4����������Main�������˷���startService(new Intent(Main.this,
- * myService.class));
- **/
-
 package com.roger.screenlocker;
 
 import android.app.KeyguardManager;
@@ -27,6 +17,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -37,10 +28,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.alibaba.fastjson.JSON;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.faceplusplus.api.FaceDetecter;
-import com.roger.screenlocker.fragment.FaceSettingFragment;
 import com.roger.screenlocker.fragment.MenuFragment;
 import com.roger.screenlocker.render.MissView;
 import com.roger.screenlocker.render.util.UriUtil;
@@ -49,7 +40,9 @@ import com.roger.screenlocker.utils.GestureLockView;
 import com.roger.screenlocker.utils.SliderLayout;
 import com.roger.screenlocker.utils.VibratorUtil;
 import com.roger.screenlocker.utils.faceutil.BitmapUtil;
+import com.roger.screenlocker.utils.faceutil.Client;
 import com.roger.screenlocker.utils.faceutil.FaceCompareRequest;
+import com.roger.screenlocker.utils.faceutil.FaceCompareResult;
 import com.roger.screenlocker.utils.faceutil.FaceMask;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -57,6 +50,10 @@ import java.io.IOException;
 
 @SuppressWarnings("deprecation") public class LockScreenService extends Service
         implements SurfaceHolder.Callback, Camera.PreviewCallback {
+
+    public static String FaceCompareUrl
+            = "http://api.facecore.cn/api/facedetectandcompare?appkey=c34e7a2059d771d00b9300de725029f7";
+
     private KeyguardManager keyguardManager = null;
     private KeyguardManager.KeyguardLock keyguardLock = null;
     private boolean isShow;//标示是否已经显示
@@ -71,6 +68,8 @@ import java.io.IOException;
     FaceDetecter facedetecter = null;
     private View mView;
     private FaceCompareRequest request;
+    private String requestStr;
+
 
     @Override public IBinder onBind(Intent intent) {
         return null;
@@ -122,6 +121,9 @@ import java.io.IOException;
 
     public static final int FLAG_LAYOUT_IN_SCREEN = 0x00000100;
 
+    private View finalFloatView;
+    private WindowManager mWindowManager;
+
 
     public void CreateFloatView() {
         final View mFloatView = View.inflate(getApplicationContext(),
@@ -129,6 +131,9 @@ import java.io.IOException;
         final WindowManager windowManager
                 = (WindowManager) getApplicationContext().getSystemService(
                 Context.WINDOW_SERVICE);
+
+        finalFloatView = mFloatView;
+        mWindowManager = windowManager;
         WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
         wmParams.width = -1;
         wmParams.height = -1;
@@ -200,15 +205,28 @@ import java.io.IOException;
             mGestureLockView.setShowLine(true);
         }
 
+        initFace(mFloatView);
+
         if (BaseActivity.localSharedPreferences.getInt(BaseActivity.PREFS_MODE,
                 0) == 1) {//是否为滑动解锁
             mSliderLayout.setVisibility(View.VISIBLE);
             mGestureLockView.setVisibility(View.GONE);
+            camerasurface.setVisibility(View.GONE);
+            mask.setVisibility(View.GONE);
         }
         else if (BaseActivity.localSharedPreferences.getInt(
                 BaseActivity.PREFS_MODE, 0) == 2) {
             mSliderLayout.setVisibility(View.GONE);
             mGestureLockView.setVisibility(View.VISIBLE);
+            camerasurface.setVisibility(View.GONE);
+            mask.setVisibility(View.GONE);
+        }
+        else if (BaseActivity.localSharedPreferences.getInt(
+                BaseActivity.PREFS_MODE, 0) == 3) {
+            mSliderLayout.setVisibility(View.GONE);
+            mGestureLockView.setVisibility(View.GONE);
+            camerasurface.setVisibility(View.VISIBLE);
+            mask.setVisibility(View.VISIBLE);
         }
 
         if (TextUtils.isEmpty(key)) {//手势为空则换为滑动解锁
@@ -239,8 +257,6 @@ import java.io.IOException;
                         }
                     }
                 });
-
-        initFace(mFloatView);
         mView = mFloatView;
         windowManager.addView(mFloatView, wmParams);
         startFace();
@@ -266,14 +282,35 @@ import java.io.IOException;
             Log.e("diff", "有错误 ");
         }
         facedetecter.setTrackingMode(true);
+
+        request = new FaceCompareRequest();
+
+        myHandler = new Handler() {
+            @Override public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Log.i("Tag", "msg.what = " + msg.what);
+                if (msg.what == 0) {
+                    stopFace();
+                    mWindowManager.removeView(finalFloatView);
+                    isShow = false;
+                }
+                else if (msg.what == 1) {
+                    Toast.makeText(getApplication(), "匹配失败,请重试.",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
 
 
     private void startFace() {
-        camera = Camera.open(1);
-        Camera.Parameters para = camera.getParameters();
-        para.setPreviewSize(width, height);
-        camera.setParameters(para);
+        if (BaseActivity.localSharedPreferences.getInt(BaseActivity.PREFS_MODE,
+                0) == 3) {
+            camera = Camera.open(1);
+            Camera.Parameters para = camera.getParameters();
+            para.setPreviewSize(width, height);
+            camera.setParameters(para);
+        }
     }
 
 
@@ -337,9 +374,7 @@ import java.io.IOException;
                     }
                 });
 
-                Log.i("Tag", "faceinfo:" +
-                        (faceinfo == null ? null : data.length + ""));
-                if (faceinfo != null && faceinfo.length >= 1) {
+                if (faceinfo != null && faceinfo.length >= 1 && isShow) {
 
                     // Convert to JPG
                     Camera.Size previewSize
@@ -363,11 +398,51 @@ import java.io.IOException;
                     else {
                         String faceImageBase64Str = BitmapUtil.bitmaptoString(
                                 bitmap);
-                        BaseActivity.localSharedPreferences.edit()
-                                                           .putString(
-                                                                   HomeActivity.PREFS_FACE_STRING,
-                                                                   faceImageBase64Str)
-                                                           .commit();
+                        String faceImageBase64Str2
+                                = BaseActivity.localSharedPreferences.getString(
+                                HomeActivity.PREFS_FACE_STRING, null);
+
+                        Log.i("Tag", "faceImageBase64Str:" +
+                                faceImageBase64Str.length() + ":" +
+                                faceImageBase64Str2.length());
+                        if (TextUtils.isEmpty(faceImageBase64Str) ||
+                                TextUtils.isEmpty(faceImageBase64Str2)) {
+                            Toast.makeText(LockScreenService.this,
+                                    "人脸识别错误,请重试.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        request.setFaceimage1(faceImageBase64Str);
+                        request.setFaceimage2(faceImageBase64Str2);
+                        requestStr = JSON.toJSONString(request);
+
+                        if (!isComparing) {
+                            new Thread() {
+
+                                public void run() {
+                                    isComparing = true;
+                                    Client client = new Client();
+                                    try {
+                                        String value = client.PostMethod(
+                                                FaceCompareUrl, requestStr);
+                                        FaceCompareResult f = JSON.parseObject(
+                                                value, FaceCompareResult.class);
+                                        Log.i("Tag", "f:" + f.getSimilar());
+                                        if (f.getSimilar() > 0 &&
+                                                f.getSimilar() >= 0.99f) {
+                                            myHandler.sendEmptyMessage(0);
+                                        }
+                                        else {
+                                            myHandler.sendEmptyMessage(1);
+                                        }
+                                    } catch (IOException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    } finally {
+                                        isComparing = false;
+                                    }
+                                }
+                            }.start();
+                        }
                     }
                 }
                 LockScreenService.this.camera.setPreviewCallback(
@@ -375,4 +450,9 @@ import java.io.IOException;
             }
         });
     }
+
+
+    private boolean isComparing;
+
+    private Handler myHandler;
 }
