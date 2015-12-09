@@ -80,6 +80,7 @@ import org.json.JSONObject;
         super.onCreate();
         IntentFilter intentFilter = new IntentFilter(
                 "android.intent.action.SCREEN_OFF");
+        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(screenReceiver, intentFilter);
     }
 
@@ -118,6 +119,10 @@ import org.json.JSONObject;
                         CreateFloatView();
                     }
                 }
+            }
+            else if (action.equals(Intent.ACTION_SCREEN_ON)) {
+                //startFace();
+                camera.startPreview();
             }
         }
     };
@@ -326,14 +331,12 @@ import org.json.JSONObject;
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
         try {
             camera.setPreviewDisplay(holder);
         } catch (IOException e) {
             e.printStackTrace();
         }
         camera.setDisplayOrientation(90);
-        camera.startPreview();
         camera.setPreviewCallback(this);
     }
 
