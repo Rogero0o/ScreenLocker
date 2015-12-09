@@ -78,8 +78,8 @@ import org.json.JSONObject;
 
     @Override public void onCreate() {
         super.onCreate();
-        IntentFilter intentFilter = new IntentFilter(
-                "android.intent.action.SCREEN_OFF");
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(screenReceiver, intentFilter);
     }
@@ -106,7 +106,7 @@ import org.json.JSONObject;
         @SuppressWarnings("static-access") @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals("android.intent.action.SCREEN_OFF")) {
+            if (action.equals(Intent.ACTION_SCREEN_OFF)) {
 
                 keyguardManager = (KeyguardManager) context.getSystemService(
                         context.KEYGUARD_SERVICE);
@@ -115,13 +115,11 @@ import org.json.JSONObject;
                 if (BaseActivity.localSharedPreferences.getBoolean(
                         BaseActivity.PREFS_IS_OPEN, false)) {
                     if (!isShow) {
-                        Log.i("Tag", "CreateFloatView");
                         CreateFloatView();
                     }
                 }
             }
             else if (action.equals(Intent.ACTION_SCREEN_ON)) {
-                //startFace();
                 camera.startPreview();
             }
         }
