@@ -67,6 +67,8 @@ import org.json.JSONObject;
     private int height = 240;
     FaceDetecter facedetecter = null;
     private View mView;
+    private Handler myHandler;
+    private Bitmap img;
 
 
     @Override public IBinder onBind(Intent intent) {
@@ -368,13 +370,6 @@ import org.json.JSONObject;
                 final FaceDetecter.Face[] faceinfo = facedetecter.findFaces(ori,
                         height, width);
 
-                mView.post(new Runnable() {
-
-                    @Override public void run() {
-                        mask.setFaceInfo(faceinfo);
-                    }
-                });
-
                 if (faceinfo != null && faceinfo.length >= 1 && isShow) {
 
                     Camera.Size previewSize
@@ -392,15 +387,10 @@ import org.json.JSONObject;
                     bitmap = BitmapUtil.rotateBitMap(bitmap, 270);
 
                     array2 = Bitmap2Bytes(bitmap);
-                    if (bitmap == null) {
-                        Toast.makeText(LockScreenService.this, "未检测到人脸.",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    else {
+                    if (bitmap != null) {
                         HttpRequests httpRequests = new HttpRequests(
                                 "af622c0acdccd2d794f90243cb033465",
                                 "ysY5joJFm4lqDONwHle36_9YSGj03iAn", true, true);
-
                         try {
                             byte[] array1 = imageProcessing(
                                     MrApplication.facePath);
@@ -420,8 +410,6 @@ import org.json.JSONObject;
                                                         .setFaceId2(face2));
                             final Double smilar = Double.valueOf(
                                     Compare.getString("similarity"));
-
-                            Log.i("Tag", "smilar:" + smilar);
                             if (smilar > 0 && smilar >= 80d) {
                                 myHandler.sendEmptyMessage(0);
                             }
@@ -442,11 +430,6 @@ import org.json.JSONObject;
             }
         });
     }
-
-
-
-    private Handler myHandler;
-    private Bitmap img;
 
 
     private byte[] imageProcessing(final String Path) {
