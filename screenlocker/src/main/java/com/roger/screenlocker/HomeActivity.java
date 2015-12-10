@@ -99,14 +99,15 @@ public class HomeActivity extends BaseActivity {
 
             public void onDrawerClosed(View view) {
 
-                if (position == oldPosition) {
-                    return;
+                if (position != 5) {//检查更新不显示
+                    if (position == oldPosition) {
+                        return;
+                    }
+                    else {
+                        oldPosition = position;
+                    }
+                    setTitle(sNewsList[position]);
                 }
-                else {
-                    oldPosition = position;
-                }
-
-                setTitle(sNewsList[position]);
 
                 invalidateOptionsMenu(); // creates call to
 
@@ -144,6 +145,7 @@ public class HomeActivity extends BaseActivity {
                         mContent = mInitSettingFragment;
                         break;
                     case 5:
+                        UmengUpdateAgent.forceUpdate(getApplication());
                         Toast.makeText(mActivity,
                                 getResources().getString(R.string.update),
                                 Toast.LENGTH_LONG).show();
@@ -204,13 +206,13 @@ public class HomeActivity extends BaseActivity {
         oldPosition = 2;
     }
 
+
     public void toFace() {
         if (mFaceSettingFragment == null) {
             mFaceSettingFragment = new FaceSettingFragment();
         }
         getFragmentManager().beginTransaction()
-                            .replace(R.id.content_frame,
-                                    mFaceSettingFragment)
+                            .replace(R.id.content_frame, mFaceSettingFragment)
                             .commit();
         oldPosition = 3;
     }

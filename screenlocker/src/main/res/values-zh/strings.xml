@@ -42,7 +42,7 @@
 
     <string name="gesture_unlock">请绘制解锁图案</string>
 
-    <string name="update">暂无更新</string>
+    <string name="update">正在检查更新,请查看弹窗信息,若无则为最新版本.</string>
 
     <string name="about">关于</string>
 
