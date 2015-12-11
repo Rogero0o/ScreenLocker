@@ -87,6 +87,10 @@ public class HomeFragment extends BaseFragment {
                                 }
                             }
                             else if (position == 3) {
+                                Toast.makeText(mContext,
+                                        getResources().getString(
+                                                R.string.home_face_net_notice),
+                                        Toast.LENGTH_SHORT).show();
                                 BaseActivity.localSharedPreferences.edit()
                                                                    .putInt(BaseActivity.PREFS_MODE,
                                                                            3)
@@ -100,6 +104,8 @@ public class HomeFragment extends BaseFragment {
                                                     R.string.home_face_notice),
                                             Toast.LENGTH_SHORT).show();
                                     mHandler.sendEmptyMessageDelayed(3, 500);
+                                }else{
+
                                 }
                             }
                         }

@@ -120,7 +120,10 @@ import org.json.JSONObject;
                 }
             }
             else if (action.equals(Intent.ACTION_SCREEN_ON)) {
-                camera.startPreview();
+                if (BaseActivity.localSharedPreferences.getInt(
+                        BaseActivity.PREFS_MODE, 0) == 3) {
+                    camera.startPreview();
+                }
             }
         }
     };
@@ -211,7 +214,9 @@ import org.json.JSONObject;
             mGestureLockView.setShowLine(true);
         }
 
-        initFace(mFloatView);
+        camerasurface = (SurfaceView) mFloatView.findViewById(
+                R.id.camera_preview);
+        mask = (FaceMask) mFloatView.findViewById(R.id.mask);
 
         if (BaseActivity.localSharedPreferences.getInt(BaseActivity.PREFS_MODE,
                 0) == 1) {//是否为滑动解锁
@@ -229,10 +234,11 @@ import org.json.JSONObject;
         }
         else if (BaseActivity.localSharedPreferences.getInt(
                 BaseActivity.PREFS_MODE, 0) == 3) {
-            mSliderLayout.setVisibility(View.GONE);
+            mSliderLayout.setVisibility(View.VISIBLE);
             mGestureLockView.setVisibility(View.GONE);
             camerasurface.setVisibility(View.VISIBLE);
             mask.setVisibility(View.VISIBLE);
+            initFace(mFloatView);
         }
 
         if (TextUtils.isEmpty(key)) {//手势为空则换为滑动解锁
@@ -270,8 +276,6 @@ import org.json.JSONObject;
 
 
     private void initFace(View mView) {
-        camerasurface = (SurfaceView) mView.findViewById(R.id.camera_preview);
-        mask = (FaceMask) mView.findViewById(R.id.mask);
         RelativeLayout.LayoutParams para = new RelativeLayout.LayoutParams(480,
                 800);
         handleThread = new HandlerThread("dt");
