@@ -253,15 +253,16 @@ import org.json.JSONObject;
                 new GestureLockView.OnGestureFinishListener() {
                     @Override
                     public void OnGestureFinish(boolean success, String key) {
-                        if (BaseActivity.localSharedPreferences.getBoolean(
-                                BaseActivity.PREFS_SETTING_SHAKE, false)) {
-                            VibratorUtil.Vibrate(getApplicationContext(), 50);
-                        }
                         if (success) {
+                            if (BaseActivity.localSharedPreferences.getBoolean(
+                                    BaseActivity.PREFS_SETTING_SHAKE, false)) {
+                                VibratorUtil.Vibrate(getApplicationContext(), 50);
+                            }
                             windowManager.removeView(mFloatView);
                             isShow = false;
                         }
                         else {
+                            VibratorUtil.Vibrate(getApplicationContext(), 50);
                             YoYo.with(Techniques.Shake)
                                 .duration(1000)
                                 .playOn(mFloatView.findViewById(
@@ -299,6 +300,10 @@ import org.json.JSONObject;
                 super.handleMessage(msg);
                 if (msg.what == 0) {
                     stopFace();
+                    if (BaseActivity.localSharedPreferences.getBoolean(
+                            BaseActivity.PREFS_SETTING_SHAKE, false)) {
+                        VibratorUtil.Vibrate(getApplicationContext(), 50);
+                    }
                     mWindowManager.removeView(finalFloatView);
                     isShow = false;
                 }
