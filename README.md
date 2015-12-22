@@ -8,6 +8,12 @@ In order to provide the most cool lock screen software for users.<br>
 ## Looks like
 ![](https://github.com/Rogero0o/ScreenLocker/raw/master/images/1.gif)
 
+![](https://github.com/Rogero0o/ScreenLocker/raw/master/images/2.gif)
+
+![](https://github.com/Rogero0o/ScreenLocker/raw/master/images/3.gif)
+
+![](https://github.com/Rogero0o/ScreenLocker/raw/master/images/4.gif)
+
 ..as you see right now,wish you like it.
 
 ## About me
