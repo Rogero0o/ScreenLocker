@@ -24,7 +24,7 @@ In order to provide the most cool lock screen software for users.<br>
 
 ## Improvement
 
-This application has not been tested in detail, so there are still a lot of BUG.
+This application has not been tested in detail, so there are still a lot of BUG.<br>
 If you have any questions or suggestions , please contact me, thank you.
 
 ## About me
