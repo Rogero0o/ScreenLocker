@@ -6,7 +6,7 @@ In order to provide the most cool lock screen software for users.<br>
 
 
 ## Looks like
-![](http://2.rogerbolg.sinaapp.com/wp-content/uploads/2015/05/5.gif)
+![](https://github.com/Rogero0o/ScreenLocker/raw/master/images/1.gif)
 
 ..as you see right now,wish you like it.
 
