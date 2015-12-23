@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Message;
+import android.system.ErrnoException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -256,7 +257,8 @@ import org.json.JSONObject;
                         if (success) {
                             if (BaseActivity.localSharedPreferences.getBoolean(
                                     BaseActivity.PREFS_SETTING_SHAKE, false)) {
-                                VibratorUtil.Vibrate(getApplicationContext(), 50);
+                                VibratorUtil.Vibrate(getApplicationContext(),
+                                        50);
                             }
                             windowManager.removeView(mFloatView);
                             isShow = false;
@@ -315,19 +317,27 @@ import org.json.JSONObject;
     private void startFace() {
         if (BaseActivity.localSharedPreferences.getInt(BaseActivity.PREFS_MODE,
                 0) == 3) {
-            camera = Camera.open(1);
-            Camera.Parameters para = camera.getParameters();
-            para.setPreviewSize(width, height);
-            camera.setParameters(para);
+            try {
+                camera = Camera.open(1);
+                Camera.Parameters para = camera.getParameters();
+                para.setPreviewSize(width, height);
+                camera.setParameters(para);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
 
     private void stopFace() {
         if (camera != null) {
-            camera.setPreviewCallback(null);
-            camera.stopPreview();
-            camera.release();
+            try {
+                camera.setPreviewCallback(null);
+                camera.stopPreview();
+                camera.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
