@@ -414,6 +414,9 @@ import org.json.JSONObject;
                         try {
                             byte[] array1 = imageProcessing(
                                     MrApplication.facePath);
+                            if (array1 == null) {
+                                return;
+                            }
                             JSONObject result1 = httpRequests.detectionDetect(
                                     new PostParameters().setImg(array1));
                             String face1 = result1.getJSONArray("face")
@@ -434,13 +437,10 @@ import org.json.JSONObject;
                                 myHandler.sendEmptyMessage(0);
                             }
                         } catch (NumberFormatException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         } catch (FaceppParseException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     }
@@ -462,6 +462,9 @@ import org.json.JSONObject;
 
         options.inJustDecodeBounds = false;
         img = BitmapFactory.decodeFile(Path, options);
+        if (img == null) {
+            return null;
+        }
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         float scale = Math.min(1,
                 Math.min(600f / img.getWidth(), 600f / img.getHeight()));
