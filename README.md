@@ -38,7 +38,7 @@ If you have any new idea about this project, feel free to tell me ,Tks. :smiley:
 
 	The MIT License (MIT)
 
-	Copyright © 2015 Yalantis, https://yalantis.com
+	Copyright © 2015 Roger
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
