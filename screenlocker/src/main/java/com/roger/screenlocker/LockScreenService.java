@@ -123,7 +123,13 @@ import org.json.JSONObject;
             else if (action.equals(Intent.ACTION_SCREEN_ON)) {
                 if (BaseActivity.localSharedPreferences.getInt(
                         BaseActivity.PREFS_MODE, 0) == 3) {
-                    camera.startPreview();
+                    if (camera != null) {
+                        try {
+                            camera.startPreview();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }
