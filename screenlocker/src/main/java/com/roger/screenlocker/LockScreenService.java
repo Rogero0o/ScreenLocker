@@ -245,7 +245,7 @@ import org.json.JSONObject;
             mGestureLockView.setVisibility(View.GONE);
             camerasurface.setVisibility(View.VISIBLE);
             mask.setVisibility(View.VISIBLE);
-            initFace(mFloatView);
+            initFace();
         }
 
         if (TextUtils.isEmpty(key)) {//手势为空则换为滑动解锁
@@ -284,7 +284,7 @@ import org.json.JSONObject;
     }
 
 
-    private void initFace(View mView) {
+    private void initFace() {
         RelativeLayout.LayoutParams para = new RelativeLayout.LayoutParams(480,
                 800);
         handleThread = new HandlerThread("dt");
