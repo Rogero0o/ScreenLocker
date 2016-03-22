@@ -300,8 +300,8 @@ public class MatchView extends View {
     public void initWithStringArray(int id) {
         String[] points = getResources().getStringArray(id);
         ArrayList<float[]> pointList = new ArrayList<float[]>();
-        for (int i = 0; i < points.length; i++) {
-            String[] x = points[i].split(",");
+        for (String point : points) {
+            String[] x = point.split(",");
             float[] f = new float[4];
             for (int j = 0; j < 4; j++) {
                 f[j] = Float.parseFloat(x[j]);

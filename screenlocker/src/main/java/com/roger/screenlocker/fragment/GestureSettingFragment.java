@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.roger.screenlocker.BaseActivity;
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.GestureLockView;
@@ -142,7 +143,7 @@ public class GestureSettingFragment extends BaseFragment
                 }
                 else if (setGestureTimes == 2) {
                     if (firstkey.equals(key)) {
-                        mHomeActivity.localSharedPreferences.edit()
+                        BaseActivity.localSharedPreferences.edit()
                                                             .putString(
                                                                     HomeActivity.PREFS_GESTURE,
                                                                     key)

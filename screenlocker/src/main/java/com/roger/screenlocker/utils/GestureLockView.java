@@ -200,11 +200,11 @@ public class GestureLockView extends View {
                 case MotionEvent.ACTION_MOVE:
                     eventX = (int) event.getX();
                     eventY = (int) event.getY();
-                    for (int i = 0; i < cycles.length; i++) {
-                        if (cycles[i].isPointIn(eventX, eventY)) {
-                            cycles[i].setOnTouch(true);
-                            if (!linedCycles.contains(cycles[i].getNum())) {
-                                linedCycles.add(cycles[i].getNum());
+                    for (LockCircle cycle : cycles) {
+                        if (cycle.isPointIn(eventX, eventY)) {
+                            cycle.setOnTouch(true);
+                            if (!linedCycles.contains(cycle.getNum())) {
+                                linedCycles.add(cycle.getNum());
                             }
                         }
                     }
@@ -212,7 +212,7 @@ public class GestureLockView extends View {
                 case MotionEvent.ACTION_UP:
                     //手指离开暂停触碰
                     canContinue = false;
-                    StringBuffer stringBuffer = new StringBuffer();
+                    StringBuilder stringBuffer = new StringBuilder();
                     for (int i = 0; i < linedCycles.size(); i++) {
                         stringBuffer.append(linedCycles.get(i));
                     }
@@ -268,25 +268,25 @@ public class GestureLockView extends View {
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int cycleSize = cycles.length;
-        for (int i = 0; i < cycleSize; i++) {
+        for (LockCircle cycle : cycles) {
             // 画完并且错误
             if (!canContinue && !result) {
-                if (cycles[i].isOnTouch()) {
-                    drawInnerCycle(cycles[i], canvas, ERROE_COLOR);
-                    drawOutsideCycle(cycles[i], canvas, ERROE_COLOR);
+                if (cycle.isOnTouch()) {
+                    drawInnerCycle(cycle, canvas, ERROE_COLOR);
+                    drawOutsideCycle(cycle, canvas, ERROE_COLOR);
                 }
                 else {
-                    drawOutsideCycle(cycles[i], canvas, NORMAL_COLOR);
+                    drawOutsideCycle(cycle, canvas, NORMAL_COLOR);
                 }
             }
             //绘画中
             else {
-                if (cycles[i].isOnTouch()) {
-                    drawInnerCycle(cycles[i], canvas, TOUCH_COLOR);
-                    drawOutsideCycle(cycles[i], canvas, TOUCH_COLOR);
+                if (cycle.isOnTouch()) {
+                    drawInnerCycle(cycle, canvas, TOUCH_COLOR);
+                    drawOutsideCycle(cycle, canvas, TOUCH_COLOR);
                 }
                 else {
-                    drawOutsideCycle(cycles[i], canvas, NORMAL_COLOR);
+                    drawOutsideCycle(cycle, canvas, NORMAL_COLOR);
                 }
             }
         }

@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.roger.screenlocker.BaseActivity;
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.PullSeparateListView;
@@ -48,8 +49,8 @@ public class MenuFragment extends Fragment {
                 R.drawable.menu_3, R.drawable.menu_face, R.drawable.menu_4,
                 R.drawable.menu_5, R.drawable.menu_6 };
         mHomeActivity = (HomeActivity) getActivity();
-        isOpen = mHomeActivity.localSharedPreferences.getBoolean(
-                mHomeActivity.PREFS_IS_OPEN, false);
+        isOpen = BaseActivity.localSharedPreferences.getBoolean(
+                BaseActivity.PREFS_IS_OPEN, false);
     }
 
 

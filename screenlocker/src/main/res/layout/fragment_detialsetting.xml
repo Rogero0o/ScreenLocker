@@ -10,99 +10,90 @@
     <FrameLayout
         android:id="@+id/frame_init"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <LinearLayout
-        android:layout_marginTop="100dp"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:layout_marginTop="130dp"
+        android:background="@drawable/button_item_shap"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
+        android:gravity="center_horizontal"
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/button_item_shap"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/btn_closesys"
             android:layout_width="fill_parent"
-            android:gravity="center_horizontal"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:id="@+id/btn_closesys"
-                android:layout_width="fill_parent"
-                android:gravity="center_vertical"
-                android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/text_init2"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detial_setting_showmenu"/>
 
-                <TextView
-                    android:layout_marginLeft="20dp"
-                    android:id="@+id/text_init2"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detial_setting_showmenu" />
-
-                <com.roger.screenlocker.utils.switchbutton.SwitchButton
-                    android:layout_weight="1"
-                    android:id="@+id/btn_detialsetting_showmenu"
-                    android:layout_marginLeft="15dp"
-                    style="@style/MaterialDesignStyle" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="fill_parent"
-                android:gravity="center_vertical"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detial_setting_shake" />
-
-                <com.roger.screenlocker.utils.switchbutton.SwitchButton
-                    android:layout_weight="1"
-                    android:id="@+id/btn_detialsetting_shake"
-                    android:layout_marginLeft="15dp"
-                    style="@style/MaterialDesignStyle" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_width="fill_parent"
-                android:gravity="center_vertical"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_weight="1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detial_setting_showline" />
-
-                <com.roger.screenlocker.utils.switchbutton.SwitchButton
-                    android:layout_weight="1"
-                    android:id="@+id/btn_detialsetting_showline"
-                    android:layout_marginLeft="15dp"
-                    style="@style/MaterialDesignStyle" />
-
-            </LinearLayout>
+            <com.roger.screenlocker.utils.switchbutton.SwitchButton
+                android:layout_weight="1"
+                android:id="@+id/btn_detialsetting_showmenu"
+                android:layout_marginLeft="15dp"
+                style="@style/MaterialDesignStyle"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detial_setting_shake"/>
+
+            <com.roger.screenlocker.utils.switchbutton.SwitchButton
+                android:layout_weight="1"
+                android:id="@+id/btn_detialsetting_shake"
+                android:layout_marginLeft="15dp"
+                style="@style/MaterialDesignStyle"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="fill_parent"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/detial_setting_showline"/>
+
+            <com.roger.screenlocker.utils.switchbutton.SwitchButton
+                android:layout_weight="1"
+                android:id="@+id/btn_detialsetting_showline"
+                android:layout_marginLeft="15dp"
+                style="@style/MaterialDesignStyle"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>

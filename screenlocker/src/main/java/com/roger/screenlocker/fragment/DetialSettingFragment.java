@@ -2,6 +2,7 @@ package com.roger.screenlocker.fragment;
 
 import android.text.TextUtils;
 import android.widget.CompoundButton;
+import com.roger.screenlocker.BaseActivity;
 import com.roger.screenlocker.HomeActivity;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.switchbutton.SwitchButton;
@@ -30,11 +31,11 @@ public class DetialSettingFragment extends BaseFragment
         mShake.setOnCheckedChangeListener(this);
         mShowLine.setOnCheckedChangeListener(this);
 
-        mShowMenu.setChecked(mHomeActivity.localSharedPreferences.getBoolean(
+        mShowMenu.setChecked(BaseActivity.localSharedPreferences.getBoolean(
                 HomeActivity.PREFS_SETTING_SHOWMENU, false));
-        mShake.setChecked(mHomeActivity.localSharedPreferences.getBoolean(
+        mShake.setChecked(BaseActivity.localSharedPreferences.getBoolean(
                 HomeActivity.PREFS_SETTING_SHAKE, false));
-        mShowLine.setChecked(mHomeActivity.localSharedPreferences.getBoolean(
+        mShowLine.setChecked(BaseActivity.localSharedPreferences.getBoolean(
                 HomeActivity.PREFS_SETTING_SHOWLINE, false));
     }
 
@@ -60,13 +61,13 @@ public class DetialSettingFragment extends BaseFragment
         }
         if (!TextUtils.isEmpty(prefsString)) {
             if (isChecked) {
-                mHomeActivity.localSharedPreferences.edit()
+                BaseActivity.localSharedPreferences.edit()
                                                     .putBoolean(prefsString,
                                                             true)
                                                     .commit();
             }
             else {
-                mHomeActivity.localSharedPreferences.edit()
+                BaseActivity.localSharedPreferences.edit()
                                                     .putBoolean(prefsString,
                                                             false)
                                                     .commit();

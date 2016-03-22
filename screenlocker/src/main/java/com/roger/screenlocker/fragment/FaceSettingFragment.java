@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.faceplusplus.api.FaceDetecter;
+import com.roger.screenlocker.BaseActivity;
 import com.roger.screenlocker.MrApplication;
 import com.roger.screenlocker.R;
 import com.roger.screenlocker.utils.faceutil.BitmapUtil;
@@ -193,9 +194,9 @@ public class FaceSettingFragment extends BaseFragment
                         isSaveed = true;
                         BitmapUtil.onlySaveBitmap(MrApplication.facePath,
                                 bitmap);//先保存
-                        mHomeActivity.localSharedPreferences.edit()
+                        BaseActivity.localSharedPreferences.edit()
                                                             .putString(
-                                                                    mHomeActivity.PREFS_FACE_STRING,
+                                                                    BaseActivity.PREFS_FACE_STRING,
                                                                     "true")
                                                             .commit();
                         Toast.makeText(getActivity(), "保存成功.",

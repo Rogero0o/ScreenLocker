@@ -1,5 +1,6 @@
 package com.roger.screenlocker.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -46,9 +47,9 @@ public class HomeFragment extends BaseFragment {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         if (position == 0) {//选择无，则关闭service
-                            mHomeActivity.localSharedPreferences.edit()
+                            BaseActivity.localSharedPreferences.edit()
                                                                 .putBoolean(
-                                                                        mHomeActivity.PREFS_IS_OPEN,
+                                                                        BaseActivity.PREFS_IS_OPEN,
                                                                         false)
                                                                 .commit();
                             mHomeActivity.stopService(new Intent(mHomeActivity,
@@ -57,9 +58,9 @@ public class HomeFragment extends BaseFragment {
                         }
                         else {//选择方式，则打开service
                             MenuFragment.isOpen = true;
-                            mHomeActivity.localSharedPreferences.edit()
+                            BaseActivity.localSharedPreferences.edit()
                                                                 .putBoolean(
-                                                                        mHomeActivity.PREFS_IS_OPEN,
+                                                                        BaseActivity.PREFS_IS_OPEN,
                                                                         true)
                                                                 .commit();
                             mHomeActivity.startService(new Intent(mHomeActivity,
@@ -120,7 +121,7 @@ public class HomeFragment extends BaseFragment {
                 });
 
         if (!BaseActivity.localSharedPreferences.getBoolean(
-                mHomeActivity.PREFS_IS_OPEN, false)) {
+                BaseActivity.PREFS_IS_OPEN, false)) {
             mSpinner.setSelection(0);
         }
         else {
@@ -154,7 +155,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == mHomeActivity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             BaseActivity.mUri = uri;
             BaseActivity.localSharedPreferences.edit()

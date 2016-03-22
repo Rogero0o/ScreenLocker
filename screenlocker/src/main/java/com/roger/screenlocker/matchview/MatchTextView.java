@@ -51,6 +51,7 @@ public class MatchTextView extends MatchView {
         mTextColor = a.getColor(R.styleable.match_textColor, Color.WHITE);
         //获取内容
         mContent = a.getString(R.styleable.match_text);
+        a.recycle();
         init();
     }
 

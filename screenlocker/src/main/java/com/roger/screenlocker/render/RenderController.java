@@ -41,7 +41,6 @@ public abstract class RenderController {
         }
     }
 
-
     protected abstract BitmapRegionLoader openDownloadedCurrentArtwork(boolean forceReload);
 
 

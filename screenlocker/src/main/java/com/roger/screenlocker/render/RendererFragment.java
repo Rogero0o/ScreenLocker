@@ -163,6 +163,8 @@ public class RendererFragment extends Fragment
 
     @Override public void onDestroyView() {
         super.onDestroyView();
+        mView.destroyDrawingCache();
+        mView.clearAnimation();
         mView = null;
     }
 

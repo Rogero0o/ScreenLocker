@@ -21,14 +21,14 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import com.roger.screenlocker.render.util.BitmapRegionLoader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
 public class DemoRenderController extends RenderController {
-
-    private final Handler mHandler = new Handler();
 
     private static final long ANIMATION_CYCLE_TIME_MILLIS = 35000;
     private static final long FOCUS_DELAY_TIME_MILLIS = 2000;
@@ -38,6 +38,7 @@ public class DemoRenderController extends RenderController {
     private boolean mReverseDirection = false;
     private boolean mAllowFocus = true;
     private String mPictureName;
+    private final Handler mHandler = new MyHandler(this);
 
 
     public DemoRenderController(Context context, BlurRenderer renderer, Callbacks callbacks, boolean allowFocus, String mPictureName) {
@@ -67,16 +68,32 @@ public class DemoRenderController extends RenderController {
             }
         });
         if (mAllowFocus) {
-            mHandler.postDelayed(new Runnable() {
-                @Override public void run() {
-                    mRenderer.setIsBlurred(false, false);
-                    mHandler.postDelayed(new Runnable() {
-                        @Override public void run() {
-                            mRenderer.setIsBlurred(true, false);
-                        }
-                    }, FOCUS_TIME_MILLIS);
-                }
-            }, FOCUS_DELAY_TIME_MILLIS);
+            mHandler.sendEmptyMessageDelayed(1, FOCUS_DELAY_TIME_MILLIS);
+        }
+    }
+
+
+    private static class MyHandler extends Handler {
+        private final WeakReference<DemoRenderController> mActivity;
+
+
+        public MyHandler(DemoRenderController activity) {
+            mActivity = new WeakReference<DemoRenderController>(activity);
+        }
+
+
+        @Override public void handleMessage(Message msg) {
+            if (mActivity.get() == null) {
+                return;
+            }
+            if (msg.arg1 == 0) {
+                mActivity.get().mRenderer.setIsBlurred(false, false);
+            }
+            else {
+                mActivity.get().mRenderer.setIsBlurred(true, false);
+            }
+            mActivity.get().mHandler.sendEmptyMessageDelayed(1,
+                    FOCUS_TIME_MILLIS);
         }
     }
 

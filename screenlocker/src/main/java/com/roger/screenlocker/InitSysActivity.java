@@ -83,6 +83,11 @@ public class InitSysActivity extends BaseActivity
     }
 
 
+    @Override protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
     @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
         this.finish();
         return true;
