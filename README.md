@@ -1,6 +1,6 @@
 # ScreenLocker
 Mr. lock screen is a simple, cool lock screen software, the ability to provide custom cool lock screen for the user.<br>
-Including the slide to unlock and unlock gesture in two ways. <br>
+Including the slide to unlock and unlock gesture of two ways. <br>
 Psychedelic background and cool animation is the biggest highlight of the application.<br>
 In order to provide the most cool lock screen software for users.<br>
 
